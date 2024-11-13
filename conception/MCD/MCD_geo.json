@@ -1,0 +1,43 @@
+{
+  "width": 558,
+  "height": 533,
+  "cx": [
+    [ "USER", 54 ],
+    [ "CREATE", 165 ],
+    [ "RECIPE", 272 ],
+    [ "ASSOCIATE", 390 ],
+    [ "CATEGORY", 508 ],
+    [ "LEAVE", 272 ],
+    [ "COMMENT", 390 ],
+    [ "GIVE", 272 ],
+    [ "SCORE", 390 ],
+    [ "HAVE", 272 ],
+    [ "ROLE", 390 ]
+  ],
+  "cy": [
+    [ "USER", 102 ],
+    [ "CREATE", 102 ],
+    [ "RECIPE", 102 ],
+    [ "ASSOCIATE", 102 ],
+    [ "CATEGORY", 102 ],
+    [ "LEAVE", 262 ],
+    [ "COMMENT", 262 ],
+    [ "GIVE", 380 ],
+    [ "SCORE", 380 ],
+    [ "HAVE", 490 ],
+    [ "ROLE", 490 ]
+  ],
+  "shift": [
+    [ "CREATE,RECIPE,0", 0 ],
+    [ "CREATE,USER,0", 0 ],
+    [ "ASSOCIATE,CATEGORY,0", 0 ],
+    [ "ASSOCIATE,RECIPE,0", 0 ],
+    [ "LEAVE,COMMENT,0", 0 ],
+    [ "LEAVE,USER,0", 0 ],
+    [ "GIVE,SCORE,0", 0 ],
+    [ "GIVE,USER,0", 0 ],
+    [ "HAVE,ROLE,0", 0 ],
+    [ "HAVE,USER,0", 0 ]
+  ],
+  "ratio": []
+}

@@ -1,0 +1,58 @@
+@startuml
+' Définition des entités
+entity "USER" {
+  +id_user : INT
+  name : TEXT
+  email : TEXT
+  password : TEXT
+  date_created : DATE
+  status : TEXT
+  --
+  +id_role : INT
+}
+
+entity "RECIPE" {
+  +id_recipe : INT
+  title : TEXT
+  description : TEXT
+  anecdote : TEXT
+  ingredients : TEXT
+  instructions : TEXT
+  source : TEXT
+  date_added : DATE
+  --
+  +id_category : INT
+}
+
+entity "CATEGORY" {
+  +id_category : INT
+  name : TEXT
+}
+
+entity "COMMENT" {
+  +id_comment : INT
+  content : TEXT
+  date_comment : DATE
+}
+
+entity "SCORE" {
+  +id_score : INT
+  score : INT
+  --
+  +id_user : INT
+  +id_recipe : INT
+}
+
+entity "ROLE" {
+  +id_role : INT
+  role : TEXT
+}
+
+' Relations entre les entités
+USER ||--o{ RECIPE : "CREATE"
+USER ||--o{ COMMENT : "LEAVE"
+USER ||--o{ SCORE : "GIVE"
+USER ||--o{ ROLE : "HAVE"
+RECIPE }|--|| CATEGORY : "ASSOCIATE"
+SCORE }|--|| RECIPE : "GIVE"
+@enduml

@@ -1,0 +1,17 @@
+USER: id_user, name, email, password, date_created, status, id_role
+CREATE, 1N RECIPE, ON USER
+RECIPE: id_recipe, title, description, anecdote, ingredients, instructions, source, date_added, id_category
+ASSOCIATE, 1N CATEGORY, ON RECIPE
+CATEGORY: id_category, name
+
+:
+LEAVE, 1N COMMENT, ON USER
+COMMENT: id_comment, content, date_comment
+
+:
+GIVE, 1N SCORE, ON USER
+SCORE: id_score, score, id_user, id_recipe
+
+:
+HAVE, 1N ROLE, ON USER
+ROLE: id_role, role

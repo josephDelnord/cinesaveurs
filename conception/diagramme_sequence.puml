@@ -1,0 +1,73 @@
+@startuml
+actor "User" as User
+actor "Admin" as Admin
+participant "Web Interface" as Web
+participant "Controller" as Controller
+participant "Database" as DB
+entity "USER" as UserDB
+entity "RECIPE" as RecipeDB
+entity "CATEGORY" as CategoryDB
+entity "ROLE" as RoleDB
+entity "SCORE" as ScoreDB
+
+' Interaction 1: The user logs in
+User -> Web : "Login (email, password)"
+Web -> Controller : "Verify user"
+Controller -> UserDB : "Check user info"
+UserDB -> Controller : "User found"
+Controller -> Web : "Login successful"
+
+' Interaction 2: The user accesses the add recipe page
+User -> Web : "Go to add recipe page"
+Web -> Controller : "Check user role"
+Controller -> RoleDB : "Check user role"
+RoleDB -> Controller : "Role: user_logged"
+
+' Interaction 3: The user enters the recipe information
+User -> Web : "Enter recipe details (title, description, etc.)"
+Web -> Controller : "Send recipe details"
+Controller -> DB : "Validate and save recipe"
+DB -> RecipeDB : "Add recipe (title, description, etc.)"
+RecipeDB -> DB : "Recipe added"
+
+' Interaction 4: Associate the recipe with a category
+Controller -> CategoryDB : "Associate recipe with category"
+CategoryDB -> DB : "Category associated"
+DB -> Web : "Recipe added confirmation"
+
+' Interaction 5: The web interface confirms the recipe addition
+Web -> User : "Recipe added successfully"
+
+' Admin checks users, recipes, and categories
+Admin -> Web : "Login as admin"
+Web -> Controller : "Verify admin credentials"
+Controller -> UserDB : "Check admin credentials"
+UserDB -> Controller : "Admin verified"
+Controller -> Web : "Login successful"
+
+Admin -> Web : "View all users"
+Web -> Controller : "Fetch all users"
+Controller -> UserDB : "Retrieve users"
+UserDB -> Controller : "List of users"
+Controller -> Web : "Display users"
+
+Admin -> Web : "View all recipes"
+Web -> Controller : "Fetch all recipes"
+Controller -> RecipeDB : "Retrieve recipes"
+RecipeDB -> Controller : "List of recipes"
+Controller -> Web : "Display recipes"
+
+Admin -> Web : "View all categories"
+Web -> Controller : "Fetch all categories"
+Controller -> CategoryDB : "Retrieve categories"
+CategoryDB -> Controller : "List of categories"
+Controller -> Web : "Display categories"
+
+' Interaction 6: User adds a score to a recipe
+User -> Web : "Rate a recipe (score 1 to 5)"
+Web -> Controller : "Send score"
+Controller -> ScoreDB : "Add score to recipe"
+ScoreDB -> DB : "Score added to recipe"
+DB -> Web : "Score added confirmation"
+Web -> User : "Score added successfully"
+@enduml

@@ -1,0 +1,95 @@
+Table "ASSOCIATE" {
+  "id_category" VARCHAR(42) [NOT NULL]
+  "id_recipe"   VARCHAR(42) [NOT NULL]
+  Indexes {
+    ("id_category", "id_recipe") [pk]
+  }
+}
+
+Table "CATEGORY" {
+  "id_category" VARCHAR(42) [pk, NOT NULL]
+  "name"        VARCHAR(42)
+}
+
+Table "COMMENT" {
+  "id_comment"   VARCHAR(42) [pk, NOT NULL]
+  "content"      VARCHAR(42)
+  "date_comment" VARCHAR(42)
+}
+
+Table "CREATE" {
+  "id_recipe" VARCHAR(42) [NOT NULL]
+  "id_user"   VARCHAR(42) [NOT NULL]
+  Indexes {
+    ("id_recipe", "id_user") [pk]
+  }
+}
+
+Table "GIVE" {
+  "id_score" VARCHAR(42) [NOT NULL]
+  "id_user"  VARCHAR(42) [NOT NULL]
+  Indexes {
+    ("id_score", "id_user") [pk]
+  }
+}
+
+Table "HAVE" {
+  "id_role" VARCHAR(42) [NOT NULL]
+  "id_user" VARCHAR(42) [NOT NULL]
+  Indexes {
+    ("id_role", "id_user") [pk]
+  }
+}
+
+Table "LEAVE" {
+  "id_comment" VARCHAR(42) [NOT NULL]
+  "id_user"    VARCHAR(42) [NOT NULL]
+  Indexes {
+    ("id_comment", "id_user") [pk]
+  }
+}
+
+Table "RECIPE" {
+  "id_recipe"    VARCHAR(42) [pk, NOT NULL]
+  "title"        VARCHAR(42)
+  "description"  VARCHAR(42)
+  "anecdote"     VARCHAR(42)
+  "ingredients"  VARCHAR(42)
+  "instructions" VARCHAR(42)
+  "source"       VARCHAR(42)
+  "date_added"   VARCHAR(42)
+  "id_category"  VARCHAR(42)
+}
+
+Table "ROLE" {
+  "id_role" VARCHAR(42) [pk, NOT NULL]
+  "role"    VARCHAR(42)
+}
+
+Table "SCORE" {
+  "id_score"  VARCHAR(42) [pk, NOT NULL]
+  "score"     VARCHAR(42)
+  "id_user"   VARCHAR(42)
+  "id_recipe" VARCHAR(42)
+}
+
+Table "USER" {
+  "id_user"      VARCHAR(42) [pk, NOT NULL]
+  "name"         VARCHAR(42)
+  "email"        VARCHAR(42)
+  "password"     VARCHAR(42)
+  "date_created" VARCHAR(42)
+  "status"       VARCHAR(42)
+  "id_role"      VARCHAR(42)
+}
+
+Ref:"ASSOCIATE"."id_category" > "CATEGORY"."id_category"
+Ref:"ASSOCIATE"."id_recipe" > "RECIPE"."id_recipe"
+Ref:"CREATE"."id_recipe" > "RECIPE"."id_recipe"
+Ref:"CREATE"."id_user" > "USER"."id_user"
+Ref:"GIVE"."id_score" > "SCORE"."id_score"
+Ref:"GIVE"."id_user" > "USER"."id_user"
+Ref:"HAVE"."id_role" > "ROLE"."id_role"
+Ref:"HAVE"."id_user" > "USER"."id_user"
+Ref:"LEAVE"."id_comment" > "COMMENT"."id_comment"
+Ref:"LEAVE"."id_user" > "USER"."id_user"

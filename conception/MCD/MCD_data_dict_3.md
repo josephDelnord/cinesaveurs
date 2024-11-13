@@ -1,0 +1,29 @@
+| Entité ou association | Libellé de l'attribut | Type |
+|:----------------------|:----------------------|:-----|
+| CATEGORY              | id_category           |      |
+| "                     | name                  |      |
+| COMMENT               | content               |      |
+| "                     | date_comment          |      |
+| "                     | id_comment            |      |
+| RECIPE                | anecdote              |      |
+| "                     | date_added            |      |
+| "                     | description           |      |
+| "                     | id_category           |      |
+| "                     | id_recipe             |      |
+| "                     | ingredients           |      |
+| "                     | instructions          |      |
+| "                     | source                |      |
+| "                     | title                 |      |
+| ROLE                  | id_role               |      |
+| "                     | role                  |      |
+| SCORE                 | id_recipe             |      |
+| "                     | id_score              |      |
+| "                     | id_user               |      |
+| "                     | score                 |      |
+| USER                  | date_created          |      |
+| "                     | email                 |      |
+| "                     | id_role               |      |
+| "                     | id_user               |      |
+| "                     | name                  |      |
+| "                     | password              |      |
+| "                     | status                |      |

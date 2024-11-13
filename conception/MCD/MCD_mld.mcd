@@ -1,0 +1,33 @@
+%%mocodo
+:
+USER: id_user, name, email, password, date_created, status, id_role
+:
+CREATE: #id_recipe > RECIPE > id_recipe, _#id_user > USER > id_user
+:
+RECIPE: id_recipe, title, description, anecdote, ingredients, instructions, source, date_added, id_category
+:
+ASSOCIATE: #id_category > CATEGORY > id_category, _#id_recipe > RECIPE > id_recipe
+:
+CATEGORY: id_category, name
+:
+
+
+:::::
+LEAVE: #id_comment > COMMENT > id_comment, _#id_user > USER > id_user
+:
+COMMENT: id_comment, content, date_comment
+:::
+
+
+:::::
+GIVE: #id_score > SCORE > id_score, _#id_user > USER > id_user
+:
+SCORE: id_score, score, id_user, id_recipe
+:::
+
+
+:::::
+HAVE: #id_role > ROLE > id_role, _#id_user > USER > id_user
+:
+ROLE: id_role, role
+:::
