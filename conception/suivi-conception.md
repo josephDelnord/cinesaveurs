@@ -28,10 +28,10 @@ assignees: ""
 
 ## Documents de conception
 
-- [ ] Le **diagramme ERD (Entité-Relation-Diagram)** : schéma de la base de données
-- [ ] Un **diagramme de séquence** d'une fonctionnalité complexe
-- [ ] Les **Use Cases** : scénarios plus complets que les User Stories, qui décrivent les interactions entre les utilisateurs et le système
-- [ ] Le Dictionnaire de données : liste des entités et de leurs attributs ([Fiche Récap](https://kourou.oclock.io/ressources/fiche-recap/dictionnaire-de-donnees/))
+- [x] Le **diagramme ERD (Entité-Relation-Diagram)** : schéma de la base de données
+- [x] Un **diagramme de séquence** d'une fonctionnalité complexe
+- [x] Les **Use Cases** : scénarios plus complets que les User Stories, qui décrivent les interactions entre les utilisateurs et le système
+- [x] Le Dictionnaire de données : liste des entités et de leurs attributs ([Fiche Récap](https://kourou.oclock.io/ressources/fiche-recap/dictionnaire-de-donnees/))
 
 ## Eléments graphiques
 
