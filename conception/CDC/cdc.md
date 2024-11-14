@@ -421,39 +421,8 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
 
 ## Arborescence complète des routes :
 
-```plaintext
-/
-│
-├── /research
-│   └── Recherche par titre, film/série, catégorie
-│
-├── /recipe/:id
-│   └── Détails de la recette (ingrédients, instructions, commentaires, notes)
-│
-├── /addRecipe
-│   └── Formulaire pour ajouter une recette (Utilisateur connecté)
-│
-├── /login
-│   └── Formulaire de connexion
-│
-├── /register
-│   └── Formulaire d'inscription
-│
-├── /profile
-│   └── Vue et modification du profil utilisateur
-│
-├── /admin/users
-│   └── Liste des utilisateurs (Administrateur)
-│
-├── /admin/recipes
-│   └── Gestion des recettes (Administrateur)
-│
-├── /admin/categories
-│   └── Gestion des catégories (Administrateur)
-│
-└── /404
-    └── Page d'erreur pour route non trouvée
-```
+![arborescence complète de notre site ](../arborescence/arborescence.png "arborescence complète de notre site ")
+
 ---
 
 ## 8. Liste des Endpoints API (Noms de Routes en Anglais)

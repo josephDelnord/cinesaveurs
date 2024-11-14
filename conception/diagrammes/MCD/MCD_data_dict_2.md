@@ -1,22 +1,17 @@
 | Libellé de l'attribut | _Description_ |
 |:----------------------|:--------------|
 | anecdote              |               |
+| code_Category         |               |
+| code_Comment          |               |
+| code_Recipe           |               |
+| code_Role             |               |
+| code_User             |               |
 | content               |               |
 | date_added            |               |
 | date_comment          |               |
 | date_created          |               |
 | description           |               |
 | email                 |               |
-| id_category           |               |
-| "                     |               |
-| id_comment            |               |
-| id_recipe             |               |
-| "                     |               |
-| id_role               |               |
-| "                     |               |
-| id_score              |               |
-| id_user               |               |
-| "                     |               |
 | ingredients           |               |
 | instructions          |               |
 | name                  |               |

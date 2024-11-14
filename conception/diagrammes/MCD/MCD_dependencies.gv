@@ -2,14 +2,13 @@
 
 digraph {
   node [shape=box]
-  "RECIPE" -> "ASSOCIATE"
-  "CATEGORY" -> "ASSOCIATE"
-  "USER" -> "CREATE"
-  "RECIPE" -> "CREATE"
-  "USER" -> "GIVE"
-  "SCORE" -> "GIVE"
-  "USER" -> "HAVE"
-  "ROLE" -> "HAVE"
-  "USER" -> "LEAVE"
-  "COMMENT" -> "LEAVE"
+  "COMMENT" -> "ACCEPT"
+  "RECIPE" -> "ACCEPT"
+  "RECIPE" -> "CATEGORY"
+  "SCORE" -> "RECEIVE"
+  "RECIPE" -> "RECEIVE"
+  "USER" -> "SCORE"
+  "RECIPE" -> "USER"
+  "ROLE" -> "USER"
+  "COMMENT" -> "USER"
 }

@@ -20,8 +20,6 @@ entity "RECIPE" {
   instructions : TEXT
   source : TEXT
   date_added : DATE
-  --
-  +id_category : INT
 }
 
 entity "CATEGORY" {
@@ -33,10 +31,12 @@ entity "COMMENT" {
   +id_comment : INT
   content : TEXT
   date_comment : DATE
+  --
+  +id_user : INT
+  +id_recipe : INT
 }
 
 entity "SCORE" {
-  +id_score : INT
   score : INT
   --
   +id_user : INT
@@ -49,10 +49,11 @@ entity "ROLE" {
 }
 
 ' Relations entre les entités
-USER ||--o{ RECIPE : "CREATE"
-USER ||--o{ COMMENT : "LEAVE"
-USER ||--o{ SCORE : "GIVE"
-USER ||--o{ ROLE : "HAVE"
-RECIPE }|--|| CATEGORY : "ASSOCIATE"
-SCORE }|--|| RECIPE : "GIVE"
+USER }|--|| ROLE : "HAVE"
+USER }|--|| RECIPE : "CREATE"
+USER }|--|| COMMENT : "LEAVE"
+USER ||--|| SCORE : "GIVE"
+RECIPE ||--|{ CATEGORY : "ASSOCIATE"
+SCORE }o--|{ RECIPE : "RECEIVE"
+COMMENT }o--|{ RECIPE : "ACCEPT"
 @enduml

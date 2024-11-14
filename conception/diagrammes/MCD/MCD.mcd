@@ -1,17 +1,17 @@
-USER: id_user, name, email, password, date_created, status, id_role
-CREATE, 1N RECIPE, ON USER
-RECIPE: id_recipe, title, description, anecdote, ingredients, instructions, source, date_added, id_category
-ASSOCIATE, 1N CATEGORY, ON RECIPE
-CATEGORY: id_category, name
+ROLE: code_Role, role
+LEAVE, 1N COMMENT, 11 USER
+COMMENT: code_Comment, content, date_comment
+ACCEPT, 0N RECIPE, 1N COMMENT
+CATEGORY: code_Category, name
+
+HAVE, 1N ROLE, 11 USER
+USER: code_User, name, email, password, date_created, status
+CREATE, 1N RECIPE, 11 USER
+RECIPE: code_Recipe, title, description, anecdote, ingredients, instructions, source, date_added
+ASSOCIATE, 11 CATEGORY, 1N RECIPE
 
 :
-LEAVE, 1N COMMENT, ON USER
-COMMENT: id_comment, content, date_comment
-
+GIVE, 11 SCORE, 11 USER
+SCORE: score
+RECEIVE, 0N RECIPE, 1N SCORE
 :
-GIVE, 1N SCORE, ON USER
-SCORE: id_score, score, id_user, id_recipe
-
-:
-HAVE, 1N ROLE, ON USER
-ROLE: id_role, role

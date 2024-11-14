@@ -1,32 +1,36 @@
 @startuml
 left to right direction
 
-actor "User" as U
-actor "Admin" as A
+actor "Guest" as G #lightgray
+actor "User" as U #lightblue
+actor "Admin" as A #lightgreen
 
 rectangle "System" {
   
-  usecase "View Recipes by Category" as UC1
-  usecase "Search Recipe by Title or Movie/TV Show" as UC2
-  usecase "View Recipe Details" as UC3
-  usecase "Create Account and Authenticate" as UC4
-  usecase "Modify User Profile" as UC5
-  usecase "Add a Recipe" as UC6
-  usecase "Leave a Comment on a Recipe" as UC7
-  usecase "Rate a Recipe" as UC8
-  usecase "View Recipes Sorted by score or Date Added" as UC10
-  usecase "View Recipes by Specific Ingredients" as UC11
-  
-  usecase "Manage Users (Moderate Accounts, Delete Accounts)" as UC12
-  usecase "Validate or Delete User-Submitted Recipes" as UC13
-  usecase "Organize Recipes into Categories" as UC14
-  usecase "Moderate User Comments" as UC15
+  usecase "View Recipes by Category" as UC1 #lightcyan
+  usecase "Search Recipe by Title or Movie/TV Show" as UC2 #lightyellow
+  usecase "View Recipe Details" as UC3 #lightyellow 
+  usecase "Create Account and Authenticate" as UC4 #lightgray
+  usecase "Modify User Profile" as UC5 #lightyellow
+  usecase "Add a Recipe" as UC6 #lightyellow
+  usecase "Leave a Comment on a Recipe" as UC7 #lightyellow
+  usecase "Rate a Recipe" as UC8 #lightyellow
+  usecase "View Recipes Sorted by score or Date Added" as UC10 #lightyellow
+  usecase "View Recipes by Specific Ingredients" as UC11 #lightyellow
+  usecase "Manage Users (Moderate Accounts, Delete Accounts)" as UC12 #lightpink
+  usecase "Validate or Delete User-Submitted Recipes" as UC13 #lightpink
+  usecase "Organize Recipes into Categories" as UC14 #lightpink
+  usecase "Moderate User Comments" as UC15 #lightpink
 }
 
+' Guest Access (light gray)
+G -down-> UC1
+G -down-> UC4
+
+' User Access (light blue)
 U -down-> UC1
 U -down-> UC2
 U -down-> UC3
-U -down-> UC4
 U -down-> UC5
 U -down-> UC6
 U -down-> UC7
@@ -34,6 +38,7 @@ U -down-> UC8
 U -down-> UC10
 U -down-> UC11
 
+' Admin Access (light green)
 A -down-> UC12
 A -down-> UC13
 A -down-> UC14

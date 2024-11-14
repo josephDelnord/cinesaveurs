@@ -1,33 +1,24 @@
 %%mocodo
 :
-USER: id_user, name, email, password, date_created, status, id_role
+ROLE: code_Role, role
+:::
+COMMENT: code_Comment, content, date_comment
 :
-CREATE: #id_recipe > RECIPE > id_recipe, _#id_user > USER > id_user
+ACCEPT: #code_Recipe > RECIPE > code_Recipe, _#code_Comment > COMMENT > code_Comment
 :
-RECIPE: id_recipe, title, description, anecdote, ingredients, instructions, source, date_added, id_category
-:
-ASSOCIATE: #id_category > CATEGORY > id_category, _#id_recipe > RECIPE > id_recipe
-:
-CATEGORY: id_category, name
+CATEGORY: code_Category, name, #code_Recipe! > RECIPE > code_Recipe
 :
 
 
-:::::
-LEAVE: #id_comment > COMMENT > id_comment, _#id_user > USER > id_user
-:
-COMMENT: id_comment, content, date_comment
+:::
+USER: code_User, name, email, password, date_created, status, #code_Comment! > COMMENT > code_Comment, #code_Role! > ROLE > code_Role, #code_Recipe! > RECIPE > code_Recipe
+:::
+RECIPE: code_Recipe, title, description, anecdote, ingredients, instructions, source, date_added
 :::
 
 
 :::::
-GIVE: #id_score > SCORE > id_score, _#id_user > USER > id_user
+SCORE: score, #code_User! > USER > code_User
 :
-SCORE: id_score, score, id_user, id_recipe
-:::
-
-
-:::::
-HAVE: #id_role > ROLE > id_role, _#id_user > USER > id_user
-:
-ROLE: id_role, role
+RECEIVE: #code_Recipe > RECIPE > code_Recipe, _#score > SCORE > score
 :::

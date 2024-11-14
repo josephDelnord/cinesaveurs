@@ -1,29 +1,24 @@
 | Entité ou association | Libellé de l'attribut | Type |
 |:----------------------|:----------------------|:-----|
-| CATEGORY              | id_category           |      |
+| CATEGORY              | code_Category         |      |
 | "                     | name                  |      |
-| COMMENT               | content               |      |
+| COMMENT               | code_Comment          |      |
+| "                     | content               |      |
 | "                     | date_comment          |      |
-| "                     | id_comment            |      |
 | RECIPE                | anecdote              |      |
+| "                     | code_Recipe           |      |
 | "                     | date_added            |      |
 | "                     | description           |      |
-| "                     | id_category           |      |
-| "                     | id_recipe             |      |
 | "                     | ingredients           |      |
 | "                     | instructions          |      |
 | "                     | source                |      |
 | "                     | title                 |      |
-| ROLE                  | id_role               |      |
+| ROLE                  | code_Role             |      |
 | "                     | role                  |      |
-| SCORE                 | id_recipe             |      |
-| "                     | id_score              |      |
-| "                     | id_user               |      |
-| "                     | score                 |      |
-| USER                  | date_created          |      |
+| SCORE                 | score                 |      |
+| USER                  | code_User             |      |
+| "                     | date_created          |      |
 | "                     | email                 |      |
-| "                     | id_role               |      |
-| "                     | id_user               |      |
 | "                     | name                  |      |
 | "                     | password              |      |
 | "                     | status                |      |

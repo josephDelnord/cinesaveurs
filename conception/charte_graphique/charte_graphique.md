@@ -20,7 +20,7 @@ La palette de couleurs est un élément clé dans la création de l'identité vi
   - Nom : Orange 
   - Utilisation : Principalement pour les actions interactives, les titres, les liens, et les boutons.  
   
-- **Couleur secondaire** (pour les éléments de mise en valeur) :  
+- **Couleur secondaire** (pour les éléments de mise en valeur) :
   - Code hexadécimal : `#333333`  
   - Nom : Gris foncé  
   - Utilisation : Pour les éléments secondaires comme les badges, les notifications de succès, ou les confirmations.

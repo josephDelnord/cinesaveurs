@@ -21,20 +21,41 @@ skinparam classFontName Arial
 skinparam classFontSize 18
 skinparam classHeaderBackgroundColor #f4a582
 
+Table("ROLE") {
+    {field} + pk(code_Role)
+    {field} + role
+}
+
+"COMMENT" "1" --- "1..*" "USER": "LEAVE"
+
+Table("COMMENT") {
+    {field} + pk(code_Comment)
+    {field} + content
+    {field} + date_comment
+}
+
+"RECIPE" "1..*" --- "*" "COMMENT": "ACCEPT"
+
+Table("CATEGORY") {
+    {field} + pk(code_Category)
+    {field} + name
+}
+
+"ROLE" "1" --- "1..*" "USER": "HAVE"
+
 Table("USER") {
-    {field} + pk(id_user)
+    {field} + pk(code_User)
     {field} + name
     {field} + email
     {field} + password
     {field} + date_created
     {field} + status
-    {field} + id_role
 }
 
-"RECIPE" "*" --- "1..*" "USER": "CREATE"
+"RECIPE" "1" --- "1..*" "USER": "CREATE"
 
 Table("RECIPE") {
-    {field} + pk(id_recipe)
+    {field} + pk(code_Recipe)
     {field} + title
     {field} + description
     {field} + anecdote
@@ -42,38 +63,16 @@ Table("RECIPE") {
     {field} + instructions
     {field} + source
     {field} + date_added
-    {field} + id_category
 }
 
-"CATEGORY" "*" --- "1..*" "RECIPE": "ASSOCIATE"
+"CATEGORY" "1..*" --- "1" "RECIPE": "ASSOCIATE"
 
-Table("CATEGORY") {
-    {field} + pk(id_category)
-    {field} + name
-}
-
-"COMMENT" "*" --- "1..*" "USER": "LEAVE"
-
-Table("COMMENT") {
-    {field} + pk(id_comment)
-    {field} + content
-    {field} + date_comment
-}
-
-"SCORE" "*" --- "1..*" "USER": "GIVE"
+"SCORE" "1" --- "1" "USER": "GIVE"
 
 Table("SCORE") {
-    {field} + pk(id_score)
-    {field} + score
-    {field} + id_user
-    {field} + id_recipe
+    {field} + pk(score)
 }
 
-"ROLE" "*" --- "1..*" "USER": "HAVE"
-
-Table("ROLE") {
-    {field} + pk(id_role)
-    {field} + role
-}
+"RECIPE" "1..*" --- "*" "SCORE": "RECEIVE"
 
 @enduml

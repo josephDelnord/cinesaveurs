@@ -28,7 +28,6 @@
 | `instructions`  | TEXT      | Étapes à suivre pour réaliser la recette.    |
 | `source`        | TEXT      | Source de la recette (par exemple, livre, site web). |
 | `date_added`    | DATE      | Date d'ajout de la recette à la base de données. |
-| `id_category`   | INT       | Identifiant de la catégorie de la recette (clé étrangère vers **CATEGORY**). |
 
 ---
 
@@ -50,6 +49,8 @@
 | `id_comment`    | INT       | Identifiant unique du commentaire (clé primaire). |
 | `content`       | TEXT      | Contenu du commentaire laissé par l'utilisateur. |
 | `date_comment`  | DATE      | Date et heure du commentaire.                 |
+| `id_user`       | INT       | Identifiant de l'utilisateur ayant posté le commentaire (clé étrangère vers **USER**). |
+| `id_recipe`     | INT       | Identifiant de la recette sur laquelle le commentaire a été posté (clé étrangère vers **RECIPE**). |
 
 ---
 
@@ -58,7 +59,6 @@
 
 | **Attribut**    | **Type**  | **Description**                               |
 |-----------------|-----------|-----------------------------------------------|
-| `id_score`      | INT       | Identifiant unique de la note (clé primaire). |
 | `score`         | INT       | Valeur de la note (de 1 à 5).                 |
 | `id_user`       | INT       | Identifiant de l'utilisateur ayant donné la note (clé étrangère vers **USER**). |
 | `id_recipe`     | INT       | Identifiant de la recette notée (clé étrangère vers **RECIPE**). |
