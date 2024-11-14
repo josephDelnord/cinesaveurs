@@ -35,7 +35,7 @@ assignees: ""
 
 ## Eléments graphiques
 
-- [ ]  Wireframes
-- [ ]  Maquettes
-- [ ]  Charte graphique
+- [x]  Wireframes
+- [x]  Maquettes
+- [x]  Charte graphique
 
