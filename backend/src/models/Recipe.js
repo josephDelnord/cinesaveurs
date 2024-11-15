@@ -4,13 +4,14 @@ import mongoose from 'mongoose';
 const recipeSchema = new mongoose.Schema({
   title: { 
     type: String, 
-    required: true 
+    required: true,
+    unique: true
   },
   description: { 
     type: String, 
     required: true 
   },
-  anecdocte: { 
+  anecdote: { 
     type: String 
   },
   ingredients: { 
@@ -19,13 +20,11 @@ const recipeSchema = new mongoose.Schema({
   },
   instructions: { 
     type: [String], 
-    required: true },
-  source: { type: String 
+    required: true 
   },
-  date_added: { 
-    type: Date, 
-    default: Date.now 
-  }
-});
+  source: { 
+    type: String 
+  },
+}, { timestamps: true });
 
 export default  mongoose.model('Recipe', recipeSchema);

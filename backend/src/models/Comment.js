@@ -22,6 +22,6 @@ const commentSchema = new mongoose.Schema({
     ref: 'Recipe',
     required: true,
   },
-});
+}, { timestamps: true });
 
 export default mongoose.model('Comment', commentSchema);

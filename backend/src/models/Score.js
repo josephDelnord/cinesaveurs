@@ -19,7 +19,7 @@ const scoreSchema = new mongoose.Schema({
     ref: 'Recipe',
     required: true,
   },
-});
+}, { timestamps: true });
 
 // Créer un index composé unique
 scoreSchema.index({ user: 1, recipe: 1 }, { unique: true });

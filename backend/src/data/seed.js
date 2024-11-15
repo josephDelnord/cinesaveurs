@@ -36,18 +36,21 @@ async function seedDatabase() {
                 name: 'Guest User',
                 email: 'guest@example.com',
                 password: hashedPassword,
+                confirmPassword: hashedPassword,
                 role: roles.find(r => r.role === ROLES.GUEST)._id
             },
             {
                 name: 'Regular User',
                 email: 'user@example.com',
                 password: hashedPassword,
+                confirmPassword: hashedPassword,
                 role: roles.find(r => r.role === ROLES.USER)._id
             },
             {
                 name: 'Admin User',
                 email: 'admin@example.com',
                 password: hashedPassword,
+                confirmPassword: hashedPassword,
                 role: roles.find(r => r.role === ROLES.ADMIN)._id
             }
            

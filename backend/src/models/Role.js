@@ -7,7 +7,7 @@ const roleSchema = new mongoose.Schema({
         enum: ['guest', 'user', 'admin'], 
         default: 'user'
         },
-});
+}, { timestamps: true });
 
 // Méthode statique pour obtenir tous les rôles possibles
 roleSchema.statics.getRoles = function() {

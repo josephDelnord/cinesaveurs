@@ -2,8 +2,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import recipeRoutes from './src/routes/recipeRoutes.js';  // Assurez-vous que ce chemin est correct
 import seedDatabase from './src/data/seed.js';
+import recipeRoutes from './src/routes/recipeRoutes.js';
+import authRoutes from './src/routes/authRoutes.js';
+import userRoutes from './src/routes/userRoutes.js';
 
 dotenv.config();
 
@@ -32,6 +34,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Utilisation des routes définies dans recipeRoutes avec préfixe '/api/recipes'
 app.use('/api/recipes', recipeRoutes);  // Le préfixe '/api/recipes' est ajouté ici
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Route de test
 app.get('/api', (req, res) => {
