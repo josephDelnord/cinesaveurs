@@ -14,18 +14,18 @@ const recipeSchema = new mongoose.Schema({
     type: String 
   },
   ingredients: { 
-    type: String, 
+    type: [String], 
     required: true 
   },
   instructions: { 
-    type: String, 
+    type: [String], 
     required: true },
   source: { type: String 
   },
   date_added: { 
     type: Date, 
     default: Date.now 
-  },
+  }
 });
 
 export default  mongoose.model('Recipe', recipeSchema);

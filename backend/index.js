@@ -1,32 +1,41 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import cors from 'cors';
-import path from 'path';
 import dotenv from 'dotenv';
-import { fileURLToPath } from 'url';
-
-// Configuration pour __dirname en ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Affichons les chemins pour déboguer
-console.log('__dirname:', __dirname);
-console.log('Path to public:', path.join(__dirname, '../public'));
-console.log('Path to index.html:', path.join(__dirname, '../public/index.html'));
+import recipeRoutes from './src/routes/recipeRoutes.js';  // Assurez-vous que ce chemin est correct
+import seedDatabase from './src/data/seed.js';
 
 dotenv.config();
 
+// Connexion à MongoDB
+const DB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/backend';
+mongoose.connect(DB_URI, { serverSelectionTimeoutMS: 5000 })
+    .then(() => {
+        console.log('Database connected successfully');
+    })
+    .catch((err) => {
+        console.error('Database connection error:', err);
+    });
+
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Si tu veux peupler la base de données pendant le développement
+if (process.env.SEED_DB) {
+    seedDatabase();
+}
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public')); // Simplifié
 
-// Routes
-app.get('/', (req, res) => {
-    res.sendFile('index.html', { root: './public' }); // Méthode alternative
+// Utilisation des routes définies dans recipeRoutes avec préfixe '/api/recipes'
+app.use('/api/recipes', recipeRoutes);  // Le préfixe '/api/recipes' est ajouté ici
+
+// Route de test
+app.get('/api', (req, res) => {
+    res.send('Hello, you are in the world of recipes!');
 });
 
 app.listen(PORT, () => {
