@@ -6,6 +6,11 @@ import seedDatabase from './src/data/seed.js';
 import recipeRoutes from './src/routes/recipeRoutes.js';
 import authRoutes from './src/routes/authRoutes.js';
 import userRoutes from './src/routes/userRoutes.js';
+import roleRoutes from './src/routes/roleRoutes.js';
+import categoryRoutes from './src/routes/categoryRoutes.js';
+import commentRoutes from './src/routes/commentRoutes.js';
+import scoreRoutes from './src/routes/scoreRoutes.js';
+import setupSwagger from './swagger.js';
 
 dotenv.config();
 
@@ -22,13 +27,22 @@ mongoose.connect(DB_URI, { serverSelectionTimeoutMS: 5000 })
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Si tu veux peupler la base de données pendant le développement
+// peupler la base de données pendant le développement
 if (process.env.SEED_DB) {
     seedDatabase();
 }
 
+// Configurer Swagger
+setupSwagger(app);
+
 // Middleware
-app.use(cors());
+app.use(cors(
+    {
+        rigin: 'http://localhost:3000', // l'URL de mon front-end en production
+         methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Méthodes HTTP autorisées
+         allowedHeaders: ['Content-Type', 'Authorization'], // En-têtes autorisés
+    }
+));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -36,6 +50,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/recipes', recipeRoutes);  // Le préfixe '/api/recipes' est ajouté ici
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/roles', roleRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/comments', commentRoutes);
+app.use('/api/scores', scoreRoutes);
 
 // Route de test
 app.get('/api', (req, res) => {

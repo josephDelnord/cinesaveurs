@@ -1,5 +1,6 @@
 import Joi from 'joi';
 
+// Schéma pour l'ajout d'une recette
 const addRecipeSchema = Joi.object({
     title: Joi.string().min(3).required().messages({
         'string.base': '"title" doit être une chaîne de caractères',
@@ -21,8 +22,8 @@ const addRecipeSchema = Joi.object({
         'array.min': '"ingredients" doit contenir au moins un ingrédient',
         'any.required': '"ingredients" est requis',
     }),
-    instructions: Joi.string().min(10).required().messages({
-        'string.base': '"instructions" doit être une chaîne de caractères',
+    instructions: Joi.array().items(Joi.string().required()).min(1).required().messages({
+        'array.base': '"instructions" doit être un tableau',
         'string.min': '"instructions" doit contenir au moins 10 caractères',
         'any.required': '"instructions" est requis',
     }),
@@ -36,6 +37,7 @@ const addRecipeSchema = Joi.object({
     })
 });
 
+// Schéma pour la mise à jour d'une recette
 const updateRecipeSchema = Joi.object({
     title: Joi.string().min(3).optional().messages({
         'string.base': '"title" doit être une chaîne de caractères',

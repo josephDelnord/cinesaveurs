@@ -1,74 +1,63 @@
 import mongoose from 'mongoose';
 import Role from './Role.js';
-import isDefaultRole from '../middlewares/isDefaultRole.js';
 import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
-  name: { 
-    type: String, 
-    required: true 
+  name: {
+    type: String,
+    required: true,
   },
-  email: { 
-    type: String, 
-    required: true, 
-    unique: true 
+  email: {
+    type: String,
+    required: true,
+    unique: true,
   },
-  password: { 
-    type: String, 
-    required: true 
+  password: {
+    type: String,
+    required: true,
   },
   confirmPassword: {
     type: String,
-    required: true
+    required: true,
+    select: false, // Cela empêche confirmPassword d'être sauvegardé dans la bdd
   },
-  status: { 
-    type: String, 
-    enum: ['actif', 'inactif'], 
-    default: 'actif' 
+  status: {
+    type: String,
+    enum: ['actif', 'inactif'],
+    default: 'actif',
   },
-  role: { 
-    type: mongoose.Schema.Types.ObjectId, 
+  role: {
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Role',
-    validate: {
-      validator: async function(value) {
-        const role = await Role.findById(value);
-        return role !== null;
-      },
-      message: 'Le rôle spécifié n\'existe pas',
-    },
+    required: true,
   },
-
 }, { timestamps: true });
 
-// Appliquer le middleware isDefaultRole avant la sauvegarde
-userSchema.pre('save', isDefaultRole);
-
-// Méthodes utiles
-userSchema.methods.isGuest = async function() {
-  const role = await Role.findById(this.id_role);
-  return role.role === 'guest';
-};
-userSchema.methods.isUser = async function() {
-  const role = await Role.findById(this.id_role);
-  return role.role === 'user';
-};
-userSchema.methods.isAdmin = async function() {
-  const role = await Role.findById(this.id_role);
-  return role.role === 'admin';
-};
-
-// Avant de sauvegarder, vérifier que les mots de passe correspondent
-userSchema.pre('save', function (next) {
-  if (this.isModified('mot_de_passe') && this.confirmPassword !== this.mot_de_passe) {
-    next(new Error('Les mots de passe ne correspondent pas.'));
-  } else {
-    next();
+// Middleware pour appliquer un rôle par défaut (user) avant de sauvegarder
+userSchema.pre('save', async function (next) {
+  if (!this.role) {
+    const role = await Role.findOne({ role: 'user' });
+    if (role) {
+      this.role = role._id;
+    } else {
+      next(new Error('Le rôle "user" n\'existe pas dans la base de données.'));
+    }
   }
-});
 
-// Méthode pour comparer les mots de passe
-userSchema.methods.comparePassword = function (password) {
-  return bcrypt.compare(password, this.mot_de_passe);
-};
+  // Vérification que les mots de passe correspondent avant de les hacher
+  if (this.isModified('password')) {
+    if (this.password !== this.confirmPassword) {
+      return next(new Error('Les mots de passe ne correspondent pas.'));
+    }
+
+    // Hacher le mot de passe uniquement (ne pas hacher confirmPassword)
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  // Ne pas sauvegarder confirmPassword dans la base de données
+  this.confirmPassword = undefined;
+
+  next();
+});
 
 export default mongoose.model('User', userSchema);

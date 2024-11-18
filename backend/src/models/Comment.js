@@ -8,10 +8,6 @@ const commentSchema = new mongoose.Schema({
     minlength: 1,
     maxlength: 1000,
   },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

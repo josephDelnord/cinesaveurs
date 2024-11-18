@@ -25,6 +25,11 @@ const recipeSchema = new mongoose.Schema({
   source: { 
     type: String 
   },
+  category: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Category', 
+    required: true
+  },
 }, { timestamps: true });
 
 export default  mongoose.model('Recipe', recipeSchema);

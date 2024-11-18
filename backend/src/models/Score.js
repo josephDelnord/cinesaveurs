@@ -1,7 +1,6 @@
-// models/Note.js
 import mongoose from 'mongoose';
-import isScoreExist from '../middlewares/isScoreExist.js';
 
+// Schéma de la note
 const scoreSchema = new mongoose.Schema({
   score: {
     type: Number,
@@ -21,28 +20,27 @@ const scoreSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-// Créer un index composé unique
+// Créer un index composé unique pour éviter les doublons
 scoreSchema.index({ user: 1, recipe: 1 }, { unique: true });
 
-// OU alternativement, créer un champ composite unique
-scoreSchema.virtual('composite_id').get(function () {
-  return `${this.user}_${this.recipe}`;
-});
-
-// Appliquer le middleware isScore avant la sauvegarde
-scoreSchema.pre('save', isScoreExist);
-
-// Méthodes statiques utiles
+// Méthode statique : Trouver un score par utilisateur et recette
 scoreSchema.statics.findByUserAndRecipe = function(userId, recipeId) {
   return this.findOne({ user: userId, recipe: recipeId });
 };
 
-scoreSchema.statics.updateOrCreate = async function(userId, recipeId, score) {
+// Méthode statique : Ajouter ou mettre à jour un score
+scoreSchema.statics.updateOrCreate = function(userId, recipeId, score) {
   return this.findOneAndUpdate(
-      { user: userId, recipe: recipeId },
-      { score: score },
-      { upsert: true, new: true }
-  );
+    { user: userId, recipe: recipeId },
+    { score },
+    { upsert: true, new: true }
+  ).catch((error) => {
+    // Gérer les erreurs de doublon spécifiques
+    if (error.code === 11000) {
+      throw new Error('Cet utilisateur a déjà noté cette recette.');
+    }
+    throw error; // Propagation des autres erreurs
+  });
 };
 
 export default mongoose.model('Score', scoreSchema);
