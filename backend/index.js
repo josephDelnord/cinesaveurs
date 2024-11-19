@@ -1,8 +1,6 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import seedDatabase from './src/data/seed.js';
 import recipeRoutes from './src/routes/recipeRoutes.js';
 import authRoutes from './src/routes/authRoutes.js';
 import userRoutes from './src/routes/userRoutes.js';
@@ -11,43 +9,32 @@ import categoryRoutes from './src/routes/categoryRoutes.js';
 import commentRoutes from './src/routes/commentRoutes.js';
 import scoreRoutes from './src/routes/scoreRoutes.js';
 import setupSwagger from './swagger.js';
+import { connectDB } from './src/config/db.js'; // Connexion à MongoDB à partir de db.js
 
 dotenv.config();
-
-// Connexion à MongoDB
-const DB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/backend';
-mongoose.connect(DB_URI, { serverSelectionTimeoutMS: 5000 })
-    .then(() => {
-        console.log('Database connected successfully');
-    })
-    .catch((err) => {
-        console.error('Database connection error:', err);
-    });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// peupler la base de données pendant le développement
-if (process.env.SEED_DB) {
-    seedDatabase();
-}
+// Connexion à MongoDB
+connectDB(); // Utilisation de la fonction de connexion définie dans config/db.js
 
 // Configurer Swagger
 setupSwagger(app);
 
-// Middleware
-app.use(cors(
-    {
-        rigin: 'http://localhost:3000', // l'URL de mon front-end en production
-         methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Méthodes HTTP autorisées
-         allowedHeaders: ['Content-Type', 'Authorization'], // En-têtes autorisés
-    }
-));
+// Middleware CORS - Corriger l'option "origin" (au lieu de "rigin")
+app.use(cors({
+    origin: 'http://localhost:3000',  // L'URL de votre frontend en production
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Méthodes HTTP autorisées
+    allowedHeaders: ['Content-Type', 'Authorization'],  // En-têtes autorisés
+}));
+
+// Middleware pour parser les données JSON et URL-encoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Utilisation des routes définies dans recipeRoutes avec préfixe '/api/recipes'
-app.use('/api/recipes', recipeRoutes);  // Le préfixe '/api/recipes' est ajouté ici
+// Utilisation des routes avec le préfixe correspondant
+app.use('/api/recipes', recipeRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
@@ -60,6 +47,11 @@ app.get('/api', (req, res) => {
     res.send('Hello, you are in the world of recipes!');
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+// Ne pas démarrer le serveur ici (important pour les tests)
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+    });
+}
+
+export default app;  // Exporter l'application pour les tests

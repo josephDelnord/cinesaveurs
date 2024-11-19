@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllRoles, createRole, deleteRole, getRolesEnum } from '../controllers/roleController.js';
+import { getAllRoles, getRoleById, createRole, deleteRole, getRolesEnum } from '../controllers/roleController.js';
 
 const router = express.Router();
 
@@ -17,6 +17,30 @@ const router = express.Router();
  *         description: Erreur serveur
  */
 router.get('/', getAllRoles);
+
+/**
+ * @swagger
+ * /roles/{id}:
+ *   get:
+ *     summary: Récupérer un rôle par ID
+ *     tags:
+ *       - Rôles
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         type: string
+ *         description: ID du rôle à récupérer
+ *     responses:
+ *       200:
+ *         description: Rôle récupéré avec succès
+ *       404:
+ *         description: Rôle non trouvé
+ *       500:
+ *         description: Erreur serveur
+ */
+
+router.get('/:id', getRoleById);
 
 /**
  * @swagger

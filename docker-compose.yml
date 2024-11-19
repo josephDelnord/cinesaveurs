@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # Service Backend (Node.js API)
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "5000:5000"  # Le backend écoute sur le port 3000
+    environment:
+      - NODE_ENV=development  # Définit l'environnement comme développement
+      - MONGODB_URI=mongodb://db:27017/mydb  # Connexion à MongoDB via Docker Compose
+    volumes:
+      - ./backend:/app  # Monte le code source du backend dans le conteneur
+      - /app/node_modules  # Empêche le répertoire node_modules de se mélanger entre le conteneur et la machine locale
+    depends_on:
+      - db  # Le backend dépend de MongoDB, il démarre après MongoDB
+
+  # Service Frontend (React)
+  frontend:
+    build:
+      context: ./frontend  # Le répertoire du frontend
+      dockerfile: Dockerfile # Utilise le Dockerfile situé dans frontend/
+    ports:
+      - "80:80"  # Le frontend est servi sur le port 80
+    depends_on:
+      - backend  # Le frontend dépend du backend
+
+  # Service MongoDB
+  db:
+    image: mongo:latest  # Utilise l'image officielle MongoDB
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root  # Nom d'utilisateur administrateur de MongoDB
+      MONGO_INITDB_ROOT_PASSWORD: example  # Mot de passe de l'utilisateur administrateur
+      MONGO_INITDB_DATABASE: mydb  # Base de données par défaut
+    volumes:
+      - db_data:/data/db  # Persistance des données de MongoDB
+    ports:
+      - "27017:27017"  # Le port par défaut de MongoDB
+
+volumes:
+  db_data:

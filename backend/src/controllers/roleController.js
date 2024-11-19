@@ -11,6 +11,21 @@ export const getAllRoles = async (req, res) => {
     }
 };
 
+// Récupérer un rôle par son ID
+export const getRoleById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const role = await Role.findById(id);
+        if (!role) {
+            return res.status(404).json({ message: 'Rôle non trouvé' });
+        }
+        res.status(200).json(role);
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la récupération du rôle', error });
+    }
+};
+
 // Créer un nouveau rôle
 export const createRole = async (req, res) => {
     // Valider les données avec Joi

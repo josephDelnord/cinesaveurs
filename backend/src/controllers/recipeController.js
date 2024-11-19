@@ -1,10 +1,10 @@
 import Recipe from '../models/Recipe.js';
 import { addRecipeSchema, updateRecipeSchema } from '../validation/schemas/recipeValidation.js';
 
-// récupérer toutes les recettes
+// Récupérer toutes les recettes
 export const getRecipes = async (req, res) => {
     try {
-        const recipes = await Recipe.find();  // Récupère toutes les recettes
+        const recipes = await Recipe.find().populate('category', 'name');  // On spécifie 'name' comme champ à peupler
         res.status(200).json(recipes);  // Renvoie les données au format JSON
     } catch (error) {
         console.error('Erreur lors de la récupération des recettes:', error);
@@ -12,39 +12,40 @@ export const getRecipes = async (req, res) => {
     }
 };
 
-// récupérer une seule recette par son ID
+// Récupérer une seule recette par son ID
 export const getRecipeById = async (req, res) => {
     const { id } = req.params;
     try {
-        const recipe = await Recipe.findById(id);  // Récupère la recette par son ID
+        const recipe = await Recipe.findById(id).populate('category', 'name');  // Peupler le nom de la catégorie
+
         if (!recipe) {
             return res.status(404).json({ message: 'Recette non trouvée' });
         }
-        res.status(200).json(recipe);
+
+        res.status(200).json(recipe);  // Renvoie la recette avec la catégorie peuplée
     } catch (error) {
         console.error('Erreur lors de la récupération de la recette:', error);
         res.status(500).json({ message: 'Erreur serveur' });
     }
 };
 
-// récupérer les recettes par catégorie
+// Récupérer les recettes par catégorie
 export const getRecipesByCategory = async (req, res) => {
-    const { categoryId } = req.params;  // Récupérer l'ID de la catégorie depuis les paramètres de l'URL
+    const { categoryId } = req.params; 
   
     try {
-      // Chercher toutes les recettes associées à la catégorie donnée
-      const recipes = await Recipe.find({ category: categoryId }).populate('category');
+        const recipes = await Recipe.find({ category: categoryId }).populate('category', 'name');
   
-      if (recipes.length === 0) {
-        return res.status(404).json({ message: 'Aucune recette trouvée pour cette catégorie' });
-      }
+        if (recipes.length === 0) {
+            return res.status(404).json({ message: 'Aucune recette trouvée pour cette catégorie' });
+        }
   
-      return res.status(200).json(recipes);
+        return res.status(200).json(recipes);
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'Erreur serveur lors de la récupération des recettes' });
+        console.error(error);
+        return res.status(500).json({ message: 'Erreur serveur lors de la récupération des recettes' });
     }
-  };
+};
 
 // ajouter une nouvelle recette
 export const addRecipe = async (req, res) => {

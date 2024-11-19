@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import bcrypt from 'bcryptjs';
 import Role from '../models/Role.js';
 import User from '../models/User.js';
 import Recipe from '../models/Recipe.js';
@@ -30,71 +29,97 @@ async function seedDatabase() {
         ]);
 
         // Créer des utilisateurs avec des données fictives
-        const hashedPassword = await bcrypt.hash(process.env.JWT_SECRET, 10);
         const users = await User.create([
+            {
+                name: 'Admin User',
+                email: 'admin@example.com',
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.ADMIN)._id, 
+            },
             {
                 name: 'Guest User',
                 email: 'guest@example.com',
-                password: hashedPassword,
-                confirmPassword: hashedPassword,
-                role: roles.find(r => r.role === ROLES.GUEST)._id
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.GUEST)._id, 
+            },
+            {
+                name: 'Chef Gordon Ramsay',
+                email: 'gordon@example.com',
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.USER)._id,
             },
             {
                 name: 'Regular User',
                 email: 'user@example.com',
-                password: hashedPassword,
-                confirmPassword: hashedPassword,
-                role: roles.find(r => r.role === ROLES.USER)._id
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.USER)._id, 
             },
-            {
-                name: 'Admin User',
-                email: 'admin@example.com',
-                password: hashedPassword,
-                confirmPassword: hashedPassword,
-                role: roles.find(r => r.role === ROLES.ADMIN)._id
-            },
-            // Ajout de nombreux autres utilisateurs
             {
                 name: 'Alice Dupont',
                 email: 'alice.dupont@example.com',
-                password: hashedPassword,
-                confirmPassword: hashedPassword,
-                role: roles.find(r => r.role === ROLES.USER)._id
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.USER)._id, 
             },
             {
                 name: 'Bob Martin',
                 email: 'bob.martin@example.com',
-                password: hashedPassword,
-                confirmPassword: hashedPassword,
-                role: roles.find(r => r.role === ROLES.USER)._id
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.USER)._id, 
             },
             {
                 name: 'Claire Lefevre',
                 email: 'claire.lefevre@example.com',
-                password: hashedPassword,
-                confirmPassword: hashedPassword,
-                role: roles.find(r => r.role === ROLES.USER)._id
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.USER)._id, 
             },
             {
                 name: 'David Leclerc',
                 email: 'david.leclerc@example.com',
-                password: hashedPassword,
-                confirmPassword: hashedPassword,
-                role: roles.find(r => r.role === ROLES.USER)._id
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.USER)._id, 
             },
             {
                 name: 'Eva Durand',
                 email: 'eva.durand@example.com',
-                password: hashedPassword,
-                confirmPassword: hashedPassword,
-                role: roles.find(r => r.role === ROLES.USER)._id
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.USER)._id,
             },
             {
                 name: 'Frank Sorel',
                 email: 'frank.sorel@example.com',
-                password: hashedPassword,
-                confirmPassword: hashedPassword,
-                role: roles.find(r => r.role === ROLES.USER)._id
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.USER)._id, 
+            },
+            {
+                name: 'Jon Snow',
+                email: 'jonsnow@got.com',
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.USER)._id,
+            },
+            {
+                name: 'Sherlock Holmes',
+                email: 'sherlock@bakerstreet.com',
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.USER)._id, 
+            },
+            {
+                name: 'Tony Stark',
+                email: 'tony.stark@starkindustries.com',
+                password: 'Password@12345',
+                confirmPassword: 'Password@12345',
+                role: roles.find(r => r.role === ROLES.USER)._id, 
             }
         ]);
 
@@ -104,7 +129,8 @@ async function seedDatabase() {
             { name: 'Plats principaux' },
             { name: 'Desserts' },
             { name: 'Boissons' },
-            { name: 'Recettes végétariennes' }
+            { name: 'Recettes végétariennes' },
+            { name: 'Recettes inspirées de films et séries' }
         ]);
 
         // Créer des recettes avec des données fictives
@@ -148,7 +174,7 @@ async function seedDatabase() {
                     'Enfourner pendant 30 minutes'
                 ],
                 source: 'Recette de famille',
-                category: [categories[1]._id]  // Plats principaux
+                category: [categories[1]._id]
             },
             {
                 title: 'Crêpes au chocolat',
@@ -168,7 +194,7 @@ async function seedDatabase() {
                     'Servir chaud'
                 ],
                 source: 'Recette trouvée sur Internet',
-                category: [categories[2]._id]  // Desserts
+                category: [categories[2]._id]
             },
             {
                 title: 'Jus de fruits frais',
@@ -185,7 +211,85 @@ async function seedDatabase() {
                     'Mélanger et servir frais'
                 ],
                 source: 'Recette familiale',
-                category: [categories[3]._id]  // Boissons
+                category: [categories[3]._id]
+            },
+            {
+                title: 'Tarte aux pommes de la Reine',
+                description: 'Une tarte aux pommes qui rend hommage à la Reine des Neiges.',
+                anecdote: 'Recette inspirée par Elsa dans le film "La Reine des Neiges"',
+                ingredients: [
+                    '6 pommes',
+                    '1 pâte brisée',
+                    '100g de sucre',
+                    'Cannelle'
+                ],
+                instructions: [
+                    'Préchauffer le four à 180°C',
+                    'Éplucher et couper les pommes',
+                    'Étaler la pâte',
+                    'Disposer les pommes',
+                    'Enfourner pendant 45 minutes'
+                ],
+                source: 'La Reine des Neiges',
+                category: [categories[2]._id]
+            },
+            {
+                title: 'Spaghetti de l\'italien préféré',
+                description: 'Recette simple et rapide de spaghetti à la sauce tomate',
+                anecdote: 'Inspiré de la cuisine d\'Italie dans "Luca"',
+                ingredients: [
+                    'Spaghetti',
+                    'Tomates fraîches',
+                    'Basilic',
+                    'Fromage râpé'
+                ],
+                instructions: [
+                    'Faire bouillir l\'eau',
+                    'Cuire les pâtes',
+                    'Préparer la sauce avec tomates et basilic',
+                    'Mélanger et servir avec le fromage râpé'
+                ],
+                source: 'Luca',
+                category: [categories[1]._id]
+            },
+            {
+                title: 'Pizza à la mode de Stranger Things',
+                description: 'Pizza classique inspirée des années 80, avec une touche rétro.',
+                anecdote: 'Recette favorite de Eleven dans "Stranger Things"',
+                ingredients: [
+                    'Pâte à pizza',
+                    'Tomates',
+                    'Fromage mozzarella',
+                    'Pepperoni',
+                    'Olives noires'
+                ],
+                instructions: [
+                    'Préchauffer le four à 220°C',
+                    'Étaler la pâte',
+                    'Ajouter la sauce tomate',
+                    'Disposer les tranches de mozzarella et de pepperoni',
+                    'Enfourner pendant 15-20 minutes'
+                ],
+                source: 'Stranger Things',
+                category: [categories[1]._id]
+            },
+            {
+                title: 'Cocktail Stark',
+                description: 'Un cocktail énergisant inspiré de Tony Stark et ses gadgets.',
+                anecdote: 'Recette de cocktail inspirée de Tony Stark dans "Avengers"',
+                ingredients: [
+                    'Whisky',
+                    'Gin',
+                    'Jus d\'orange',
+                    'Glaçons'
+                ],
+                instructions: [
+                    'Verser les ingrédients dans un shaker',
+                    'Ajouter des glaçons',
+                    'Secouer et servir dans un verre à cocktail'
+                ],
+                source: 'Avengers',
+                category: [categories[3]._id]
             }
         ]);
 
@@ -210,6 +314,21 @@ async function seedDatabase() {
                 content: 'Très bon jus de fruits, idéal pour le matin.',
                 user: users[4]._id,
                 recipe: recipes[3]._id
+            },
+            {
+                content: 'Cette pizza est incroyable, tout comme dans la série !',
+                user: users[5]._id,
+                recipe: recipes[6]._id
+            },
+            {
+                content: 'Je me sens comme Tony Stark en buvant ce cocktail.',
+                user: users[4]._id,
+                recipe: recipes[7]._id
+            },
+            {
+                content: 'La tarte aux pommes est délicieuse, comme la Reine des Neiges !',
+                user: users[6]._id,
+                recipe: recipes[4]._id
             }
         ]);
 
@@ -233,7 +352,22 @@ async function seedDatabase() {
             {
                 score: 5,
                 user: users[4]._id,
-                recipe: recipes[3]._id
+                recipe: recipes[6]._id
+            },
+            {
+                score: 5,
+                user: users[5]._id,
+                recipe: recipes[5]._id
+            },
+            {
+                score: 4,
+                user: users[6]._id,
+                recipe: recipes[6]._id
+            },
+            {
+                score: 5,
+                user: users[7]._id,
+                recipe: recipes[4]._id
             }
         ]);
 

@@ -28,8 +28,9 @@ const recipeSchema = new mongoose.Schema({
   category: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Category', 
-    required: true
+    required: true,
   },
 }, { timestamps: true });
 
-export default  mongoose.model('Recipe', recipeSchema);
+const Recipe = mongoose.model('Recipe', recipeSchema);
+export default Recipe;

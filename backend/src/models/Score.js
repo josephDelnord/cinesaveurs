@@ -43,4 +43,5 @@ scoreSchema.statics.updateOrCreate = function(userId, recipeId, score) {
   });
 };
 
-export default mongoose.model('Score', scoreSchema);
+const Score = mongoose.model('Score', scoreSchema);
+export default Score;
