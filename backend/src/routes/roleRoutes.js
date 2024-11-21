@@ -1,5 +1,7 @@
 import express from 'express';
-import { getAllRoles, getRoleById, createRole, deleteRole, getRolesEnum } from '../controllers/roleController.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
+import { isAdmin, isAdminOrSelf } from '../middlewares/roleMiddleware.js';
+import { getAllRoles, getRoleById, createRole, deleteRole } from '../controllers/roleController.js';
 
 const router = express.Router();
 
@@ -16,7 +18,7 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur
  */
-router.get('/', getAllRoles);
+router.get('/', authMiddleware, isAdminOrSelf, getAllRoles);
 
 /**
  * @swagger
@@ -40,7 +42,7 @@ router.get('/', getAllRoles);
  *         description: Erreur serveur
  */
 
-router.get('/:id', getRoleById);
+router.get('/:id', authMiddleware, isAdmin, getRoleById);
 
 /**
  * @swagger
@@ -72,7 +74,7 @@ router.get('/:id', getRoleById);
  *       500:
  *         description: Erreur serveur
  */
-router.post('/addRole', createRole);
+router.post('/addRole', authMiddleware, isAdmin, createRole);
 
 /**
  * @swagger
@@ -97,28 +99,6 @@ router.post('/addRole', createRole);
  *       500:
  *         description: Erreur serveur
  */
-router.delete('/:id', deleteRole);
-
-/**
- * @swagger
- * /roles/enum:
- *   get:
- *     summary: Récupérer les rôles possibles (enum)
- *     tags:
- *       - Rôles
- *     responses:
- *       200:
- *         description: Liste des rôles possibles récupérée avec succès
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: string
- *                 example: ["admin", "user", "guest"]
- *       500:
- *         description: Erreur serveur
- */
-router.get('/enum', getRolesEnum);
+router.delete('/:id', authMiddleware, isAdmin, deleteRole);
 
 export default router;

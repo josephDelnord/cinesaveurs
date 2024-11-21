@@ -1,4 +1,6 @@
 import express from 'express';
+import { isUser, isAdmin } from '../middlewares/roleMiddleware.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
 import { getAllCategories, createCategory, deleteCategory, getCategoryById, updateCategory } from '../controllers/categoryController.js';
 
 const router = express.Router();
@@ -17,7 +19,7 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur
  */
-router.get('/', getAllCategories);
+router.get('/', authMiddleware, isUser, getAllCategories);
 
 /**
  * @swagger
@@ -43,7 +45,7 @@ router.get('/', getAllCategories);
  *       500:
  *         description: Erreur serveur
  */
-router.get('/:id', getCategoryById);
+router.get('/:id', authMiddleware, isUser, getCategoryById);
 
 /**
  * @swagger
@@ -73,7 +75,7 @@ router.get('/:id', getCategoryById);
  *       500:
  *         description: Erreur serveur
  */
-router.post('/addCategory', createCategory);
+router.post('/addCategory', authMiddleware, isAdmin, createCategory);
 
 /**
  * @swagger
@@ -113,7 +115,7 @@ router.post('/addCategory', createCategory);
  *       500:
  *         description: Erreur serveur
  */
-router.put('/:id', updateCategory);
+router.put('/:id', authMiddleware, isAdmin, updateCategory);
 
 /**
  * @swagger
@@ -139,6 +141,6 @@ router.put('/:id', updateCategory);
  *       500:
  *         description: Erreur serveur
  */
-router.delete('/:id', deleteCategory);
+router.delete('/:id', authMiddleware, isAdmin, deleteCategory);
 
 export default router;

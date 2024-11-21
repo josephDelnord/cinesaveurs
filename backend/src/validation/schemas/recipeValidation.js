@@ -32,11 +32,17 @@ const addRecipeSchema = Joi.object({
         'string.uri': '"source" doit être une URL valide',
         'any.required': '"source" est requis',
     }),
-    date_added: Joi.date().default(Date.now).messages({
-        'date.base': '"date_added" doit être une date valide',
-    })
-});
 
+    category: Joi.string().required().messages({
+        'string.base': '"category" doit être une chaîne de caractères',
+        'any.required': '"category" est requis',
+    }),
+    image: Joi.string().uri().optional().messages({
+        'string.base': '"image" doit être une chaîne de caractères',
+        'string.uri': '"image" doit être une URL valide',
+    }),
+    });
+    
 // Schéma pour la mise à jour d'une recette
 const updateRecipeSchema = Joi.object({
     title: Joi.string().min(3).optional().messages({

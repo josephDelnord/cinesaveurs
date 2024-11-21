@@ -1,4 +1,3 @@
-// models/Recipe.js
 import mongoose from 'mongoose';
 
 const recipeSchema = new mongoose.Schema({
@@ -14,22 +13,27 @@ const recipeSchema = new mongoose.Schema({
   anecdote: { 
     type: String 
   },
-  ingredients: { 
-    type: [String], 
+  ingredients: [{ 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Ingredient', 
     required: true 
-  },
-  instructions: { 
-    type: [String], 
+  }],
+  instructions: [{ 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Instruction', 
     required: true 
-  },
+  }],
   source: { 
     type: String 
   },
   category: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Category', 
-    required: true,
+    required: true 
   },
+  image: {
+    type: String
+  }
 }, { timestamps: true });
 
 const Recipe = mongoose.model('Recipe', recipeSchema);

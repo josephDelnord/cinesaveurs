@@ -1,6 +1,7 @@
 import express from 'express';
 import { getScoresByRecipe, getScoreByUserAndRecipe, addOrUpdateScore, deleteScore } from '../controllers/scoreController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
+import { isAdmin, isAdminOrSelf } from '../middlewares/roleMiddleware.js';
 
 const router = express.Router();
 
@@ -39,7 +40,7 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur.
  */
-router.post('/', authMiddleware, addOrUpdateScore);
+router.post('/', authMiddleware, isAdminOrSelf, addOrUpdateScore);
 
 /**
  * @swagger
@@ -63,7 +64,7 @@ router.post('/', authMiddleware, addOrUpdateScore);
  *       500:
  *         description: Erreur serveur.
  */
-router.get('/:recipeId', getScoresByRecipe);
+router.get('/:recipeId', authMiddleware, isAdminOrSelf, getScoresByRecipe);
 
 /**
  * @swagger
@@ -87,7 +88,7 @@ router.get('/:recipeId', getScoresByRecipe);
  *       500:
  *         description: Erreur serveur.
  */
-router.get('/score/:recipeId', authMiddleware, getScoreByUserAndRecipe);
+router.get('/score/:recipeId', authMiddleware, isAdminOrSelf, getScoreByUserAndRecipe);
 
 /**
  * @swagger
@@ -111,6 +112,6 @@ router.get('/score/:recipeId', authMiddleware, getScoreByUserAndRecipe);
  *       500:
  *         description: Erreur serveur.
  */
-router.delete('/:scoreId', authMiddleware, deleteScore);
+router.delete('/:scoreId', authMiddleware, isAdmin, deleteScore);
 
 export default router;

@@ -14,7 +14,12 @@ export const getUserInfo = async (req, res) => {
     }
 
     // Récupérer l'utilisateur demandé
-    const user = await User.findById(userId).select('-password'); // Ne pas retourner le mot de passe
+    const user = await User.findById(userId)
+    .select('-password') // Ne pas retourner le mot de passe
+    .populate('status') // Populate le statut et ne récupérer que le nom du statut
+    .populate('role'); // Populate le rôle et ne récupérer que le nom du rôle
+
+    console.log('Utilisateur récupéré :', user);
 
     if (!user) {
       return res.status(404).json({ message: 'Utilisateur non trouvé.' });
@@ -25,8 +30,8 @@ export const getUserInfo = async (req, res) => {
       id: user._id,
       name: user.name,
       email: user.email,
-      status: user.status,
-      role: user.role,
+      status: user.status ? user.status.status_name : 'Non défini', // Affichage du nom du statut
+      role: user.role ? user.role.role_name : 'Non défini',           // Affichage du nom du rôle
     });
   } catch (err) {
     console.error(err);
@@ -121,3 +126,57 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur' });
   }
 };
+
+// vérifier le statut de l'utilisateur
+export const checkUserStatus = async (req, res) => { 
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+    res.status(200).json({ status: user.status });
+  } catch (err) {
+    console.error('Erreur lors de la vérification du statut de l\'utilisateur:', err);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+  };
+
+  // Suspender un utilisateur (accessible uniquement par un administrateur)
+
+  export const suspendUser = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'Utilisateur non trouvé' });
+      }
+
+      // Mettre à jour le statut de l'utilisateur à "suspendu"
+      user.status = 'suspendu';
+      await user.save();
+      return res.status(200).json({ message: 'Utilisateur suspendu avec succès' });
+      } catch (err) {
+        console.error('Erreur lors de la suspension de l\'utilisateur:', err);
+        res.status(500).json({ message: 'Erreur serveur' });
+      }
+      };
+  
+  // Activer un utilisateur (accessible uniquement par un administrateur)
+  export const activateUser = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'Utilisateur non trouvé' });
+      }
+      // Mettre à jour le statut de l'utilisateur à "actif"
+      user.status = 'actif';
+      await user.save();
+      return res.status(200).json({ message: 'Utilisateur activé avec succès' });
+      } catch (err) {
+      console.error('Erreur lors de l\'activation de l\'utilisateur:', err);
+      res.status(500).json({ message: 'Erreur serveur' });
+      }
+      };
+    

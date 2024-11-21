@@ -6,16 +6,20 @@ dotenv.config();
 
 export const connectDB = async () => {
     try {
-        const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/cinedelices';
+        // Récupération de l'URI de connexion à MongoDB à partir des variables d'environnement
+        const mongoURI = process.env.MONGO_URI;
 
-        // Connexion à MongoDB sans les options dépréciées
-        await mongoose.connect(mongoURI);
+        // Connexion à MongoDB avec les options recommandées pour éviter les avertissements
+        await mongoose.connect(mongoURI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
         console.log('Connecté à MongoDB');
 
         // Log pour déboguer la valeur de SEED_DB
         console.log('Valeur de SEED_DB:', process.env.SEED_DB);
 
-        // Conditionner l'exécution du seeding en fonction de SEED_DB
+        // Vérification de la variable d'environnement SEED_DB et lancement du seeding si nécessaire
         if (process.env.SEED_DB === 'true') {
             console.log('Démarrage du seeding...');
             await seedDatabase();  // Lancer le seeding si SEED_DB est à 'true'
@@ -24,7 +28,7 @@ export const connectDB = async () => {
         }
     } catch (error) {
         console.error('Erreur de connexion à MongoDB:', error);
-        process.exit(1);  // Arrêter l'application si la connexion échoue
+        process.exit(1);  // Arrêter l'application si la connexion échoue pour éviter les erreurs, sauf en cas de test
     }
 };
 

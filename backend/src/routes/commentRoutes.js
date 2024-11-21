@@ -2,6 +2,7 @@
 import express from 'express';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import { addComment, getCommentsByRecipe, updateComment, deleteComment } from '../controllers/commentController.js';
+import { isAdmin, isAdminOrSelf } from '../middlewares/roleMiddleware.js';
 
 const router = express.Router();
 
@@ -36,7 +37,7 @@ const router = express.Router();
  *       500:
  *       description: "Erreur serveur"
  */
-router.post('/', authMiddleware, addComment);  // Ajouter un commentaire
+router.post('/', authMiddleware, isAdminOrSelf, addComment);  // Ajouter un commentaire
 
 /**
  * @swagger
@@ -71,7 +72,7 @@ router.post('/', authMiddleware, addComment);  // Ajouter un commentaire
  *       500:
  *         description: "Erreur serveur"
  */
-router.get('/:recipeId', getCommentsByRecipe);  // Récupérer les commentaires d'une recette
+router.get('/:recipeId', authMiddleware, isAdmin, getCommentsByRecipe);  // Récupérer les commentaires d'une recette
 
 /**
  * @swagger
@@ -108,7 +109,7 @@ router.get('/:recipeId', getCommentsByRecipe);  // Récupérer les commentaires 
  *       500:
  *         description: "Erreur serveur"
  */
-router.put('/:commentId', authMiddleware, updateComment);  // Mettre à jour un commentaire
+router.put('/:commentId', authMiddleware, isAdmin, updateComment);  // Mettre à jour un commentaire
 
 /**
  * @swagger
@@ -136,6 +137,6 @@ router.put('/:commentId', authMiddleware, updateComment);  // Mettre à jour un 
  *       500:
  *         description: "Erreur serveur"
  */
-router.delete('/:commentId', authMiddleware, deleteComment);  // Supprimer un commentaire
+router.delete('/:commentId', authMiddleware, isAdmin, deleteComment);  // Supprimer un commentaire
 
 export default router;

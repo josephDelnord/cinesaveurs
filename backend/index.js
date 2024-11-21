@@ -8,6 +8,7 @@ import roleRoutes from './src/routes/roleRoutes.js';
 import categoryRoutes from './src/routes/categoryRoutes.js';
 import commentRoutes from './src/routes/commentRoutes.js';
 import scoreRoutes from './src/routes/scoreRoutes.js';
+import statusRoutes from './src/routes/statusRoutes.js';
 import setupSwagger from './swagger.js';
 import { connectDB } from './src/config/db.js'; // Connexion à MongoDB à partir de db.js
 
@@ -41,6 +42,7 @@ app.use('/api/roles', roleRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/scores', scoreRoutes);
+app.use('/api/status', statusRoutes);
 
 // Route de test
 app.get('/api', (req, res) => {

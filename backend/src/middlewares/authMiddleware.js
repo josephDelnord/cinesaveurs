@@ -4,29 +4,28 @@ import  dotenv from 'dotenv';
 dotenv.config();
 
 const authMiddleware = async (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-  if (!token) {
-    return res.status(401).json({ message: 'Accès non autorisé' });
-  }
+  if (token == null) return res.status(401).json({ message: 'Token manquant' });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.userId;  // Le payload décodé (généralement l'ID de l'utilisateur) est attaché à req.user
-    req.user = decoded;  // Ajouter toute autre information du token, comme le rôle
+    
+    // Vérifier que l'utilisateur existe et a un rôle valide
+    const user = await User.findById(decoded.userId).populate('role');
+    
+    if (!user || !user.role) {
+      return res.status(403).json({ message: 'Utilisateur ou rôle invalide' });
+    }
 
-     // Récupérer l'utilisateur et son rôle
-     const user = await User.findById(req.userId).populate('role'); // Assurer que tu utilises le modèle Role correctement
-     if (!user) {
-       return res.status(404).json({ message: 'Utilisateur non trouvé' });
-     }
-     req.userRole = user.role.role; // Ajouter le rôle de l'utilisateur au `req`
-     next(); // L'utilisateur est authentifié et le rôle est associé, continuer
-
-  } catch (err) {
-    console.error('Erreur de vérification du token:', err);
-    res.status(401).json({ message: 'Token invalide ou expiré' });
+    req.userId = decoded.userId;
+    req.userRole = user.role.role_name; // Stocker le nom du rôle
+    
+    next();
+  } catch (error) {
+    return res.status(403).json({ error, message: 'Token invalide' });
   }
-  };
+};
 
 export default authMiddleware;

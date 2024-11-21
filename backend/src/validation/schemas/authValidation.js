@@ -28,7 +28,7 @@ const registerSchema = Joi.object({
   // Validation du mot de passe
   password: Joi.string()
     .min(8) // Minimum 8 caractères
-    .pattern(new RegExp('^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])')) // Le mot de passe doit contenir une majuscule, un chiffre et un caractère spécial
+    .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])')) // Doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial
     .required() // Champ requis
     .messages(errorMessage('password', 8)),
 

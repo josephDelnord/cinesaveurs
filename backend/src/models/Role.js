@@ -1,25 +1,18 @@
 import mongoose from 'mongoose';
+
 const roleSchema = new mongoose.Schema({
-    role: { 
-        type: String, 
-        required: true,
-        unique: true,
-        enum: ['guest', 'user', 'admin'], 
-        default: 'user'
-        },
+  role_name: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    index: { unique: true }
+
+  }
 }, { timestamps: true });
 
-// Méthode statique pour obtenir tous les rôles possibles
-roleSchema.statics.getRoles = function() {
-    return this.schema.path('role').enumValues;
-};
-
-// Constantes pour les rôles (optionnel mais utile)
-export const ROLES = {
-    GUEST: 'guest',
-    USER: 'user',
-    ADMIN: 'admin',
-};
+// Ajouter un index unique explicite
+roleSchema.index({ role_name: 1 }, { unique: true });
 
 const Role = mongoose.model('Role', roleSchema);
 export default Role;

@@ -27,9 +27,6 @@ const updateUserSchema = Joi.object({
     'any.only': 'Les mots de passe ne correspondent pas',
     'any.required': '"confirmer le mot de passe" est requis',
   }),
-  status: Joi.string()
-  .valid('actif', 'inactif')
-  .optional() 
 
 }).with('password', 'newPassword'); // s'assurter que l'ancien mot de passe est requis si un nouveau mot de passe est fourni
 

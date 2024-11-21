@@ -1,4 +1,4 @@
-import Role, { ROLES } from '../models/Role.js';
+import Role from '../models/Role.js';
 import roleValidationSchema from '../validation/schemas/roleValidation.js';
 
 // Récupérer tous les rôles
@@ -6,6 +6,7 @@ export const getAllRoles = async (req, res) => {
     try {
         const roles = await Role.find();
         res.status(200).json(roles);
+        console.log("Rôles récupérés avec succès", roles);
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de la récupération des rôles', error });
     }
@@ -36,16 +37,16 @@ export const createRole = async (req, res) => {
         return res.status(400).json({ message: error.details[0].message });
     }
 
-    const { role } = req.body;
+    const { role_name } = req.body;
 
     try {
         // Vérifier si le rôle existe déjà dans la base de données
-        const existingRole = await Role.findOne({ role });
+        const existingRole = await Role.findOne({ role_name  });
         if (existingRole) {
             return res.status(400).json({ message: 'Ce rôle existe déjà' });
         }
 
-        const newRole = new Role({ role });
+        const newRole = new Role({ role_name  });
         await newRole.save();
         res.status(201).json(newRole);
     } catch (error) {
@@ -66,9 +67,4 @@ export const deleteRole = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de la suppression du rôle', error });
     }
-};
-
-// Récupérer les rôles possibles (enum)
-export const getRolesEnum = (req, res) => {
-    res.status(200).json(Object.values(ROLES));
 };

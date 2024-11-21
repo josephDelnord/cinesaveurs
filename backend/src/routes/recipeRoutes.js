@@ -1,5 +1,7 @@
 import express from 'express';
 import authMiddleware from '../middlewares/authMiddleware.js';
+import { isAdmin, isAdminOrSelf } from '../middlewares/roleMiddleware.js';
+
 import { 
   getRecipes, 
   getRecipeById, 
@@ -71,7 +73,7 @@ router.get('/', getRecipes);
  *       404:
  *         description: "Recette non trouvée"
  */
-router.get('/:id', getRecipeById);
+router.get('/:id', authMiddleware, isAdminOrSelf, getRecipeById);
 
 /**
  * @swagger
@@ -103,7 +105,7 @@ router.get('/:id', getRecipeById);
  *       404:
  *         description: "Aucune recette trouvée pour cette catégorie"
  */
-router.get('/category/:categoryId', getRecipesByCategory);
+router.get('/category/:categoryId', authMiddleware, isAdminOrSelf, getRecipesByCategory);
 
 /**
  * @swagger
@@ -137,7 +139,7 @@ router.get('/category/:categoryId', getRecipesByCategory);
  *       400:
  *         description: "Données invalides"
  */
-router.post('/addRecipe', authMiddleware, addRecipe);
+router.post('/addRecipe', authMiddleware, isAdminOrSelf, addRecipe);
 
 /**
  * @swagger
@@ -177,7 +179,7 @@ router.post('/addRecipe', authMiddleware, addRecipe);
  *       404:
  *         description: "Recette non trouvée"
  */
-router.put('/:id', authMiddleware, updateRecipe);
+router.put('/:id', authMiddleware, isAdmin, updateRecipe);
 
 /**
  * @swagger
@@ -199,7 +201,7 @@ router.put('/:id', authMiddleware, updateRecipe);
  *       404:
  *         description: "Recette non trouvée"
  */
-router.delete('/:id', authMiddleware, deleteRecipe);
+router.delete('/:id', authMiddleware, isAdmin, deleteRecipe);
 
 /**
  * @swagger
