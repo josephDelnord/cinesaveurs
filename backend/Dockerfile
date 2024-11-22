@@ -1,5 +1,5 @@
 # Étape 1 : Utiliser l'image de base Node.js
-FROM node:14
+FROM node:alpine
 
 # Étape 2 : Créer et définir le répertoire de travail dans le conteneur
 WORKDIR /app
@@ -17,4 +17,4 @@ COPY backend/ ./
 EXPOSE 5000
 
 # Étape 7 : Lancer l'application Node.js
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

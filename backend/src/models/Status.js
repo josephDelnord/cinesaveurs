@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-// Définition du schéma pour le statut
+// Modèle de données pour les statuts
 const statusSchema = new mongoose.Schema({
     status_name: {
         type: String,

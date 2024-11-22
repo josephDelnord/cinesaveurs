@@ -1,6 +1,6 @@
-// models/Category.js
 import mongoose from 'mongoose';
 
+// Modèle de données pour les catégories
 const categorySchema = new mongoose.Schema({
   name: { 
     type: String, 

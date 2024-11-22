@@ -4,11 +4,14 @@ import validateCommentSchema from '../validation/schemas/commentValidation.js';
 
 // Ajouter un commentaire
 export const addComment = async (req, res) => {
+  // Récupérer les données du corps de la requête
   const { content, recipeId } = req.body;
-  const userId = req.userId;  // Si tu utilises un middleware pour l'authentification
+  // Récupérer l'ID de l'utilisateur connecté
+  const userId = req.userId;
 
   // Validation des données
   const { error } = validateCommentSchema({ content, recipeId, userId });
+  // Si les données sont invalides, renvoyer une réponse d'erreur
   if (error) {
     return res.status(400).json({ message: error.details.map(x => x.message).join(', ') });
   }
@@ -44,12 +47,13 @@ export const getCommentsByRecipe = async (req, res) => {
   try {
     // Chercher tous les commentaires associés à la recette
     const comments = await Comment.find({ recipe: recipeId }).populate('user', 'name').populate('recipe', 'title');
-
+    
+    // Vérifier si des commentaires ont été trouvés
     if (comments.length === 0) {
       return res.status(404).json({ message: 'Aucun commentaire trouvé pour cette recette' });
     }
-
     return res.status(200).json(comments);
+
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Erreur serveur lors de la récupération des commentaires' });
@@ -60,10 +64,12 @@ export const getCommentsByRecipe = async (req, res) => {
 export const updateComment = async (req, res) => {
   const { commentId } = req.params;
   const { content } = req.body;
-  const userId = req.userId;  // ID de l'utilisateur connecté
+  const userId = req.userId;
 
   // Validation des données
   const { error } = validateCommentSchema({ content, recipeId: req.body.recipeId, userId });
+  
+  // Vérifier si les données sont invalides
   if (error) {
     return res.status(400).json({ message: error.details.map(x => x.message).join(', ') });
   }
@@ -94,7 +100,7 @@ export const updateComment = async (req, res) => {
 // Supprimer un commentaire
 export const deleteComment = async (req, res) => {
   const { commentId } = req.params;
-  const userId = req.userId;  // ID de l'utilisateur connecté
+  const userId = req.userId;
 
   try {
     // Vérifier si le commentaire existe

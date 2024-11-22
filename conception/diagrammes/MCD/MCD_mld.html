@@ -16,35 +16,82 @@
   <details><summary><span class='relation'>CATEGORY</span> (
     <span class='primary'>code_Category</span>,
     <span class='normal'>name</span>,
-    <span class='foreign'>#code_Recipe!</span>
+    <span class='foreign'>#code_Recipe</span>
   )</summary>
   <ul>
     <li>Le champ <i>code_Category</i> constitue la clé primaire de la table. C'était déjà un identifiant de l'entité <i>CATEGORY</i>.</li>
     <li>Le champ <i>name</i> était déjà un simple attribut de l'entité <i>CATEGORY</i>.</li>
-    <li>Le champ à saisie obligatoire <i>code_Recipe</i> est une clé étrangère. Il a migré par l'association de dépendance fonctionnelle <i>ASSOCIATE</i> à partir de l'entité <i>RECIPE</i> en perdant son caractère identifiant.</li>
+    <li>Le champ <i>code_Recipe</i> est une clé étrangère. Il a migré par l'association de dépendance fonctionnelle <i>ASSOCIATE</i> à partir de l'entité <i>RECIPE</i> en perdant son caractère identifiant.</li>
   </ul></details>
 </div>
 
 <div>
   <details><summary><span class='relation'>COMMENT</span> (
     <span class='primary'>code_Comment</span>,
-    <span class='normal'>content</span>,
-    <span class='normal'>date_comment</span>
+    <span class='normal'>content</span>
   )</summary>
   <ul>
     <li>Le champ <i>code_Comment</i> constitue la clé primaire de la table. C'était déjà un identifiant de l'entité <i>COMMENT</i>.</li>
-    <li>Les champs <i>content</i> et <i>date_comment</i> étaient déjà de simples attributs de l'entité <i>COMMENT</i>.</li>
+    <li>Le champ <i>content</i> était déjà un simple attribut de l'entité <i>COMMENT</i>.</li>
+  </ul></details>
+</div>
+
+<div>
+  <details><summary><span class='relation'>CONTAIN</span> (
+    <span class='foreign primary'>#code_Recipe</span>,
+    <span class='foreign primary'>#code_Ingredient</span>
+  )</summary>
+  <ul>
+    <li>Le champ <i>code_Recipe</i> fait partie de la clé primaire de la table. C'est une clé étrangère qui a migré directement à partir de l'entité <i>RECIPE</i>.</li>
+    <li>Le champ <i>code_Ingredient</i> fait partie de la clé primaire de la table. C'est une clé étrangère qui a migré directement à partir de l'entité <i>INGREDIENT</i>.</li>
+  </ul></details>
+</div>
+
+<div>
+  <details><summary><span class='relation'>INGREDIENT</span> (
+    <span class='primary'>code_Ingredient</span>,
+    <span class='normal'>name</span>,
+    <span class='normal'>quantity</span>,
+    <span class='normal'>quantity_Description</span>,
+    <span class='normal'>unit</span>
+  )</summary>
+  <ul>
+    <li>Le champ <i>code_Ingredient</i> constitue la clé primaire de la table. C'était déjà un identifiant de l'entité <i>INGREDIENT</i>.</li>
+    <li>Les champs <i>name</i>, <i>quantity</i>, <i>quantity_Description</i> et <i>unit</i> étaient déjà de simples attributs de l'entité <i>INGREDIENT</i>.</li>
+  </ul></details>
+</div>
+
+<div>
+  <details><summary><span class='relation'>INSTRUCTION</span> (
+    <span class='primary'>code_Instruction</span>,
+    <span class='normal'>step_Number</span>,
+    <span class='normal'>instruction</span>
+  )</summary>
+  <ul>
+    <li>Le champ <i>code_Instruction</i> constitue la clé primaire de la table. C'était déjà un identifiant de l'entité <i>INSTRUCTION</i>.</li>
+    <li>Les champs <i>step_Number</i> et <i>instruction</i> étaient déjà de simples attributs de l'entité <i>INSTRUCTION</i>.</li>
+  </ul></details>
+</div>
+
+<div>
+  <details><summary><span class='relation'>POSSESS</span> (
+    <span class='foreign primary'>#code_Recipe</span>,
+    <span class='foreign primary'>#code_Instruction</span>
+  )</summary>
+  <ul>
+    <li>Le champ <i>code_Recipe</i> fait partie de la clé primaire de la table. C'est une clé étrangère qui a migré directement à partir de l'entité <i>RECIPE</i>.</li>
+    <li>Le champ <i>code_Instruction</i> fait partie de la clé primaire de la table. C'est une clé étrangère qui a migré directement à partir de l'entité <i>INSTRUCTION</i>.</li>
   </ul></details>
 </div>
 
 <div>
   <details><summary><span class='relation'>RECEIVE</span> (
     <span class='foreign primary'>#code_Recipe</span>,
-    <span class='foreign primary'>#score</span>
+    <span class='foreign primary'>#code_Score</span>
   )</summary>
   <ul>
     <li>Le champ <i>code_Recipe</i> fait partie de la clé primaire de la table. C'est une clé étrangère qui a migré directement à partir de l'entité <i>RECIPE</i>.</li>
-    <li>Le champ <i>score</i> fait partie de la clé primaire de la table. C'est une clé étrangère qui a migré directement à partir de l'entité <i>SCORE</i>.</li>
+    <li>Le champ <i>code_Score</i> fait partie de la clé primaire de la table. C'est une clé étrangère qui a migré directement à partir de l'entité <i>SCORE</i>.</li>
   </ul></details>
 </div>
 
@@ -54,36 +101,47 @@
     <span class='normal'>title</span>,
     <span class='normal'>description</span>,
     <span class='normal'>anecdote</span>,
-    <span class='normal'>ingredients</span>,
-    <span class='normal'>instructions</span>,
     <span class='normal'>source</span>,
-    <span class='normal'>date_added</span>
+    <span class='normal'>image</span>
   )</summary>
   <ul>
     <li>Le champ <i>code_Recipe</i> constitue la clé primaire de la table. C'était déjà un identifiant de l'entité <i>RECIPE</i>.</li>
-    <li>Les champs <i>title</i>, <i>description</i>, <i>anecdote</i>, <i>ingredients</i>, <i>instructions</i>, <i>source</i> et <i>date_added</i> étaient déjà de simples attributs de l'entité <i>RECIPE</i>.</li>
+    <li>Les champs <i>title</i>, <i>description</i>, <i>anecdote</i>, <i>source</i> et <i>image</i> étaient déjà de simples attributs de l'entité <i>RECIPE</i>.</li>
   </ul></details>
 </div>
 
 <div>
   <details><summary><span class='relation'>ROLE</span> (
     <span class='primary'>code_Role</span>,
-    <span class='normal'>role</span>
+    <span class='normal'>role_Name</span>
   )</summary>
   <ul>
     <li>Le champ <i>code_Role</i> constitue la clé primaire de la table. C'était déjà un identifiant de l'entité <i>ROLE</i>.</li>
-    <li>Le champ <i>role</i> était déjà un simple attribut de l'entité <i>ROLE</i>.</li>
+    <li>Le champ <i>role_Name</i> était déjà un simple attribut de l'entité <i>ROLE</i>.</li>
   </ul></details>
 </div>
 
 <div>
   <details><summary><span class='relation'>SCORE</span> (
-    <span class='primary'>score</span>,
-    <span class='foreign'>#code_User</span> <sup>u1</sup>
+    <span class='primary'>code_Score</span>,
+    <span class='normal'>score</span>,
+    <span class='foreign'>#code_User</span>
   )</summary>
   <ul>
-    <li>Le champ <i>score</i> constitue la clé primaire de la table. C'était déjà un identifiant de l'entité <i>SCORE</i>.</li>
-    <li>Le champ <i>code_User</i> est une clé étrangère. Il a migré par l'association de dépendance fonctionnelle <i>GIVE</i> à partir de l'entité <i>USER</i> en perdant son caractère identifiant. Il obéit en outre à la contrainte d'unicité 1.</li>
+    <li>Le champ <i>code_Score</i> constitue la clé primaire de la table. C'était déjà un identifiant de l'entité <i>SCORE</i>.</li>
+    <li>Le champ <i>score</i> était déjà un simple attribut de l'entité <i>SCORE</i>.</li>
+    <li>Le champ <i>code_User</i> est une clé étrangère. Il a migré par l'association de dépendance fonctionnelle <i>GIVE</i> à partir de l'entité <i>USER</i> en perdant son caractère identifiant.</li>
+  </ul></details>
+</div>
+
+<div>
+  <details><summary><span class='relation'>STATUS</span> (
+    <span class='primary'>code_Status</span>,
+    <span class='normal'>status_Name</span>
+  )</summary>
+  <ul>
+    <li>Le champ <i>code_Status</i> constitue la clé primaire de la table. C'était déjà un identifiant de l'entité <i>STATUS</i>.</li>
+    <li>Le champ <i>status_Name</i> était déjà un simple attribut de l'entité <i>STATUS</i>.</li>
   </ul></details>
 </div>
 
@@ -93,18 +151,19 @@
     <span class='normal'>name</span>,
     <span class='normal'>email</span>,
     <span class='normal'>password</span>,
-    <span class='normal'>date_created</span>,
-    <span class='normal'>status</span>,
-    <span class='foreign'>#code_Comment!</span>,
-    <span class='foreign'>#code_Role!</span>,
-    <span class='foreign'>#code_Recipe!</span>
+    <span class='normal'>confirm_Password</span>,
+    <span class='foreign'>#code_Comment</span>,
+    <span class='foreign'>#code_Recipe</span>,
+    <span class='foreign'>#code_Status</span>,
+    <span class='foreign'>#code_Role</span>
   )</summary>
   <ul>
     <li>Le champ <i>code_User</i> constitue la clé primaire de la table. C'était déjà un identifiant de l'entité <i>USER</i>.</li>
-    <li>Les champs <i>name</i>, <i>email</i>, <i>password</i>, <i>date_created</i> et <i>status</i> étaient déjà de simples attributs de l'entité <i>USER</i>.</li>
-    <li>Le champ à saisie obligatoire <i>code_Comment</i> est une clé étrangère. Il a migré par l'association de dépendance fonctionnelle <i>LEAVE</i> à partir de l'entité <i>COMMENT</i> en perdant son caractère identifiant.</li>
-    <li>Le champ à saisie obligatoire <i>code_Role</i> est une clé étrangère. Il a migré par l'association de dépendance fonctionnelle <i>HAVE</i> à partir de l'entité <i>ROLE</i> en perdant son caractère identifiant.</li>
-    <li>Le champ à saisie obligatoire <i>code_Recipe</i> est une clé étrangère. Il a migré par l'association de dépendance fonctionnelle <i>CREATE</i> à partir de l'entité <i>RECIPE</i> en perdant son caractère identifiant.</li>
+    <li>Les champs <i>name</i>, <i>email</i>, <i>password</i> et <i>confirm_Password</i> étaient déjà de simples attributs de l'entité <i>USER</i>.</li>
+    <li>Le champ <i>code_Comment</i> est une clé étrangère. Il a migré par l'association de dépendance fonctionnelle <i>LEAVE</i> à partir de l'entité <i>COMMENT</i> en perdant son caractère identifiant.</li>
+    <li>Le champ <i>code_Recipe</i> est une clé étrangère. Il a migré par l'association de dépendance fonctionnelle <i>CREATE</i> à partir de l'entité <i>RECIPE</i> en perdant son caractère identifiant.</li>
+    <li>Le champ <i>code_Status</i> est une clé étrangère. Il a migré par l'association de dépendance fonctionnelle <i>OWN</i> à partir de l'entité <i>STATUS</i> en perdant son caractère identifiant.</li>
+    <li>Le champ <i>code_Role</i> est une clé étrangère. Il a migré par l'association de dépendance fonctionnelle <i>HAVE</i> à partir de l'entité <i>ROLE</i> en perdant son caractère identifiant.</li>
   </ul></details>
 </div>
 

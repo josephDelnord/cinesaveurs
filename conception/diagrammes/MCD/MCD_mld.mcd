@@ -1,24 +1,37 @@
 %%mocodo
 :
-ROLE: code_Role, role
-:::
-COMMENT: code_Comment, content, date_comment
+INGREDIENT: code_Ingredient, name, quantity, quantity_Description, unit
 :
 ACCEPT: #code_Recipe > RECIPE > code_Recipe, _#code_Comment > COMMENT > code_Comment
 :
-CATEGORY: code_Category, name, #code_Recipe! > RECIPE > code_Recipe
+COMMENT: code_Comment, content
+:::
+STATUS: code_Status, status_Name
 :
 
 
+:
+CONTAIN: #code_Recipe > RECIPE > code_Recipe, _#code_Ingredient > INGREDIENT > code_Ingredient
+:
+RECIPE: code_Recipe, title, description, anecdote, source, image
 :::
-USER: code_User, name, email, password, date_created, status, #code_Comment! > COMMENT > code_Comment, #code_Role! > ROLE > code_Role, #code_Recipe! > RECIPE > code_Recipe
-:::
-RECIPE: code_Recipe, title, description, anecdote, ingredients, instructions, source, date_added
+USER: code_User, name, email, password, confirm_Password, #code_Comment > COMMENT > code_Comment, #code_Recipe > RECIPE > code_Recipe, #code_Status > STATUS > code_Status, #code_Role > ROLE > code_Role
 :::
 
 
+:::
+POSSESS: #code_Recipe > RECIPE > code_Recipe, _#code_Instruction > INSTRUCTION > code_Instruction
+:
+RECEIVE: #code_Recipe > RECIPE > code_Recipe, _#code_Score > SCORE > code_Score
 :::::
-SCORE: score, #code_User! > USER > code_User
+
+
 :
-RECEIVE: #code_Recipe > RECIPE > code_Recipe, _#score > SCORE > score
+CATEGORY: code_Category, name, #code_Recipe > RECIPE > code_Recipe
+:
+INSTRUCTION: code_Instruction, step_Number, instruction
+:
+SCORE: code_Score, score, #code_User > USER > code_User
 :::
+ROLE: code_Role, role_Name
+:

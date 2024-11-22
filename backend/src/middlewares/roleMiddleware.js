@@ -6,7 +6,7 @@ const isAdmin = (req, res, next) => {
     return res.status(403).json({ message: 'Accès interdit, vous devez être un administrateur.' });
   }
 
-  next(); // Si l'utilisateur est un admin, on passe au middleware suivant
+  next();
 };
 
 // Middleware pour vérifier si l'utilisateur est un utilisateur (user)

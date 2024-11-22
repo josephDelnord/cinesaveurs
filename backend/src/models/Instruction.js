@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Modèle de données pour les instructions
 const instructionSchema = new mongoose.Schema({
     step_number: {
         type: Number,

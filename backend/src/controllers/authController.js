@@ -4,17 +4,21 @@ import User from '../models/User.js';
 import Role from '../models/Role.js';
 import dotenv from 'dotenv';
 import { registerSchema, loginSchema } from '../validation/schemas/authValidation.js';
+
 dotenv.config();
 
+// Fonction pour gérer les erreurs de validation
 const handleValidationError = (res, error) => {
   return res.status(400).json({ message: "Données invalides", errors: error.details });
 };
 
+// Fonction pour gérer les erreurs de base de données
 const handleDatabaseError = (res, error) => {
   console.error('Erreur serveur:', error);
   return res.status(500).json({ message: 'Une erreur est survenue, veuillez réessayer plus tard.' });
 };
 
+// Fonction pour créer un objet utilisateur avec le rôle
 const createUserObject = async (name, email, password, roleName) => {
   // Trouver le rôle par son nom
   const role = await Role.findOne({ role_name: roleName });
@@ -24,16 +28,19 @@ const createUserObject = async (name, email, password, roleName) => {
   return new User({ name, email, password, role: role._id });
 };
 
+// Fonction pour hacher le mot de passe
 const hashPassword = async (password) => {
   return await bcrypt.hash(password, 10);
 };
 
-// Dans votre contrôleur d'inscription
+// Inscription d'un nouvel utilisateur
 export const register = async (req, res) => {
   try {
+    // Valider les données
     const { error } = registerSchema.validate(req.body);
     if (error) return handleValidationError(res, error);
 
+    // Récupérer les données du corps de la requête
     const { name, email, password, role } = req.body;
 
     // Vérifier si l'utilisateur existe déjà
@@ -61,12 +68,14 @@ export const register = async (req, res) => {
   }
 };
 
-// Dans votre contrôleur de connexion
+// Connexion d'un utilisateur 
 export const login = async (req, res) => {
   try {
+    // Valider les données
     const { error } = loginSchema.validate(req.body);
     if (error) return handleValidationError(res, error);
 
+    // Récupérer les données du corps de la requête
     const { email, password } = req.body;
 
     // Trouver l'utilisateur et peupler son rôle
@@ -75,7 +84,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
     }
 
-    // Vérifier le mot de passe
+    // Vérifier le mot de passe hashé
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Email ou mot de passe incorrect' });

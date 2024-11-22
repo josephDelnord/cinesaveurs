@@ -16,52 +16,84 @@ CREATE TABLE CATEGORY (
 CREATE TABLE COMMENT (
   PRIMARY KEY (code_Comment),
   code_Comment VARCHAR(42) NOT NULL,
-  content      VARCHAR(42),
-  date_comment VARCHAR(42)
+  content      VARCHAR(42)
+);
+
+CREATE TABLE CONTAIN (
+  PRIMARY KEY (code_Recipe, code_Ingredient),
+  code_Recipe     VARCHAR(42) NOT NULL,
+  code_Ingredient VARCHAR(42) NOT NULL
+);
+
+CREATE TABLE INGREDIENT (
+  PRIMARY KEY (code_Ingredient),
+  code_Ingredient      VARCHAR(42) NOT NULL,
+  name                 VARCHAR(42),
+  quantity             VARCHAR(42),
+  quantity_Description VARCHAR(42),
+  unit                 VARCHAR(42)
+);
+
+CREATE TABLE INSTRUCTION (
+  PRIMARY KEY (code_Instruction),
+  code_Instruction VARCHAR(42) NOT NULL,
+  step_Number      VARCHAR(42),
+  instruction      VARCHAR(42)
+);
+
+CREATE TABLE POSSESS (
+  PRIMARY KEY (code_Recipe, code_Instruction),
+  code_Recipe      VARCHAR(42) NOT NULL,
+  code_Instruction VARCHAR(42) NOT NULL
 );
 
 CREATE TABLE RECEIVE (
-  PRIMARY KEY (code_Recipe, score),
+  PRIMARY KEY (code_Recipe, code_Score),
   code_Recipe VARCHAR(42) NOT NULL,
-  score       VARCHAR(42) NOT NULL
+  code_Score  VARCHAR(42) NOT NULL
 );
 
 CREATE TABLE RECIPE (
   PRIMARY KEY (code_Recipe),
-  code_Recipe  VARCHAR(42) NOT NULL,
-  title        VARCHAR(42),
-  description  VARCHAR(42),
-  anecdote     VARCHAR(42),
-  ingredients  VARCHAR(42),
-  instructions VARCHAR(42),
-  source       VARCHAR(42),
-  date_added   VARCHAR(42)
+  code_Recipe VARCHAR(42) NOT NULL,
+  title       VARCHAR(42),
+  description VARCHAR(42),
+  anecdote    VARCHAR(42),
+  source      VARCHAR(42),
+  image       VARCHAR(42)
 );
 
 CREATE TABLE ROLE (
   PRIMARY KEY (code_Role),
   code_Role VARCHAR(42) NOT NULL,
-  role      VARCHAR(42)
+  role_Name VARCHAR(42)
 );
 
 CREATE TABLE SCORE (
-  PRIMARY KEY (score),
-  score     VARCHAR(42) NOT NULL,
-  code_User VARCHAR(42) NOT NULL,
+  PRIMARY KEY (code_Score),
+  code_Score VARCHAR(42) NOT NULL,
+  score      VARCHAR(42),
+  code_User  VARCHAR(42) NOT NULL,
   UNIQUE (code_User)
+);
+
+CREATE TABLE STATUS (
+  PRIMARY KEY (code_Status),
+  code_Status VARCHAR(42) NOT NULL,
+  status_Name VARCHAR(42)
 );
 
 CREATE TABLE USER (
   PRIMARY KEY (code_User),
-  code_User    VARCHAR(42) NOT NULL,
-  name         VARCHAR(42),
-  email        VARCHAR(42),
-  password     VARCHAR(42),
-  date_created VARCHAR(42),
-  status       VARCHAR(42),
-  code_Comment VARCHAR(42) NOT NULL,
-  code_Role    VARCHAR(42) NOT NULL,
-  code_Recipe  VARCHAR(42) NOT NULL
+  code_User        VARCHAR(42) NOT NULL,
+  name             VARCHAR(42),
+  email            VARCHAR(42),
+  password         VARCHAR(42),
+  confirm_Password VARCHAR(42),
+  code_Comment     VARCHAR(42) NOT NULL,
+  code_Recipe      VARCHAR(42) NOT NULL,
+  code_Status      VARCHAR(42) NOT NULL,
+  code_Role        VARCHAR(42) NOT NULL
 );
 
 ALTER TABLE ACCEPT ADD FOREIGN KEY (code_Comment) REFERENCES COMMENT (code_Comment);
@@ -69,11 +101,18 @@ ALTER TABLE ACCEPT ADD FOREIGN KEY (code_Recipe) REFERENCES RECIPE (code_Recipe)
 
 ALTER TABLE CATEGORY ADD FOREIGN KEY (code_Recipe) REFERENCES RECIPE (code_Recipe);
 
-ALTER TABLE RECEIVE ADD FOREIGN KEY (score) REFERENCES SCORE (score);
+ALTER TABLE CONTAIN ADD FOREIGN KEY (code_Ingredient) REFERENCES INGREDIENT (code_Ingredient);
+ALTER TABLE CONTAIN ADD FOREIGN KEY (code_Recipe) REFERENCES RECIPE (code_Recipe);
+
+ALTER TABLE POSSESS ADD FOREIGN KEY (code_Instruction) REFERENCES INSTRUCTION (code_Instruction);
+ALTER TABLE POSSESS ADD FOREIGN KEY (code_Recipe) REFERENCES RECIPE (code_Recipe);
+
+ALTER TABLE RECEIVE ADD FOREIGN KEY (code_Score) REFERENCES SCORE (code_Score);
 ALTER TABLE RECEIVE ADD FOREIGN KEY (code_Recipe) REFERENCES RECIPE (code_Recipe);
 
 ALTER TABLE SCORE ADD FOREIGN KEY (code_User) REFERENCES USER (code_User);
 
-ALTER TABLE USER ADD FOREIGN KEY (code_Recipe) REFERENCES RECIPE (code_Recipe);
 ALTER TABLE USER ADD FOREIGN KEY (code_Role) REFERENCES ROLE (code_Role);
+ALTER TABLE USER ADD FOREIGN KEY (code_Status) REFERENCES STATUS (code_Status);
+ALTER TABLE USER ADD FOREIGN KEY (code_Recipe) REFERENCES RECIPE (code_Recipe);
 ALTER TABLE USER ADD FOREIGN KEY (code_Comment) REFERENCES COMMENT (code_Comment);

@@ -18,12 +18,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Connexion à MongoDB
-connectDB(); // Utilisation de la fonction de connexion définie dans config/db.js
+connectDB();
 
 // Configurer Swagger
 setupSwagger(app);
 
-// Middleware CORS - Corriger l'option "origin" (au lieu de "rigin")
+// Middleware CORS
 app.use(cors({
     origin: 'http://localhost:3000',  // L'URL de votre frontend en production
     methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Méthodes HTTP autorisées
@@ -35,12 +35,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Utilisation des routes avec le préfixe correspondant
-app.use('/api/recipes', recipeRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/recipes', recipeRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/categories', categoryRoutes);
-app.use('/api/comments', commentRoutes);
+app.use('/api/comments/', commentRoutes);
 app.use('/api/scores', scoreRoutes);
 app.use('/api/status', statusRoutes);
 

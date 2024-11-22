@@ -1,5 +1,5 @@
 import Status from '../models/Status.js';
-import validateStatus from '../validation/schemas/statusValidation.js';
+import statusValidationSchema from '../validation/schemas/statusValidation.js';
 
 // Récupérer tous les statuts
 export const getStatus = async (req, res) => {
@@ -26,7 +26,7 @@ export const getStatusById = async (req, res) => {
 export const createStatus = async (req, res) => {  
     try {
         const { status_name } = req.body;
-        const { error } = validateStatus({ status_name });
+        const { error } = statusValidationSchema({ status_name });
         if (error) {
             return res.status(400).json({ message: error.details[0].message });
         }

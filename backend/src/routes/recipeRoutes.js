@@ -18,7 +18,7 @@ const router = express.Router();
  * @swagger
  * /recipes:
  *   get:
- *     summary: "Recettes: Obtenir toutes les recettes"
+ *     summary: "Obtenir toutes les recettes (tout le monde)"
  *     description: "Retourne une liste de toutes les recettes."
  *     tags: [Recettes]
  *     responses:
@@ -46,7 +46,7 @@ router.get('/', getRecipes);
  * @swagger
  * /recipes/{id}:
  *   get:
- *     summary: "Obtenir une recette par ID"
+ *     summary: "Obtenir une recette par ID (admin ou utilisateur lui-même)"
  *     description: "Retourne les détails d'une recette en fonction de son ID."
  *     tags: [Recettes]
  *     parameters:
@@ -79,7 +79,7 @@ router.get('/:id', authMiddleware, isAdminOrSelf, getRecipeById);
  * @swagger
  * /recipes/category/{categoryId}:
  *   get:
- *     summary: "Obtenir les recettes d'une catégorie"
+ *     summary: "Obtenir les recettes d'une catégorie (admin ou utilisateur lui-même)"
  *     description: "Retourne une liste de recettes d'une catégorie spécifique."
  *     tags: [Recettes]
  *     parameters:
@@ -105,13 +105,13 @@ router.get('/:id', authMiddleware, isAdminOrSelf, getRecipeById);
  *       404:
  *         description: "Aucune recette trouvée pour cette catégorie"
  */
-router.get('/category/:categoryId', authMiddleware, isAdminOrSelf, getRecipesByCategory);
+router.get('/:categoryId', authMiddleware, isAdminOrSelf, getRecipesByCategory);
 
 /**
  * @swagger
  * /recipes/addRecipe:
  *   post:
- *     summary: "Ajouter une nouvelle recette"
+ *     summary: "Ajouter une nouvelle recette (admin ou utilisateur lui-même)"
  *     description: "Permet d'ajouter une nouvelle recette à la base de données."
  *     tags: [Recettes]
  *     requestBody:
@@ -145,7 +145,7 @@ router.post('/addRecipe', authMiddleware, isAdminOrSelf, addRecipe);
  * @swagger
  * /recipes/{id}:
  *   put:
- *     summary: "Mettre à jour une recette"
+ *     summary: "Mettre à jour une recette (admin seulement)"
  *     description: "Met à jour les détails d'une recette existante."
  *     tags: [Recettes]
  *     parameters:
@@ -185,7 +185,7 @@ router.put('/:id', authMiddleware, isAdmin, updateRecipe);
  * @swagger
  * /recipes/{id}:
  *   delete:
- *     summary: "Supprimer une recette"
+ *     summary: "Supprimer une recette (admin seulement)"
  *     description: "Permet de supprimer une recette à partir de son ID."
  *     tags: [Recettes]
  *     parameters:
@@ -207,7 +207,7 @@ router.delete('/:id', authMiddleware, isAdmin, deleteRecipe);
  * @swagger
  * /recipes/research:
  *   post:
- *     summary: "Rechercher des recettes"
+ *     summary: "Rechercher des recettes (tout le monde)"
  *     description: "Permet de rechercher des recettes par titre, catégorie ou source."
  *     tags: [Recettes]
  *     requestBody:

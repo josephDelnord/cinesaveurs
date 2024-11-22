@@ -9,7 +9,7 @@ const router = express.Router();
  * @swagger
  * /scores:
  *   post:
- *     summary: Ajouter ou mettre à jour un score pour une recette
+ *     summary: "Ajouter ou mettre à jour un score pour une recette (admin ou utilisateur lui-même)"
  *     tags:
  *       - Scores
  *     requestBody:
@@ -40,13 +40,13 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur.
  */
-router.post('/', authMiddleware, isAdminOrSelf, addOrUpdateScore);
+router.post('/recipeId', authMiddleware, isAdminOrSelf, addOrUpdateScore);
 
 /**
  * @swagger
  * /scores/{recipeId}:
  *   get:
- *     summary: Récupérer les scores d'une recette
+ *     summary: "Récupérer les scores d'une recette (admin seulement)"
  *     tags:
  *       - Scores
  *     parameters:
@@ -64,13 +64,13 @@ router.post('/', authMiddleware, isAdminOrSelf, addOrUpdateScore);
  *       500:
  *         description: Erreur serveur.
  */
-router.get('/:recipeId', authMiddleware, isAdminOrSelf, getScoresByRecipe);
+router.get('/:recipeId', authMiddleware, isAdmin, getScoresByRecipe);
 
 /**
  * @swagger
  * /score/{recipeId}:
  *   get:
- *     summary: Récupérer le score d'un utilisateur pour une recette spécifique
+ *     summary: "Récupérer le score d'un utilisateur pour une recette spécifique (admin seulement)"
  *     tags:
  *       - Scores
  *     parameters:
@@ -88,13 +88,13 @@ router.get('/:recipeId', authMiddleware, isAdminOrSelf, getScoresByRecipe);
  *       500:
  *         description: Erreur serveur.
  */
-router.get('/score/:recipeId', authMiddleware, isAdminOrSelf, getScoreByUserAndRecipe);
+router.get('/:recipeId', authMiddleware, isAdmin, getScoreByUserAndRecipe);
 
 /**
  * @swagger
  * /scores/{scoreId}:
  *   delete:
- *     summary: Supprimer un score
+ *     summary: "Supprimer un score (admin seulement)"
  *     tags:
  *       - Scores
  *     parameters:

@@ -1,17 +1,23 @@
-ROLE: code_Role, role
-LEAVE, 1N COMMENT, 11 USER
-COMMENT: code_Comment, content, date_comment
+INGREDIENT: code_Ingredient, name, quantity, quantity_Description, unit 
 ACCEPT, 0N RECIPE, 1N COMMENT
-CATEGORY: code_Category, name
+COMMENT: code_Comment, content
+LEAVE, 1N COMMENT, 11 USER
+STATUS: code_Status, status_Name
 
-HAVE, 1N ROLE, 11 USER
-USER: code_User, name, email, password, date_created, status
+CONTAIN, 1N RECIPE, 1N INGREDIENT
+RECIPE: code_Recipe, title, description, anecdote, source, image
 CREATE, 1N RECIPE, 11 USER
-RECIPE: code_Recipe, title, description, anecdote, ingredients, instructions, source, date_added
-ASSOCIATE, 11 CATEGORY, 1N RECIPE
+USER: code_User, name, email, password, confirm_Password
+OWN, 11 USER, 1N STATUS
 
-:
-GIVE, 11 SCORE, 11 USER
-SCORE: score
+ASSOCIATE, 11 CATEGORY, 1N RECIPE
+POSSESS, 1N RECIPE, 1N INSTRUCTION
 RECEIVE, 0N RECIPE, 1N SCORE
+GIVE, 11 SCORE, 11 USER
+HAVE, 1N ROLE, 11 USER
+
+CATEGORY: code_Category, name
+INSTRUCTION: code_Instruction, step_Number, instruction 
+SCORE: code_Score, score
 :
+ROLE: code_Role, role_Name

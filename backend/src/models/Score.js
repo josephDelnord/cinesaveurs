@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-// Schéma de la note
+// Modèle de données pour les scores
 const scoreSchema = new mongoose.Schema({
   score: {
     type: Number,

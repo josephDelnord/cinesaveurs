@@ -7,8 +7,8 @@ const router = express.Router();
  * @swagger
  * /api/auth/register:
  *   post:
- *     summary: Inscription d'un nouvel utilisateur
- *     description: Cette route permet à un utilisateur de s'inscrire en fournissant son nom, son email et son mot de passe.
+ *     summary: "Inscription d'un nouvel utilisateur (tout le monde)"
+ *     description: "Cette route permet à un utilisateur de s'inscrire en fournissant son nom, son email et son mot de passe."
  *     tags:
  *       - Authentification
  *     requestBody:
@@ -45,8 +45,8 @@ router.post('/register', register);
  * @swagger
  * /api/auth/login:
  *   post:
- *     summary: Connexion d'un utilisateur existant
- *     description: Cette route permet à un utilisateur de se connecter en fournissant son email et son mot de passe.
+ *     summary: "Connexion d'un utilisateur existant (tout le monde)"
+ *     description: "Cette route permet à un utilisateur de se connecter en fournissant son email et son mot de passe."
  *     tags:
  *       - Authentification
  *     requestBody:

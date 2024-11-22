@@ -1,73 +1,86 @@
 import Joi from 'joi';
 
-// Fonction utilitaire pour générer des messages d'erreur
-const errorMessage = (field, minLength = 0) => ({
-  'string.base': `"${field}" doit être une chaîne de caractères`,
-  'string.min': `"${field}" doit contenir au moins ${minLength} caractères`,
-  'any.required': `"${field}" est requis`,
-});
-
 // Schéma pour l'inscription
 const registerSchema = Joi.object({
-  // Validation du nom
-  name: Joi.string()
+
+  name: Joi
+    .string() // Le nom doit être une chaîne de caractères
     .min(3) // Minimum 3 caractères
     .required() // Champ requis
-    .messages(errorMessage('name', 3)),
+    .trim() // Supprime les espaces inutiles
+    .messages({
+      'string.base': '"name" doit être une chaîne de caractères',
+      'string.min': '"name" doit contenir au moins 3 caractères',
+      'any.required': '"name" est requis',
+    }),
 
-  // Validation de l'email
-  email: Joi.string()
-    .email() // Doit être une adresse email valide
+  email: Joi
+    .string() // L'email doit être une chaîne de caractères
+    .pattern(new RegExp('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.][a-zA-Z]{2,}')) // Doit être une adresse email valide
     .required() // Champ requis
+    .trim() // Supprime les espaces inutiles
     .messages({
       'string.base': '"email" doit être une chaîne de caractères',
       'string.email': '"email" doit être une adresse email valide',
       'any.required': '"email" est requis',
     }),
 
-  // Validation du mot de passe
-  password: Joi.string()
+  password: Joi
+    .string() // Le mot de passe doit être une chaîne de caractères
     .min(8) // Minimum 8 caractères
     .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])')) // Doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial
     .required() // Champ requis
-    .messages(errorMessage('password', 8)),
-
-  // Validation de la confirmation du mot de passe
-  confirmPassword: Joi.string()
-    .valid(Joi.ref('password')) // Doit correspondre au mot de passe
-    .required()
+    .trim() // Supprime les espaces inutiles
     .messages({
-      'any.only': 'Les mots de passe ne correspondent pas', // Si les mots de passe ne correspondent pas
-      'any.required': '"confirmPassword" est requis', // Si le champ est manquant
+      'string.base': '"password" doit être une chaîne de caractères',
+      'string.min': '"password" doit contenir au moins 8 caractères',
+      'string.pattern.base': '"password" doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial',
+      'any.required': '"password" est requis',
     }),
 
-  // Validation du rôle
-  role: Joi.string()
+  confirmPassword: Joi
+    .string() // Le mot de passe doit être une chaîne de caractères
+    .valid(Joi.ref('password')) // Doit correspondre au mot de passe
+    .required() // Champ requis
+    .trim() // Supprime les espaces inutiles
+    .messages({
+      'any.only': 'Les mots de passe ne correspondent pas', 
+      'any.required': '"confirmPassword" est requis',
+    }),
+
+  role: Joi
+    .string() // Le rôle doit être une chaîne de caractères
     .valid('user', 'admin') // Le rôle doit être soit "user" soit "admin"
     .required() // Champ requis
+    .trim() // Supprime les espaces inutiles
     .messages({
       'any.only': 'Le rôle doit être "user" ou "admin"', // Si le rôle est invalide
       'any.required': '"role" est requis', // Si le rôle est manquant
     }),
 });
-
 // Schéma pour la connexion
 const loginSchema = Joi.object({
-  // Validation de l'email pour la connexion
-  email: Joi.string()
+  email: Joi
+    .string() // L'email doit être une chaîne de caractères
     .email() // Doit être une adresse email valide
     .required() // Champ requis
+    .trim() // Supprime les espaces inutiles
     .messages({
       'string.base': '"email" doit être une chaîne de caractères',
       'string.email': '"email" doit être une adresse email valide',
       'any.required': '"email" est requis',
     }),
 
-  // Validation du mot de passe pour la connexion
-  password: Joi.string()
+  password: Joi
+    .string() // Le mot de passe doit être une chaîne de caractères
     .min(8) // Minimum 8 caractères
     .required() // Champ requis
-    .messages(errorMessage('password', 8)),
+    .trim() // Supprime les espaces inutiles
+    .messages({
+      'string.base': '"password" doit être une chaîne de caractères',
+      'string.min': '"password" doit contenir au moins 8 caractères',
+      'any.required': '"password" est requis',
+    }),
 });
 
 export { registerSchema, loginSchema };

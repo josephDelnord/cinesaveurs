@@ -89,7 +89,7 @@ async function seedDatabase() {
                 email: 'guest@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
-                status: status[2]._id,
+                status: status[1]._id,
                 role: roles.find(r => r.role_name === 'guest')._id,
             },
             {
@@ -97,7 +97,7 @@ async function seedDatabase() {
                 email: 'gordon@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
-                status: status[1]._id,
+                status: status[0]._id,
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
@@ -105,7 +105,7 @@ async function seedDatabase() {
                 email: 'user@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
-                status: status[1]._id,
+                status: status[0]._id,
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
@@ -113,7 +113,7 @@ async function seedDatabase() {
                 email: 'alice.dupont@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
-                status: status[1]._id,
+                status: status[0]._id,
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
@@ -121,7 +121,7 @@ async function seedDatabase() {
                 email: 'bob.martin@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
-                status: status[1]._id,
+                status: status[0]._id,
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
@@ -129,7 +129,7 @@ async function seedDatabase() {
                 email: 'claire.lefevre@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
-                status: status[1]._id,
+                status: status[0]._id,
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
@@ -137,7 +137,7 @@ async function seedDatabase() {
                 email: 'david.leclerc@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
-                status: status[1]._id,
+                status: status[0]._id,
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
@@ -145,7 +145,7 @@ async function seedDatabase() {
                 email: 'eva.durand@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
-                status: status[1]._id,
+                status: status[0]._id,
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
@@ -153,7 +153,7 @@ async function seedDatabase() {
                 email: 'frank.sorel@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
-                status: status[1]._id,
+                status: status[0]._id,
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
@@ -161,7 +161,7 @@ async function seedDatabase() {
                 email: 'jonsnow@got.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
-                status: status[1]._id,
+                status: status[0]._id,
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {

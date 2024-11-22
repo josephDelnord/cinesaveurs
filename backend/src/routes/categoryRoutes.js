@@ -1,5 +1,5 @@
 import express from 'express';
-import { isUser, isAdmin } from '../middlewares/roleMiddleware.js';
+import { isAdmin, isAdminOrSelf } from '../middlewares/roleMiddleware.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import { getAllCategories, createCategory, deleteCategory, getCategoryById, updateCategory } from '../controllers/categoryController.js';
 
@@ -9,8 +9,8 @@ const router = express.Router();
  * @swagger
  * /api/categories:
  *   get:
- *     summary: Récupérer toutes les catégories
- *     description: Cette route permet de récupérer la liste de toutes les catégories disponibles.
+ *     summary: "Récupérer toutes les catégories (admin ou utilisateur lui-même)"
+ *     description: "Cette route permet de récupérer la liste de toutes les catégories disponibles."
  *     tags:
  *       - Catégories
  *     responses:
@@ -19,14 +19,14 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur
  */
-router.get('/', authMiddleware, isUser, getAllCategories);
+router.get('/', authMiddleware, isAdminOrSelf, getAllCategories);
 
 /**
  * @swagger
  * /api/categories/{id}:
  *   get:
- *     summary: Récupérer une catégorie par ID
- *     description: Cette route permet de récupérer une catégorie spécifique par son ID.
+ *     summary: "Récupérer une catégorie par ID (admin ou utilisateur lui-même)"
+ *     description: "Cette route permet de récupérer une catégorie spécifique par son ID."
  *     tags:
  *       - Catégories
  *     parameters:
@@ -45,14 +45,14 @@ router.get('/', authMiddleware, isUser, getAllCategories);
  *       500:
  *         description: Erreur serveur
  */
-router.get('/:id', authMiddleware, isUser, getCategoryById);
+router.get('/:id', authMiddleware, isAdminOrSelf, getCategoryById);
 
 /**
  * @swagger
  * /api/categories/addCategory:
  *   post:
- *     summary: Ajouter une nouvelle catégorie
- *     description: Cette route permet d'ajouter une nouvelle catégorie à la liste.
+ *     summary: "Ajouter une nouvelle catégorie (admin seulement)"
+ *     description: "Cette route permet d'ajouter une nouvelle catégorie à la liste."
  *     tags:
  *       - Catégories
  *     requestBody:
@@ -81,8 +81,8 @@ router.post('/addCategory', authMiddleware, isAdmin, createCategory);
  * @swagger
  * /api/categories/{id}:
  *   put:
- *     summary: Mettre à jour une catégorie par ID
- *     description: Cette route permet de mettre à jour une catégorie existante par son ID.
+ *     summary: "Mettre à jour une catégorie par ID (admin seulement)"
+ *     description: "Cette route permet de mettre à jour une catégorie existante par son ID."
  *     tags:
  *       - Catégories
  *     parameters:
@@ -121,8 +121,8 @@ router.put('/:id', authMiddleware, isAdmin, updateCategory);
  * @swagger
  * /api/categories/{id}:
  *   delete:
- *     summary: Supprimer une catégorie par ID
- *     description: Cette route permet de supprimer une catégorie en utilisant son ID.
+ *     summary: "Supprimer une catégorie par ID (admin seulement)"
+ *     description: "Cette route permet de supprimer une catégorie en utilisant son ID."
  *     tags:
  *       - Catégories
  *     parameters:

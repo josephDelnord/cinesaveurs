@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+// Modèle de données pour les rôles
 const roleSchema = new mongoose.Schema({
   role_name: {
     type: String,

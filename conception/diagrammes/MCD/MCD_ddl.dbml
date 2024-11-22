@@ -15,59 +15,97 @@ Table "CATEGORY" {
 Table "COMMENT" {
   "code_Comment" VARCHAR(42) [pk, NOT NULL]
   "content"      VARCHAR(42)
-  "date_comment" VARCHAR(42)
+}
+
+Table "CONTAIN" {
+  "code_Recipe"     VARCHAR(42) [NOT NULL]
+  "code_Ingredient" VARCHAR(42) [NOT NULL]
+  Indexes {
+    ("code_Recipe", "code_Ingredient") [pk]
+  }
+}
+
+Table "INGREDIENT" {
+  "code_Ingredient"      VARCHAR(42) [pk, NOT NULL]
+  "name"                 VARCHAR(42)
+  "quantity"             VARCHAR(42)
+  "quantity_Description" VARCHAR(42)
+  "unit"                 VARCHAR(42)
+}
+
+Table "INSTRUCTION" {
+  "code_Instruction" VARCHAR(42) [pk, NOT NULL]
+  "step_Number"      VARCHAR(42)
+  "instruction"      VARCHAR(42)
+}
+
+Table "POSSESS" {
+  "code_Recipe"      VARCHAR(42) [NOT NULL]
+  "code_Instruction" VARCHAR(42) [NOT NULL]
+  Indexes {
+    ("code_Recipe", "code_Instruction") [pk]
+  }
 }
 
 Table "RECEIVE" {
   "code_Recipe" VARCHAR(42) [NOT NULL]
-  "score"       VARCHAR(42) [NOT NULL]
+  "code_Score"  VARCHAR(42) [NOT NULL]
   Indexes {
-    ("code_Recipe", "score") [pk]
+    ("code_Recipe", "code_Score") [pk]
   }
 }
 
 Table "RECIPE" {
-  "code_Recipe"  VARCHAR(42) [pk, NOT NULL]
-  "title"        VARCHAR(42)
-  "description"  VARCHAR(42)
-  "anecdote"     VARCHAR(42)
-  "ingredients"  VARCHAR(42)
-  "instructions" VARCHAR(42)
-  "source"       VARCHAR(42)
-  "date_added"   VARCHAR(42)
+  "code_Recipe" VARCHAR(42) [pk, NOT NULL]
+  "title"       VARCHAR(42)
+  "description" VARCHAR(42)
+  "anecdote"    VARCHAR(42)
+  "source"      VARCHAR(42)
+  "image"       VARCHAR(42)
 }
 
 Table "ROLE" {
   "code_Role" VARCHAR(42) [pk, NOT NULL]
-  "role"      VARCHAR(42)
+  "role_Name" VARCHAR(42)
 }
 
 Table "SCORE" {
-  "score"     VARCHAR(42) [pk, NOT NULL]
-  "code_User" VARCHAR(42) [NOT NULL]
+  "code_Score" VARCHAR(42) [pk, NOT NULL]
+  "score"      VARCHAR(42)
+  "code_User"  VARCHAR(42) [NOT NULL]
   Indexes {
     "code_User" [unique]
   }
 }
 
+Table "STATUS" {
+  "code_Status" VARCHAR(42) [pk, NOT NULL]
+  "status_Name" VARCHAR(42)
+}
+
 Table "USER" {
-  "code_User"    VARCHAR(42) [pk, NOT NULL]
-  "name"         VARCHAR(42)
-  "email"        VARCHAR(42)
-  "password"     VARCHAR(42)
-  "date_created" VARCHAR(42)
-  "status"       VARCHAR(42)
-  "code_Comment" VARCHAR(42) [NOT NULL]
-  "code_Role"    VARCHAR(42) [NOT NULL]
-  "code_Recipe"  VARCHAR(42) [NOT NULL]
+  "code_User"        VARCHAR(42) [pk, NOT NULL]
+  "name"             VARCHAR(42)
+  "email"            VARCHAR(42)
+  "password"         VARCHAR(42)
+  "confirm_Password" VARCHAR(42)
+  "code_Comment"     VARCHAR(42) [NOT NULL]
+  "code_Recipe"      VARCHAR(42) [NOT NULL]
+  "code_Status"      VARCHAR(42) [NOT NULL]
+  "code_Role"        VARCHAR(42) [NOT NULL]
 }
 
 Ref:"ACCEPT"."code_Recipe" > "RECIPE"."code_Recipe"
 Ref:"ACCEPT"."code_Comment" > "COMMENT"."code_Comment"
 Ref:"CATEGORY"."code_Recipe" > "RECIPE"."code_Recipe"
+Ref:"CONTAIN"."code_Recipe" > "RECIPE"."code_Recipe"
+Ref:"CONTAIN"."code_Ingredient" > "INGREDIENT"."code_Ingredient"
+Ref:"POSSESS"."code_Recipe" > "RECIPE"."code_Recipe"
+Ref:"POSSESS"."code_Instruction" > "INSTRUCTION"."code_Instruction"
 Ref:"RECEIVE"."code_Recipe" > "RECIPE"."code_Recipe"
-Ref:"RECEIVE"."score" > "SCORE"."score"
+Ref:"RECEIVE"."code_Score" > "SCORE"."code_Score"
 Ref:"SCORE"."code_User" > "USER"."code_User"
 Ref:"USER"."code_Comment" > "COMMENT"."code_Comment"
-Ref:"USER"."code_Role" > "ROLE"."code_Role"
 Ref:"USER"."code_Recipe" > "RECIPE"."code_Recipe"
+Ref:"USER"."code_Status" > "STATUS"."code_Status"
+Ref:"USER"."code_Role" > "ROLE"."code_Role"

@@ -2,77 +2,99 @@
 
 @startuml "MCD"
 
-!define Table(x) class "x" << (T,#fddbc7) >>
+!define Table(x) class "x" << (T,#e7d4e8) >>
 !define pk(x) <b>x</b>
 hide methods
 left to right direction
 skinparam groupInheritance 2
 skinparam lineThickness 2
-skinparam lineColor #4393c3
+skinparam lineColor #5aae61
 skinparam backgroundColor #f7f7f7
 skinparam classAttributeFontColor #000000
 skinparam classAttributeFontName Monospaced
 skinparam classAttributeFontSize 14
-skinparam classBackgroundColor #fddbc7
-skinparam classBorderColor #d6604d
+skinparam classBackgroundColor #e7d4e8
+skinparam classBorderColor #9970ab
 skinparam classBorderThickness 2
 skinparam classFontColor #000000
 skinparam classFontName Arial
 skinparam classFontSize 18
-skinparam classHeaderBackgroundColor #f4a582
+skinparam classHeaderBackgroundColor #c2a5cf
 
-Table("ROLE") {
-    {field} + pk(code_Role)
-    {field} + role
-}
-
-"COMMENT" "1" --- "1..*" "USER": "LEAVE"
-
-Table("COMMENT") {
-    {field} + pk(code_Comment)
-    {field} + content
-    {field} + date_comment
+Table("INGREDIENT") {
+    {field} + pk(code_Ingredient)
+    {field} + name
+    {field} + quantity
+    {field} + quantity_Description
+    {field} + unit
 }
 
 "RECIPE" "1..*" --- "*" "COMMENT": "ACCEPT"
 
-Table("CATEGORY") {
-    {field} + pk(code_Category)
-    {field} + name
+Table("COMMENT") {
+    {field} + pk(code_Comment)
+    {field} + content
 }
 
-"ROLE" "1" --- "1..*" "USER": "HAVE"
+"COMMENT" "1" --- "1..*" "USER": "LEAVE"
 
-Table("USER") {
-    {field} + pk(code_User)
-    {field} + name
-    {field} + email
-    {field} + password
-    {field} + date_created
-    {field} + status
+Table("STATUS") {
+    {field} + pk(code_Status)
+    {field} + status_Name
 }
 
-"RECIPE" "1" --- "1..*" "USER": "CREATE"
+"RECIPE" "1..*" --- "1..*" "INGREDIENT": "CONTAIN"
 
 Table("RECIPE") {
     {field} + pk(code_Recipe)
     {field} + title
     {field} + description
     {field} + anecdote
-    {field} + ingredients
-    {field} + instructions
     {field} + source
-    {field} + date_added
+    {field} + image
 }
+
+"RECIPE" "1" --- "1..*" "USER": "CREATE"
+
+Table("USER") {
+    {field} + pk(code_User)
+    {field} + name
+    {field} + email
+    {field} + password
+    {field} + confirm_Password
+}
+
+"USER" "1..*" --- "1" "STATUS": "OWN"
 
 "CATEGORY" "1..*" --- "1" "RECIPE": "ASSOCIATE"
 
-"SCORE" "1" --- "1" "USER": "GIVE"
-
-Table("SCORE") {
-    {field} + pk(score)
-}
+"RECIPE" "1..*" --- "1..*" "INSTRUCTION": "POSSESS"
 
 "RECIPE" "1..*" --- "*" "SCORE": "RECEIVE"
+
+"SCORE" "1" --- "1" "USER": "GIVE"
+
+"ROLE" "1" --- "1..*" "USER": "HAVE"
+
+Table("CATEGORY") {
+    {field} + pk(code_Category)
+    {field} + name
+}
+
+Table("INSTRUCTION") {
+    {field} + pk(code_Instruction)
+    {field} + step_Number
+    {field} + instruction
+}
+
+Table("SCORE") {
+    {field} + pk(code_Score)
+    {field} + score
+}
+
+Table("ROLE") {
+    {field} + pk(code_Role)
+    {field} + role_Name
+}
 
 @enduml

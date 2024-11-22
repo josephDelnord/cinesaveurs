@@ -9,7 +9,7 @@ const router = express.Router();
  * @swagger
  * /roles:
  *   get:
- *     summary: Récupérer tous les rôles
+ *     summary: "Récupérer tous les rôles (admin ou utilisateur lui-même)"
  *     tags:
  *       - Rôles
  *     responses:
@@ -24,7 +24,7 @@ router.get('/', authMiddleware, isAdminOrSelf, getAllRoles);
  * @swagger
  * /roles/{id}:
  *   get:
- *     summary: Récupérer un rôle par ID
+ *     summary: "Récupérer un rôle par ID (admin seulement)"
  *     tags:
  *       - Rôles
  *     parameters:
@@ -48,7 +48,7 @@ router.get('/:id', authMiddleware, isAdmin, getRoleById);
  * @swagger
  * /roles/addRole:
  *   post:
- *     summary: Créer un nouveau rôle
+ *     summary: "Créer un nouveau rôle (admin seulement)"
  *     tags:
  *       - Rôles
  *     requestBody:
@@ -74,13 +74,13 @@ router.get('/:id', authMiddleware, isAdmin, getRoleById);
  *       500:
  *         description: Erreur serveur
  */
-router.post('/addRole', authMiddleware, isAdmin, createRole);
+router.post('/', authMiddleware, isAdmin, createRole);
 
 /**
  * @swagger
  * /roles/{id}:
  *   delete:
- *     summary: Supprimer un rôle par ID
+ *     summary: " Supprimer un rôle par ID (admin seulement)"
  *     tags:
  *       - Rôles
  *     parameters:

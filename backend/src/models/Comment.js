@@ -1,6 +1,7 @@
 // models/Comment.js
 import mongoose from 'mongoose';
 
+// Modèle de données pour les commentaires
 const commentSchema = new mongoose.Schema({
   content: {
     type: String,

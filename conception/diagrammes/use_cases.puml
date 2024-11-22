@@ -21,11 +21,14 @@ rectangle "System" {
   usecase "Validate or Delete User-Submitted Recipes" as UC13 #lightpink
   usecase "Organize Recipes into Categories" as UC14 #lightpink
   usecase "Moderate User Comments" as UC15 #lightpink
+  usecase "Delete Recipe" as UC16 #lightpink
+  usecase "View Recipe Score and Comments" as UC17 #lightyellow
 }
 
 ' Guest Access (light gray)
 G -down-> UC1
 G -down-> UC4
+G -down-> UC17
 
 ' User Access (light blue)
 U -down-> UC1
@@ -37,10 +40,12 @@ U -down-> UC7
 U -down-> UC8
 U -down-> UC10
 U -down-> UC11
+U -down-> UC17
 
 ' Admin Access (light green)
 A -down-> UC12
 A -down-> UC13
 A -down-> UC14
 A -down-> UC15
+A -down-> UC16
 @enduml

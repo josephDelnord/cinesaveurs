@@ -9,7 +9,7 @@ const router = express.Router();
  * @swagger
  * /api/statuses:
  *   get:
- *     summary: Récupérer tous les statuts  
+ *     summary: "Récupérer tous les statuts (admin seulement)"
  *     tags:
  *       - Statuts
  *     responses:
@@ -18,13 +18,13 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur.
  */
-router.get('/', getStatus);
+router.get('/', authMiddleware, isAdmin, getStatus);
 
 /**
  * @swagger
  * /api/statuses/{id}:
  *   get:
- *     summary: Récupérer un statut par ID
+ *     summary: "Récupérer un statut par ID (admin seulement)"
  *     tags:
  *       - Statuts
  *     parameters:
@@ -59,7 +59,7 @@ router.get('/:id', authMiddleware, isAdmin, getStatusById);
  * @swagger
  * /api/statuses:
  *   post:
- *     summary: Créer un statut
+ *     summary: "Créer un statut (admin seulement)"
  *     tags:
  *       - Statuts
  *     requestBody:

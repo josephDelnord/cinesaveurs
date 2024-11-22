@@ -4,16 +4,14 @@ import seedDatabase from '../data/seed.js';
 
 dotenv.config();
 
+// Fonction pour se connecter à MongoDB
 export const connectDB = async () => {
     try {
         // Récupération de l'URI de connexion à MongoDB à partir des variables d'environnement
         const mongoURI = process.env.MONGO_URI;
 
         // Connexion à MongoDB avec les options recommandées pour éviter les avertissements
-        await mongoose.connect(mongoURI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        await mongoose.connect(mongoURI, {});
         console.log('Connecté à MongoDB');
 
         // Log pour déboguer la valeur de SEED_DB

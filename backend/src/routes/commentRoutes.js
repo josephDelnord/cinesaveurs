@@ -10,7 +10,7 @@ const router = express.Router();
  * @swagger
  * /comments:
  *   post:
- *     summary: "Ajouter un commentaire"
+ *     summary: "Ajouter un commentaire (admin ou utilisateur lui-même)"
  *     description: "Permet à un utilisateur d'ajouter un commentaire sur une recette."
  *     tags: [Commentaires]
  *     security:
@@ -37,13 +37,13 @@ const router = express.Router();
  *       500:
  *       description: "Erreur serveur"
  */
-router.post('/', authMiddleware, isAdminOrSelf, addComment);  // Ajouter un commentaire
+router.post('/:recipeId', authMiddleware, isAdminOrSelf, addComment); 
 
 /**
  * @swagger
  * /comments/{recipeId}:
  *   get:
- *     summary: "Récupérer les commentaires d'une recette"
+ *     summary: "Récupérer les commentaires d'une recette (admin seulement)"
  *     description: "Permet de récupérer tous les commentaires d'une recette spécifique."
  *     tags: [Commentaires]
  *     parameters:
@@ -72,13 +72,13 @@ router.post('/', authMiddleware, isAdminOrSelf, addComment);  // Ajouter un comm
  *       500:
  *         description: "Erreur serveur"
  */
-router.get('/:recipeId', authMiddleware, isAdmin, getCommentsByRecipe);  // Récupérer les commentaires d'une recette
+router.get('/:recipeId', authMiddleware, isAdmin, getCommentsByRecipe);  
 
 /**
  * @swagger
  * /comments/{commentId}:
  *   put:
- *     summary: "Mettre à jour un commentaire"
+ *     summary: "Mettre à jour un commentaire (admin seulement)"
  *     description: "Permet de mettre à jour un commentaire existant."
  *     tags: [Commentaires]
  *     parameters:
@@ -109,13 +109,13 @@ router.get('/:recipeId', authMiddleware, isAdmin, getCommentsByRecipe);  // Réc
  *       500:
  *         description: "Erreur serveur"
  */
-router.put('/:commentId', authMiddleware, isAdmin, updateComment);  // Mettre à jour un commentaire
+router.put('/:commentId', authMiddleware, isAdmin, updateComment);  
 
 /**
  * @swagger
  * /comments/{commentId}:
  *   delete:
- *     summary: "Supprimer un commentaire"
+ *     summary: "Supprimer un commentaire (admin seulement)"
  *     description: "Permet de supprimer un commentaire existant."
  *     tags: [Commentaires]
  *     security:
@@ -137,6 +137,6 @@ router.put('/:commentId', authMiddleware, isAdmin, updateComment);  // Mettre à
  *       500:
  *         description: "Erreur serveur"
  */
-router.delete('/:commentId', authMiddleware, isAdmin, deleteComment);  // Supprimer un commentaire
+router.delete('/:commentId', authMiddleware, isAdmin, deleteComment); 
 
 export default router;

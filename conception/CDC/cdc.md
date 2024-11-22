@@ -199,56 +199,82 @@ Ces évolutions seront priorisées et développées en fonction des retours des 
   - **SCSS** est un **préprocesseur CSS** qui permet d'écrire des feuilles de style plus structurées et maintenables grâce à des fonctionnalités avancées comme les variables, les mixins, les fonctions, et les imbrications.
   - Il offre une **flexibilité accrue** pour personnaliser les styles de manière plus précise tout en rendant le code plus lisible et réutilisable. SCSS permet de mieux organiser les règles CSS en divisant le code en modules et en favorisant une approche modulaire.
   - **Réduction de la duplication de code** et **optimisation des styles** pour garantir une interface à la fois esthétique, fluide et facilement évolutive sur toutes les plateformes (desktop et mobile).
+  - 
+#### E. **Cypress**
+- **Justification** :
+  - **Cypress** est un framework de test de bout en bout (end-to-end) pour les applications web. Il permet de tester l'application dans un environnement réel de navigateur, ce qui aide à tester l'ensemble du flux de l'utilisateur.
+  - **Tests d'intégration complets** : Contrairement à Jest et Supertest, qui sont principalement utilisés pour tester le backend, **Cypress** est utilisé pour tester l'interaction complète du frontend et du backend, comme les scénarios où l'utilisateur interagit avec l'interface de manière réaliste.
+  - **Tests d'interface utilisateur (UI)** : Cypress permet de tester les composants d'interface utilisateur (UI) en simulant des interactions comme des clics, des soumissions de formulaires, et des déplacements dans l'application, ce qui permet de valider que l'interface fonctionne correctement avec l'API et que l'expérience utilisateur est fluide.
+  - Il offre des fonctionnalités comme la capture d'écran et la vidéo des tests, ce qui est utile pour le débogage et l'amélioration continue de l'application.
 
   
 
 ### 2. **Backend (Serveur et API)**
 
 #### a. **Node.js**
-- **Justification** :
-  - **Node.js** est un environnement d'exécution JavaScript côté serveur, ce qui permet d’utiliser JavaScript aussi bien côté client que côté serveur. Cela simplifie le développement en unifiant le langage de programmation tout au long de l’application.
-  - Il est **asynchrone** et basé sur un modèle d'event-loop, ce qui permet de gérer un grand nombre de requêtes simultanées avec une faible latence, idéal pour un site interactif avec des utilisateurs multiples.
-  - **Scalabilité** : Node.js offre des performances élevées grâce à son architecture non-bloquante, ce qui est un atout pour gérer une application à fort trafic.
+ - **Justification** :
+   - **Node.js** est un environnement d'exécution JavaScript côté serveur, ce qui permet d’utiliser JavaScript aussi bien côté client que côté serveur. Cela simplifie le développement en unifiant le langage de programmation tout au long de l’application.
+   - Il est **asynchrone** et basé sur un modèle d'event-loop, ce qui permet de gérer un grand nombre de requêtes simultanées avec une faible latence, idéal pour un site interactif avec des utilisateurs multiples.
+   - **Scalabilité** : Node.js offre des performances élevées grâce à son architecture non-bloquante, ce qui est un atout pour gérer une application à fort trafic.
 
 #### b. **Express.js**
-- **Justification** :
-  - **Express.js** est un framework minimaliste pour Node.js qui simplifie la gestion des requêtes HTTP et la création d'APIs RESTful.
-  - Il permet de **structurer rapidement les endpoints** du serveur, facilitant ainsi la gestion des routes, la gestion des erreurs et la manipulation des données reçues des utilisateurs.
-  - Il est également compatible avec une multitude de middlewares permettant d'ajouter des fonctionnalités (authentification, validation des données, gestion des erreurs, etc.).
+ - **Justification** :
+   - **Express.js** est un framework minimaliste pour Node.js qui simplifie la gestion des requêtes HTTP et la création d'APIs RESTful.
+   - Il permet de **structurer rapidement les endpoints** du serveur, facilitant ainsi la gestion des routes, la gestion des erreurs et la manipulation des données reçues des utilisateurs.
+   - Il est également compatible avec une multitude de middlewares permettant d'ajouter des fonctionnalités (authentification, validation des données, gestion des erreurs, etc.).
 
-#### c. **PostgreSQL**
+#### c. **Mongoose (remplaçant de MongoDB)**
 - **Justification** :
-  - **PostgreSQL** est un système de gestion de base de données relationnelle (SGBDR) robuste et open-source, qui permet de stocker et manipuler des données de manière structurée à l'aide de **tables et de relations**. Il est particulièrement adapté aux projets nécessitant des transactions complexes et des intégrités référentielles strictes, comme dans le cas de recettes où des relations entre les ingrédients, les instructions et d'autres données sont nécessaires.
-  - **Flexibilité et Richesse Fonctionnelle** : PostgreSQL offre un large éventail de types de données, d'extensions et de fonctionnalités avancées (comme les vues, les index, les procédures stockées) permettant de gérer des requêtes complexes tout en maintenant une forte intégrité des données.
-  - **Scalabilité** : Bien que PostgreSQL soit principalement une base de données relationnelle, il supporte également des mécanismes de partitionnement, des réplications, et des extensions comme **Citus** pour le scaling horizontal, permettant de gérer des volumes de données de plus en plus importants tout en garantissant des performances optimisées.
+  - **Mongoose** est une bibliothèque ODM (Object Data Modeling) pour MongoDB qui permet de simplifier les interactions avec la base de données NoSQL MongoDB. Alors que MongoDB est une base de données NoSQL brute, Mongoose ajoute des fonctionnalités de modélisation, de validation, de gestion des erreurs, et de gestion de la logique métier dans une application.
+  - **Modélisation des données** : Mongoose permet de définir des schémas de données, ce qui garantit que les données insérées dans la base respectent des structures spécifiques (par exemple, des modèles pour les utilisateurs, recettes, etc.). Cela facilite le travail de validation et le contrôle des données avant qu'elles ne soient enregistrées.
+  - **Simplicité des requêtes** : Mongoose rend les requêtes plus lisibles et expressives. Grâce aux modèles et à des méthodes comme `.find()`, `.create()`, `.update()`, etc., il est plus facile d’interagir avec la base de données MongoDB qu’avec l’interface brute de MongoDB.
+  - **Middleware** : Mongoose permet d’ajouter des middleware, ce qui peut être utile pour des actions comme l’encryption des mots de passe avant de les stocker dans la base de données.
 
-#### d. **MongoDB**
+#### d. **Swagger**
 - **Justification** :
-  - **MongoDB** est une base de données NoSQL qui permet de stocker des données sous forme de **documents JSON**. Elle est idéale pour des projets où les données peuvent être hétérogènes et évolutives, comme c’est le cas pour les recettes qui peuvent contenir des informations variées (ingrédients, instructions, liens vers des films, etc.).
-  - **Flexibilité** : MongoDB offre une grande flexibilité pour ajouter de nouvelles données sans perturber la structure existante.
-  - **Scalabilité** : MongoDB permet de gérer facilement des volumes de données importants et de scaler horizontalement avec une gestion simplifiée de la répartition des données.
+  - **Swagger** est une solution pour la documentation d'APIs RESTful. Elle permet de générer une documentation interactive et lisible qui aide les développeurs à comprendre rapidement comment interagir avec les différentes routes de l'API.
+  - **Documentation automatique** : Swagger génère la documentation automatiquement à partir de votre code et de vos annotations, ce qui assure que la documentation reste à jour avec les évolutions de votre API.
+  - **Exploration et tests d'API** : Grâce à l'interface utilisateur de Swagger UI, les développeurs peuvent tester directement les différentes API dans un environnement contrôlé. Cela accélère le développement et facilite l’intégration des nouvelles fonctionnalités.
 
-#### e. **JSON Web Token (JWT)**
+#### e. **mongodb-memory-server**
+- **Justification** :
+  - **mongodb-memory-server** permet de créer une instance MongoDB en mémoire pour les tests. Cela est particulièrement utile dans les environnements de développement ou de test, où vous ne souhaitez pas configurer une base de données MongoDB complète.
+  - **Tests en mémoire** : En utilisant une base de données MongoDB en mémoire, les tests peuvent être effectués plus rapidement sans nécessiter de connexions réseau ou d'une base de données persistante.
+  - **Isolation des tests** : Chaque test peut exécuter MongoDB dans un environnement isolé, ce qui garantit que les tests sont indépendants et que l’état de la base de données est réinitialisé entre chaque test.
+
+#### f. **dotenv**
+- **Justification** :
+  - **dotenv** est une bibliothèque permettant de charger des variables d'environnement depuis un fichier `.env` et de les rendre disponibles dans l'application. Cela permet de stocker des informations sensibles comme les clés API, les configurations de base de données ou d'autres paramètres spécifiques à l'environnement.
+  - **Sécurité et flexibilité** : En stockant les informations sensibles dans des fichiers `.env`, vous séparez la logique de votre application de ses configurations. Cela permet d'éviter de compromettre des informations sensibles dans le code source.
+  - **Facilité de gestion des environnements** : Vous pouvez avoir des fichiers `.env` différents pour vos environnements de développement, de test et de production, ce qui vous permet de gérer facilement les configurations spécifiques à chaque environnement sans avoir à modifier votre code.
+
+#### g. **JSON Web Token (JWT)**
 - **Justification** :
   - **JWT** est une solution standard pour gérer les sessions utilisateurs dans une application web. Il permet de créer des **tokens sécurisés** qui stockent des informations de session sur le client et assurent une communication sécurisée entre le serveur et le client.
   - Cela permet de protéger les routes sensibles (par exemple, l'ajout de recettes, l'accès au profil utilisateur) en vérifiant l'authenticité des utilisateurs via leur **token d'authentification**.
-  
+
 
 ### 3. **Sécurité et Accessibilité**
 
-#### a. **Helmet.js**
-- **Justification** :
-  - **Helmet.js** est un middleware de sécurité pour Express.js. Il permet de sécuriser l'application en définissant des en-têtes HTTP recommandés, comme la protection contre les attaques de type **Cross-Site Scripting (XSS)**, **Clickjacking**, et autres attaques liées aux en-têtes HTTP.
-  
-#### b. **CORS (Cross-Origin Resource Sharing)**
-- **Justification** :
-  - **CORS** est une norme de sécurité permettant de gérer les partages de ressources entre différentes origines (par exemple, un frontend React hébergé sur un domaine différent du backend Node.js).
-  - Il permet de garantir que seules certaines origines peuvent accéder aux ressources de l'API, ce qui renforce la sécurité de l'application.
 
-#### c. **Validation des Données**
+#### a. **CORS (Cross-Origin Resource Sharing)**
 - **Justification** :
-  - L'application utilise des **validations des données côté serveur** pour éviter les attaques par injection (XSS, CSRF) et s’assurer que les données envoyées par les utilisateurs respectent un format attendu. Cela protège la base de données et l’application contre des entrées malveillantes.
+  - **CORS** est une norme de sécurité qui permet de gérer les partages de ressources entre différentes origines (par exemple, un frontend React hébergé sur un domaine différent du backend Node.js).
+  - Il permet de garantir que seules certaines origines peuvent accéder aux ressources de l'API, renforçant ainsi la sécurité de l'application.
+  - CORS est essentiel dans une architecture moderne où le frontend et le backend peuvent être hébergés sur des serveurs distincts, et assure une communication fluide entre ces composants.
 
+#### b. **Joi (Validation des Données)**
+- **Justification** :
+  - **Joi** est une bibliothèque JavaScript de validation de données qui permet de définir des schémas pour les données reçues dans les requêtes HTTP. Cela permet de valider les données côté serveur avant de les traiter et de les insérer dans la base de données.
+  - **Prévention des erreurs** : Joi permet de s'assurer que les données envoyées par les utilisateurs respectent un format attendu (par exemple, un format d'email valide, un mot de passe d'une longueur minimale, etc.), ce qui prévient les erreurs dans l'application.
+  - **Protection contre les attaques** : La validation avec Joi aide à éviter les attaques par injection (XSS, CSRF) en s'assurant que les données reçues respectent des critères stricts avant toute manipulation. Cela protège à la fois la base de données et l'application contre des entrées malveillantes.
+
+#### d. **bcryptjs**
+- **Justification** :
+  - **bcryptjs** est une bibliothèque de hachage de mots de passe pour Node.js, basée sur l'algorithme **bcrypt**. Elle permet de **hacher les mots de passe** des utilisateurs de manière sécurisée et d'éviter de stocker les mots de passe en clair dans la base de données.
+  - **Sécurité** : Le hachage des mots de passe avec un sel unique et un facteur de travail élevé permet de sécuriser les mots de passe contre les attaques de type **brute force** et **rainbow table**.
+  - En combinaison avec des fonctionnalités comme **JWT** pour l'authentification, **bcryptjs** assure une gestion sécurisée des mots de passe et des sessions d'utilisateurs.
+  - **Vérification des mots de passe** : bcryptjs permet également de comparer le mot de passe fourni par l'utilisateur avec celui stocké de manière sécurisée (haché dans la base de données), garantissant ainsi une validation correcte des utilisateurs lors de la connexion.
 
 ### 4. **Déploiement et Conteneurisation**
 
@@ -269,6 +295,13 @@ Ces évolutions seront priorisées et développées en fonction des retours des 
 - **Justification** :
   - **Jest** est un framework de test JavaScript pour tester les composants React ainsi que le backend (API Express). Il permet d'écrire des tests unitaires et d'intégration de manière efficace et simple, avec une bonne prise en charge des tests asynchrones.
   - Grâce à Jest, nous pouvons garantir que les différentes fonctionnalités du projet fonctionnent correctement avant chaque déploiement.
+  
+#### b. **Supertest**
+- **Justification** :
+  - **Supertest** est une bibliothèque de test HTTP qui permet de tester facilement les API Express. Elle offre une interface fluide et simple pour envoyer des requêtes HTTP à votre serveur et vérifier les réponses (status code, headers, corps de la réponse, etc.).
+  - Elle est idéale pour effectuer des tests d'intégration des routes de l'API. Supertest permet de tester le comportement de l'application dans des scénarios réels, ce qui aide à garantir la stabilité de l'API tout en facilitant la détection des erreurs dans les endpoints avant la mise en production.
+  - **Tests d'API** : Supertest permet de tester des routes RESTful, des contrôleurs, des middlewares, et d'autres parties de l'API de manière rapide et fiable.
+  
 
 ### 6. **Hébergement et Déploiement**
 
@@ -411,7 +444,33 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
     - Liste des catégories existantes
     - Options pour ajouter ou supprimer des catégories
 
-### 10. **Page d'Erreur 404**
+### 10 . **Page de Gestion des Commentaires** (Administrateur)
+- **Route** : `/admin/comments`
+- **Description** : Page permettant aux administrateurs de gérer les commentaires des utilisateurs (valider, supprimer, organiser).
+  - **Composants principaux** :
+    - Liste des commentaires
+    - Actions sur chaque commentaire (valider, supprimer)
+    - Recherche par utilisateur ou par recette
+    - Recherche par date de création ou de modification
+
+### 11. **Page de Gestion des Scores** (Administrateur)
+- **Route** : `/admin/scores`
+- **Description** : Page permettant aux administrateurs de gérer les scores des utilisateurs (valider, supprimer, organiser).
+- **Composants principaux** :
+  - Liste des scores
+  - Actions sur chaque score (valider, supprimer)
+  - Recherche par utilisateur ou par recette
+  - Recherche par date de création ou de modification
+
+
+### 12. **Page de Gestion status** (Administrateur)
+- **Route** : `/admin/status`
+- **Description** : Page permettant aux administrateurs de gérer les status des utilisateurs (activer, désactiver, supprimer des comptes).
+- **Composants principaux** :
+  - Liste des status
+  - Actions sur chaque status (activer, désactiver, supprimer)
+
+### 13. **Page d'Erreur 404**
 - **Route** : `/404`
 - **Description** : Page affichée lorsqu'un utilisateur essaie d'accéder à une page non existante.
   - **Composants principaux** :
@@ -427,117 +486,170 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
 
 ## 8. Liste des Endpoints API (Noms de Routes en Anglais)
 
-### 1. **Authentification et gestion des utilisateurs**
+### 1. **Authentification **
 - **POST /api/auth/register**
   - **Description** : Créer un nouveau compte utilisateur.
   
 - **POST /api/auth/login**
   - **Description** : Connexion d'un utilisateur avec email et mot de passe.
+  
+### 2. **Utilisateurs**
 
-- **GET /api/auth/profile**
+- **GET /api/user/:userId**
   - **Description** : Récupérer les informations du profil de l'utilisateur connecté.
 
-- **PUT /api/auth/profile**
-  - **Description** : Modifier les informations du profil utilisateur (nom, email, mot de passe).
+- **PUT /api/user/:userId**
+  - **Description** : Mettre à jour les informations d'un utilisateur (admin ou utilisateur lui-même).
+  
+- **DELETE /api/user/:userId**
+  - **Description** : Supprimer un utilisateur (admin seulement).
+  
+- **GET /api/users**
+  - **Description** : Récupérer la liste de tous les utilisateurs.
+  
+- **GET /api/users/:userId/status**
+  - **Description** : Récupérer le statut d'un utilisateur.
+  
+- **PUT /api/users/:userId/status**
+  - **Description** : suspension ou désactivation d'un utilisateur (admin seulement).
+  
+- **PUT /api/users/:userId/status**
+  - **Description** : Activer un utilisateur (admin seulement).
+  
+- **PUT /api/users/:userId/status**
+  - **Description** : Bannir un utilisateur (admin seulement).
+  
+  ### 3. **Rôles**
+- **POST /api/roles/**
+  - **Description** : Récupérer tous les rôles (admin ou utilisateur lui-même)
+
+- **GET /api/roles/:id**
+  - **Description** : Récupérer un statut par ID (admin seulement).
+
+- **GET /api/roles/**
+  - **Description** : Créer un nouveau rôle (admin seulement).
+  
+- **GET /api/status/**
+  - **Description** : Supprimer un rôle (admin seulement)
 
 
-### 2. **Recettes**
+### 4. **Recettes**
 - **GET /api/recipes**
   - **Description** : Récupérer toutes les recettes, avec options de filtrage par catégorie, popularité, etc.
 
+- **GET /api/recipes/**
+- **Description** : Récupérer toutes les recettes.
 - **GET /api/recipes/:id**
   - **Description** : Récupérer les détails d'une recette spécifique.
 
-- **POST /api/recipes**
+- **POST /api/recipes/addReecipe***
   - **Description** : Ajouter une nouvelle recette (réservée aux utilisateurs connectés).
 
 - **PUT /api/recipes/:id**
-  - **Description** : Modifier une recette existante (réservée aux utilisateurs ayant créé la recette ou aux administrateurs).
+  - **Description** : Mettre à jour une recette existante (réservée aux utilisateurs ayant créé la recette ou aux administrateurs).
 
 - **DELETE /api/recipes/:id**
   - **Description** : Supprimer une recette (réservée aux utilisateurs ayant créé la recette ou aux administrateurs).
+- **GET /api/recipes//:categoryId**
+  - **Description** : Récupérer les recettes d'une catégorie spécifique.
+- **GET /api/recipes/research**
+  - **Description** : Rechercher des recettes par titre, catégorie ou source.
 
-
-### 3. **Catégories**
+### 5. **Catégories**
 - **GET /api/categories**
   - **Description** : Récupérer toutes les catégories de recettes disponibles.
+- **GET /api/categories/:id**
+  - **Description** : Récupérer les détails d'une catégorie spécifique.
 
-- **POST /api/categories**
+- **POST /api/categories/addCategory**
   - **Description** : Ajouter une nouvelle catégorie (réservée aux administrateurs).
 
 - **PUT /api/categories/:id**
-  - **Description** : Modifier une catégorie existante (réservée aux administrateurs).
+  - **Description** : Mettre à jour une catégorie existante (réservée aux administrateurs).
 
 - **DELETE /api/categories/:id**
   - **Description** : Supprimer une catégorie (réservée aux administrateurs).
 
 
-### 4. **Commentaires**
-- **POST /api/recipes/:id/comments**
+### 6. **Commentaires**
+- **POST /api/comments/:recipeId**
   - **Description** : Ajouter un commentaire à une recette.
 
-- **GET /api/recipes/:id/comments**
+- **GET /api/comments/:recipeId**
   - **Description** : Récupérer les commentaires d'une recette spécifique.
 
-- **DELETE /api/comments/:id**
+- **PUT /api/comments/:commentId**
+  - **Description** : Mettre à jour un commentaire (réservée aux administrateurs ou à l'utilisateur ayant posté le commentaire).
+  - 
+- **DELETE /api/comments/:commentId**
   - **Description** : Supprimer un commentaire (réservée aux administrateurs ou à l'utilisateur ayant posté le commentaire).
 
 
-### 5. **Notes**
-- **POST /api/recipes/:id/rating**
-  - **Description** : Ajouter une note à une recette (1 à 5 étoiles).
+### 7. **Notes**
+- **POST /api/scores/:recipeId**
+  - **Description** : Ajouter ou mettre àjour une note à une recette (1 à 5 étoiles).
 
-- **GET /api/recipes/:id/rating**
+- **GET /api/scores/:recipeId**
   - **Description** : Récupérer la note moyenne d'une recette.
 
+- **GET /api/scores/:recipeId**
+  - **Description** : Récupérer le score d'un utilisateur pour une recette spécifique.
+- **GET /api/scores/:recipeId**
+  - **Description** : Supprimer un score (admin seulement).
 
-### 6. **Préférences**
-- **POST /api/user/preferences**
-  - **Description** : Enregistrer les préférences d'un utilisateur (type de cuisine, genre de cinéma).
+### 8. **Status**
+- **POST /api/status/**
+  - **Description** : Recupérer les status des utilisateurs (admin seulement).
 
-- **GET /api/user/preferences**
-  - **Description** : Récupérer les préférences de l'utilisateur connecté.
+- **GET /api/status/:id**
+  - **Description** : Récupérer un rôle par ID (admin seulement).
 
-
-### 7. **Administration**
-- **GET /api/admin/users**
-  - **Description** : Récupérer la liste de tous les utilisateurs (réservé aux administrateurs).
-
-- **DELETE /api/admin/users/:id**
-  - **Description** : Supprimer un utilisateur (réservé aux administrateurs).
-
-- **GET /api/admin/recipes**
-  - **Description** : Récupérer toutes les recettes (réservé aux administrateurs).
-
-- **PUT /api/admin/recipes/:id/approve**
-  - **Description** : Valider une recette soumise par un utilisateur (réservé aux administrateurs).
-
-- **DELETE /api/admin/recipes/:id**
-  - **Description** : Supprimer une recette (réservé aux administrateurs).
+- **GET /api/status/**
+  - **Description** : Créer un statut (admin seulement).
 
 
 ## Résumé des principaux Endpoints
 
-| **Méthode** | **Route**                           | **Description**                                             |
-|-------------|-------------------------------------|-------------------------------------------------------------|
-| POST        | /api/auth/register                  | Inscription d'un utilisateur                                |
-| POST        | /api/auth/login                     | Connexion d'un utilisateur                                  |
-| GET         | /api/recipes                        | Récupérer toutes les recettes                               |
-| GET         | /api/recipes/:id                    | Détails d'une recette spécifique                            |
-| POST        | /api/recipes                        | Ajouter une nouvelle recette                                |
-| PUT         | /api/recipes/:id                    | Modifier une recette existante                              |
-| DELETE      | /api/recipes/:id                    | Supprimer une recette                                       |
-| POST        | /api/recipes/:id/comments           | Ajouter un commentaire à une recette                        |
-| GET         | /api/recipes/:id/comments           | Récupérer les commentaires d'une recette                    |
-| POST        | /api/recipes/:id/rating             | Ajouter une note à une recette                              |
-| GET         | /api/recipes/:id/rating             | Récupérer la note moyenne d'une recette                     |
-| POST        | /api/user/preferences               | Enregistrer les préférences d'un utilisateur                |
-| GET         | /api/user/preferences               | Récupérer les préférences de l'utilisateur connecté         |
-| GET         | /api/admin/users                    | Liste des utilisateurs (Administrateur)                     |
-| DELETE      | /api/admin/users/:id                | Supprimer un utilisateur (Administrateur)                   |
-| GET         | /api/admin/recipes                  | Liste des recettes (Administrateur)                         |
-| PUT         | /api/admin/recipes/:id/approve      | Valider une recette soumise par un utilisateur (Admin)      |
-| DELETE      | /api/admin/recipes/:id              | Supprimer une recette (Administrateur)                      |
+
+| **Catégorie**         | **Méthode**    | **Route**                                    | **Description**                                                       |
+|-----------------------|----------------|----------------------------------------------|-----------------------------------------------------------------------|
+| **Authentification**   | **POST**       | /api/auth/register                           | Créer un nouveau compte utilisateur.                                   |
+|                       | **POST**       | /api/auth/login                              | Connexion d'un utilisateur avec email et mot de passe.                |
+| **Utilisateurs**       | **GET**        | /api/user/:userId                            | Récupérer les informations du profil de l'utilisateur connecté.       |
+|                       | **PUT**        | /api/user/:userId                            | Mettre à jour les informations d'un utilisateur (admin ou utilisateur lui-même). |
+|                       | **DELETE**     | /api/user/:userId                            | Supprimer un utilisateur (admin seulement).                           |
+|                       | **GET**        | /api/users                                    | Récupérer la liste de tous les utilisateurs.                          |
+|                       | **GET**        | /api/users/:userId/status                    | Récupérer le statut d'un utilisateur.                                 |
+|                       | **PUT**        | /api/users/:userId/status                    | Suspension ou désactivation d'un utilisateur (admin seulement).       |
+|                       | **PUT**        | /api/users/:userId/status                    | Activer un utilisateur (admin seulement).                             |
+|                       | **PUT**        | /api/users/:userId/status                    | Bannir un utilisateur (admin seulement).                              |
+| **Rôles**              | **POST**       | /api/roles/                                  | Récupérer tous les rôles (admin ou utilisateur lui-même).             |
+|                       | **GET**        | /api/roles/:id                               | Récupérer un rôle par ID (admin seulement).                           |
+|                       | **GET**        | /api/roles/                                  | Créer un nouveau rôle (admin seulement).                              |
+|                       | **GET**        | /api/status/                                 | Supprimer un rôle (admin seulement).                                  |
+| **Recettes**           | **GET**        | /api/recipes                                 | Récupérer toutes les recettes, avec options de filtrage par catégorie, popularité, etc. |
+|                       | **GET**        | /api/recipes/:id                             | Récupérer les détails d'une recette spécifique.                       |
+|                       | **POST**       | /api/recipes/addRecipe                       | Ajouter une nouvelle recette (réservée aux utilisateurs connectés).  |
+|                       | **PUT**        | /api/recipes/:id                             | Mettre à jour une recette existante (réservée aux utilisateurs ayant créé la recette ou aux administrateurs). |
+|                       | **DELETE**     | /api/recipes/:id                             | Supprimer une recette (réservée aux utilisateurs ayant créé la recette ou aux administrateurs). |
+|                       | **GET**        | /api/recipes/:categoryId                     | Récupérer les recettes d'une catégorie spécifique.                    |
+|                       | **GET**        | /api/recipes/research                        | Rechercher des recettes par titre, catégorie ou source.               |
+| **Catégories**         | **GET**        | /api/categories                              | Récupérer toutes les catégories de recettes disponibles.              |
+|                       | **GET**        | /api/categories/:id                          | Récupérer les détails d'une catégorie spécifique.                     |
+|                       | **POST**       | /api/categories/addCategory                  | Ajouter une nouvelle catégorie (réservée aux administrateurs).       |
+|                       | **PUT**        | /api/categories/:id                          | Mettre à jour une catégorie existante (réservée aux administrateurs). |
+|                       | **DELETE**     | /api/categories/:id                          | Supprimer une catégorie (réservée aux administrateurs).               |
+| **Commentaires**       | **POST**       | /api/comments/:recipeId                      | Ajouter un commentaire à une recette.                                 |
+|                       | **GET**        | /api/comments/:recipeId                      | Récupérer les commentaires d'une recette spécifique.                  |
+|                       | **PUT**        | /api/comments/:commentId                     | Mettre à jour un commentaire (réservée aux administrateurs ou à l'utilisateur ayant posté le commentaire). |
+|                       | **DELETE**     | /api/comments/:commentId                     | Supprimer un commentaire (réservée aux administrateurs ou à l'utilisateur ayant posté le commentaire). |
+| **Notes**              | **POST**       | /api/scores/:recipeId                        | Ajouter ou mettre à jour une note à une recette (1 à 5 étoiles).      |
+|                       | **GET**        | /api/scores/:recipeId                        | Récupérer la note moyenne d'une recette.                              |
+|                       | **GET**        | /api/scores/:recipeId                        | Récupérer le score d'un utilisateur pour une recette spécifique.     |
+|                       | **DELETE**     | /api/scores/:recipeId                        | Supprimer un score (admin seulement).                                 |
+| **Status**             | **POST**       | /api/status/                                  | Récupérer les statuts des utilisateurs (admin seulement).            |
+|                       | **GET**        | /api/status/:id                               | Récupérer un statut par ID (admin seulement).                         |
+|                       | **POST**       | /api/status/                                  | Créer un statut (admin seulement).                                    |
 
 ---
 

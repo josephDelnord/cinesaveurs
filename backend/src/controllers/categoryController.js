@@ -7,6 +7,15 @@ const handleError = (res, statusCode, message, error) => {
   return res.status(statusCode).json({ message, error });
 };
 
+// Fonction pour valider les données d'une catégorie
+const validateCategory = (categoryData) => {
+    const { error } = categoryValidationSchema.validate(categoryData);
+    if (error) {
+      return error;
+    }
+    return null;
+};
+
 // Récupérer toutes les catégories
 export const getAllCategories = async (req, res) => {
     try {
@@ -30,15 +39,6 @@ export const getCategoryById = async (req, res) => {
     } catch (error) {
         handleError(res, 500, 'Erreur lors de la récupération de la catégorie', error);
     }
-};
-
-// Fonction pour valider les données d'une catégorie
-const validateCategory = (categoryData) => {
-    const { error } = categoryValidationSchema.validate(categoryData);
-    if (error) {
-      return error;
-    }
-    return null;
 };
   
 // Créer une nouvelle catégorie
@@ -74,17 +74,22 @@ export const updateCategory = async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
 
-    // Validation des données entrantes avec Joi
+    // Validation des données
     const validationError = validateCategory(req.body);
+
+    // Si les données ne sont pas valides, on renvoie un message d'erreur
     if (validationError) {
         return res.status(400).json({ message: validationError.details[0].message });
     }
 
     try {
+        // Mise à jour de la catégorie
         const updatedCategory = await Category.findByIdAndUpdate(id, { name }, { new: true });
+        // Si la catégorie n'est pas trouvée, on renvoie une erreur
         if (!updatedCategory) {
             return res.status(404).json({ message: 'Catégorie non trouvée' });
         }
+        // Si la mise à jour est réussie, on renvoie la catégorie mise à jour
         res.status(200).json(updatedCategory);
     } catch (error) {
         handleError(res, 500, 'Erreur lors de la mise à jour de la catégorie', error);
