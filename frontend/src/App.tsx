@@ -5,6 +5,7 @@ import Header from './components/Header/Header';
 import Popular from './components/Popular/Popular';
 import Recipes from './components/Recipes/Recipes';
 import Recipe from './components/Recipe/Recipe';
+import Comment from "./components/Comment/Comment";
 
 function App() {
   const [showPopular, setShowPopular] = useState(true);
@@ -25,7 +26,12 @@ function App() {
           />
           <Route
             path="/recipe/:id"
-            element={<Recipe />}
+            element={
+            <>
+              <Recipe />
+              <Comment />
+            </>
+            }
           />
         </Routes>
       </div>
