@@ -7,7 +7,8 @@ function Recipes({ togglePopular }: { togglePopular: () => void }) {
     const handleShowMore = () => {
         setShowMore(!showMore);
         togglePopular();
-    }
+    };
+
 
     return (
         <div>
@@ -55,7 +56,7 @@ function Recipes({ togglePopular }: { togglePopular: () => void }) {
                         <div className='recipe-card-description'>a bowl of rice porridge with a cheerful face made from two fried eggs for eyes and bacon strips as a smile</div>
                         <h4 className='recipe-card-recipe'>Mulan</h4>
                     </div></div>
-                <div className="recipe-card hidden"> <div className='recipe-card-top'>
+                <div className={`recipe-card ${!showMore ? 'hidden' : ''}`}> <div className='recipe-card-top'>
                         <aside className='aside-card'>+</aside>
                         <div className='recipe-card-img-container'>
                         <img src="/img/1.jpg" alt="" className="recipe-card-img" /></div>
@@ -65,7 +66,7 @@ function Recipes({ togglePopular }: { togglePopular: () => void }) {
                         <div className='recipe-card-description'>a bowl of rice porridge with a cheerful face made from two fried eggs for eyes and bacon strips as a smile</div>
                         <h4 className='recipe-card-recipe'>Mulan</h4>
                     </div></div>
-                <div className="recipe-card hidden"> <div className='recipe-card-top'>
+                <div className={`recipe-card ${!showMore ? 'hidden' : ''}`}> <div className='recipe-card-top'>
                         <aside className='aside-card'>+</aside>
                         <div className='recipe-card-img-container'>
                         <img src="/img/1.jpg" alt="" className="recipe-card-img" /></div>
