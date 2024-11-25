@@ -50,7 +50,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 18.5vw;
+    width: 23%;
     height: 45vh;
     border-width: 0px 3px 3px 0px;
     border-style: solid;
@@ -58,7 +58,9 @@
     box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.25);
     z-index: 0;
     transition: transform 0.1s ease-in-out;
-    position: relative; /* Pour un bon positionnement dans le conteneur */
+    position: relative;
+    margin-inline: 1%;
+    margin-bottom: 2%;
 }
 
 
@@ -110,14 +112,20 @@ h3, h4 {
 
 #recipes-list {
     display: flex;
-    flex-wrap: wrap; /* Permet de passer à une nouvelle ligne si nécessaire */
-    justify-content: space-around;; /* Centre les éléments horizontalement */
-    gap: 2vw; /* Ajoute un espace entre les cartes */
+    flex-wrap: wrap;
+    justify-content: space-around;
     margin-top: 2vh;
     margin-inline: 2vw;
-    overflow: scroll;
+    overflow: auto; /* Permet de défiler sans afficher la barre de défilement */
     height: 79.5vh;
+    -ms-overflow-style: none; /* Cache la barre de défilement dans Internet Explorer */
+    scrollbar-width: none; /* Cache la barre de défilement dans Firefox */
 }
+
+#recipes-list::-webkit-scrollbar {
+    display: none; /* Cache la barre de défilement dans les navigateurs WebKit (Chrome, Safari) */
+}
+
 
 
 .hidden {
@@ -146,3 +154,15 @@ h3, h4 {
 
 
 
+@media (max-width: 1024px) { // Tablette
+  .recipe-card {
+    width: 48%; /* Affiche 2 cartes par ligne */
+  }
+}
+
+@media (max-width: 768px) { // Petit écran (grande taille téléphone)
+  .recipe-card {
+    width: 95%; /* Affiche 1 carte par ligne */
+    margin-inline: 1%;
+  }
+}
