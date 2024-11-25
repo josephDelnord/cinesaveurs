@@ -24,3 +24,10 @@ dist-ssr
 *.sw?
 
 .cache/
+
+# Node modules
+node_modules/
+**/node_modules/
+
+# MongoDB memory server cache
+**/.cache/mongodb-memory-server/
