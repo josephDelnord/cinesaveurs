@@ -1,8 +1,8 @@
 import './Popular.scss';
 
-function Popular() {
+function Popular({ isVisible }: { isVisible: boolean }) {
     return (
-        <div id='popular'>
+        <div id='popular' className={isVisible ? 'visible' : ''}>
         <div id='popular-footer'>
             <div id='popular-footer-orange'> 
             <div id='title-popular'>
@@ -22,7 +22,9 @@ function Popular() {
             </aside>
             <h4 className="popular-footer-title" id='popular-footer-title'>
                 black susuwatari
+                
             </h4>
+            <img className="popular-footer-title" src="/img/arrow.png" alt="arrow" id='popular-arrow' />
             <div id='popular-footer-img-container'>
                 <img src="/img/2.jpg" alt="" id="popular-footer-img" />
             </div>

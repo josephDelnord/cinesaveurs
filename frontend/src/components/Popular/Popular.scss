@@ -23,7 +23,7 @@
 
 #popular-footer-title {
     position: absolute;
-    right: 30vw;
+    right: 24vw;
 }
 
 #popular-footer-description {
@@ -65,8 +65,8 @@
     overflow: hidden;
     border-radius: 50%;
     box-shadow: -5px 12px 9px 5px rgba(0, 0, 0, 0.25);
-    width: 40vw;
-    height: 60vh;
+    width: 32vw;
+    height: 52vh;
 }
 
 #popular-footer-img img {
@@ -80,4 +80,22 @@
     position: absolute;
     top: -10vh;
     left: 10vw;
+}
+
+#popular-arrow {
+    width: 5vw;
+    position: absolute;
+    transform: rotate(130deg);
+    left: 9vw;
+    bottom: 0vh;
+}
+
+#popular {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.5s ease-in-out;
+}
+
+#popular.visible {
+  max-height: 500px; /* Ajuste selon la hauteur maximale attendue */
 }

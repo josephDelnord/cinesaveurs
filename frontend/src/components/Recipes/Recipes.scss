@@ -44,26 +44,23 @@
 }
 
 
-
-
 .recipe-card {
     box-sizing: border-box;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    position: absolute;
-    width: 18.75vw;
+    width: 18.5vw;
     height: 45vh;
-    left: 5vw;
-    top: 22vh;
     border-width: 0px 3px 3px 0px;
     border-style: solid;
     border-color: #E65126;
-    box-shadow:  2px 5px 8px rgba(0, 0, 0, 0.25);
+    box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.25);
     z-index: 0;
     transition: transform 0.1s ease-in-out;
+    position: relative; /* Pour un bon positionnement dans le conteneur */
 }
+
 
 .recipe-card:hover {
     transform: scale(1.01);
@@ -109,3 +106,41 @@ h3, h4 {
     align-self: flex-end;
     padding-bottom: 1vh
 }
+
+
+#recipes-list {
+    display: flex;
+    flex-wrap: wrap; /* Permet de passer à une nouvelle ligne si nécessaire */
+    justify-content: space-around;; /* Centre les éléments horizontalement */
+    gap: 2vw; /* Ajoute un espace entre les cartes */
+    margin-top: 2vh;
+    margin-inline: 2vw;
+}
+
+
+.hidden {
+    display: none; /* Masque les cartes supplémentaires */
+}
+
+#show-more {
+    display: block;
+    position: absolute;
+    bottom: 84vh;
+    left: 92vw;
+    padding: 1vh 2vw;
+    font-family: 'Inter', sans-serif;
+    font-size: 1em;
+    color: white;
+    background-color: #e65126;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#show-more:hover {
+    transform: scale(1.05);
+}
+
+
+
