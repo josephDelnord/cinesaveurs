@@ -19,13 +19,13 @@ const handleDatabaseError = (res, error) => {
 };
 
 // Fonction pour créer un objet utilisateur avec le rôle
-const createUserObject = async (name, email, password, roleName) => {
+const createUserObject = async (username, email, password, roleName) => {
   // Trouver le rôle par son nom
   const role = await Role.findOne({ role_name: roleName });
   if (!role) {
     throw new Error('Rôle non trouvé');
   }
-  return new User({ name, email, password, role: role._id });
+  return new User({ username, email, password, role: role._id });
 };
 
 // Fonction pour hacher le mot de passe
@@ -41,7 +41,7 @@ export const register = async (req, res) => {
     if (error) return handleValidationError(res, error);
 
     // Récupérer les données du corps de la requête
-    const { name, email, password, role } = req.body;
+    const { username, email, password, role } = req.body;
 
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await User.findOne({ email });
@@ -53,7 +53,7 @@ export const register = async (req, res) => {
     const hashedPassword = await hashPassword(password);
 
     // Créer l'utilisateur avec le rôle
-    const newUser = await createUserObject(name, email, hashedPassword, role);
+    const newUser = await createUserObject(username, email, hashedPassword, role);
     await newUser.save();
 
     // Générer le token
@@ -97,7 +97,7 @@ export const login = async (req, res) => {
       token, 
       user: { 
         id: user._id, 
-        name: user.name, 
+        username: user.username, 
         email: user.email, 
         role: user.role.role_name 
       } 

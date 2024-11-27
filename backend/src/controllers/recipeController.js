@@ -10,14 +10,7 @@ import categoryValidationSchema from '../validation/schemas/categoryValidation.j
 // Récupérer toutes les recettes avec les ingrédients et instructions peuplés
 export const getRecipes = async (req, res) => {
     try {
-        const recipes = await Recipe.find()
-            // Peupler la catégorie avec le champ 'name'
-            .populate('category', 'name')
-            // Peupler les ingrédients avec les champs spécifiés
-            .populate('ingredients', 'name quantity quantity_description unit')
-            // Peupler les instructions avec les champs spécifiés
-            .populate('instructions', 'step_number instruction');
-
+        const recipes = await Recipe.find();
             // Si aucune recette n'est trouvée, renvoyer un tableau vide
             if (!recipes.length) {
                 return res.status(200).json([]);
@@ -268,6 +261,7 @@ export const deleteRecipe = async (req, res) => {
 };
 
 // Rechercher des recettes par titre, source ou catégorie
+// Recherche de recettes par titre, source ou catégorie
 export const searchRecipes = async (req, res) => {
     // Extraire les critères de recherche depuis le corps de la requête
     const { title, source, category } = req.body;
@@ -275,13 +269,17 @@ export const searchRecipes = async (req, res) => {
     // Créer un objet de filtre
     const filter = {};
 
-    // Ajouter des conditions de filtre selon les critères envoyés dans la requête
-    if (title) filter.title = { $regex: title, $options: 'i' }; // Recherche insensible à la casse pour le titre
-    if (source) filter.source = { $regex: source, $options: 'i' }; // Recherche insensible à la casse pour la source
+    if (title) {
+        filter.title = { $regex: title, $options: 'i' }; // Recherche insensible à la casse pour le titre
+    }
 
-    // Si la catégorie est fournie, vérifier son existence dans la base de données
+    if (source) {
+        filter.source = { $regex: source, $options: 'i' }; // Recherche insensible à la casse pour la source
+    }
+
     if (category) {
         try {
+            // Chercher la catégorie dans la base de données (vérifier si l'ID ou le nom est passé)
             const existingCategory = await Category.findOne({ name: category });
             if (existingCategory) {
                 filter.category = existingCategory._id; // Utiliser l'ID de la catégorie
@@ -295,18 +293,16 @@ export const searchRecipes = async (req, res) => {
     }
 
     try {
-        // Effectuer la recherche dans la base de données avec les filtres appliqués
-        const recipes = await Recipe.find(filter);
+        // Recherche dans la base de données avec les filtres appliqués
+        const recipes = await Recipe.find(filter).populate('category', 'name'); // Peuple la catégorie avec son nom
 
-        // Vérifier si des recettes ont été trouvées
         if (recipes.length === 0) {
             return res.status(404).json({ message: 'Aucune recette trouvée' });
         }
 
-        // Retourner les recettes trouvées
-        res.status(200).json(recipes);
+        return res.status(200).json(recipes);
     } catch (error) {
         console.error('Erreur lors de la recherche des recettes:', error);
-        res.status(500).json({ message: 'Erreur serveur' });
+        return res.status(500).json({ message: 'Erreur serveur' });
     }
 };

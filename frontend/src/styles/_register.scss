@@ -1,0 +1,132 @@
+@use 'variables' as *;
+
+.register-page {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $background-color-light;
+  font-family: $font-family-primary;
+  padding: 2rem;
+  position: relative;
+  flex-direction: column; // Assure que les éléments sont alignés verticalement
+
+  h2 {
+    text-align: center;
+    font-size: $font-size-secondary-title;
+    color: $primary-color;
+    margin-bottom: 5rem; // Espace sous le titre
+  }
+
+  form {
+    background-color: $background-color-light;
+    padding: 6rem;
+    padding-bottom: 5rem; // Espace sous le formulaire
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; // Pour que les éléments se placent l'un après l'autre
+    position: relative; // Utilisé pour contrôler le placement des éléments
+
+    input, select {
+      width: 100%;
+      padding: 2rem;
+      margin: 0.75rem 0;
+      border: 1px solid $secondary-color;
+      border-radius: 5px;
+      font-size: 1rem;
+      background-color: $background-color-light;
+      color: $text-color-secondary;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+      &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 5px $primary-color;
+      }
+
+      &::placeholder {
+        color: $text-color-tertiary;
+      }
+    }
+
+    select {
+      appearance: none;
+      background-color: $background-color-light;
+      background-image: url('/path/to/your/icon.svg');
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    }
+
+    button {
+      width: 100%;
+      padding: 2rem;
+      margin-top: 1rem;
+      border: none;
+      background-color: $primary-color;
+      color: $text-color-quaternary;
+      font-size: 1.1rem;
+      font-weight: $font-weight-bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+
+      &:hover {
+        background-color: $hover-background-color-button;
+        color: $hover-text-color-button;
+        transform: scale(1.05);
+      }
+
+      &:disabled {
+        background-color: $text-color-quaternary;
+        cursor: not-allowed;
+      }
+    }
+    
+    p {
+      color: $error-color;
+      text-align: center;
+      font-size: 1rem;
+      margin: 1rem 0;
+    }
+  }
+
+  .login-link {
+    display: flex;
+    justify-content: center; 
+    position: relative; 
+    top: 2rem; 
+    
+    p {
+      color: $text-color-primary;
+      font-size: 1rem;
+      margin: 0;
+    }
+  
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      font-weight: $font-weight-bold;
+  
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  @media screen and (max-width: $breakpoint-md) {
+    padding: 1rem;
+
+    h2 {
+      font-size: 2rem;
+    }
+
+    form {
+      max-width: 100%;
+      padding: 1.5rem;
+    }
+  }
+}

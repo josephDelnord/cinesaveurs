@@ -73,7 +73,7 @@ router.get('/', getRecipes);
  *       404:
  *         description: "Recette non trouvée"
  */
-router.get('/:id', authMiddleware, isAdminOrSelf, getRecipeById);
+router.get('/:id', getRecipeById);
 
 /**
  * @swagger

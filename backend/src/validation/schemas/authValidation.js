@@ -3,15 +3,15 @@ import Joi from 'joi';
 // Schéma pour l'inscription
 const registerSchema = Joi.object({
 
-  name: Joi
+  username: Joi
     .string() // Le nom doit être une chaîne de caractères
     .min(3) // Minimum 3 caractères
     .required() // Champ requis
     .trim() // Supprime les espaces inutiles
     .messages({
-      'string.base': '"name" doit être une chaîne de caractères',
-      'string.min': '"name" doit contenir au moins 3 caractères',
-      'any.required': '"name" est requis',
+      'string.base': '"username" doit être une chaîne de caractères',
+      'string.min': '"username" doit contenir au moins 3 caractères',
+      'any.required': '"username" est requis',
     }),
 
   email: Joi

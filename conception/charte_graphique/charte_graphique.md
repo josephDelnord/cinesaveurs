@@ -95,13 +95,13 @@ La typographie est essentielle pour garantir la lisibilité du site et renforcer
   - Police : `Anonymous Pro Regular`, 16px, couleur `#E65126` (orange).
 
 - **Titre recette populaire** :  
-  - Police : `Inter Bold`, 24px, couleur `#E65126` (orange).
+  - Police : `Inter Bold`, 32px, couleur `#E65126` (orange).
 
 - **Description recette populaire** :  
-  - Police : `Anonymous Pro Regular`, 32px, couleur `#fff` (blanc).
+  - Police : `Anonymous Pro Regular`, 24px, couleur `#fff` (blanc).
 
 - **Source recette populaire** :  
-  - Police : `Anonymous Pro Regular`, 32px, couleur `#FAC5B6` (orange très clair).
+  - Police : `Anonymous Pro Regular`, 24px, couleur `#FAC5B6` (orange très clair).
 
 
 ---
@@ -143,4 +143,4 @@ L’accessibilité est un aspect crucial pour garantir que l’application soit 
 ---
 
 ## 9. Conclusion
-Cette charte graphique définit les éléments essentiels à la conception de l'interface utilisateur du projet. En suivant ces principes, vous garantissez une expérience cohérente, accessible et agréable pour les utilisateurs tout en maintenant l'identité visuelle du projet.
+Cette charte graphique définit les éléments essentiels à la conception de l'interface utilisateur du projet. En suivant ces principes, nous garantissons une expérience cohérente, accessible et agréable pour les utilisateurs tout en maintenant l'identité visuelle du projet.

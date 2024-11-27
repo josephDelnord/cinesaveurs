@@ -31,3 +31,9 @@ node_modules/
 
 # MongoDB memory server cache
 **/.cache/mongodb-memory-server/
+
+# env
+.env
+
+#another files
+manage_project/

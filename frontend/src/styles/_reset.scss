@@ -1,0 +1,48 @@
+// Reset des marges, padding, bordures, etc. pour certains éléments HTML
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+// Réinitialisation pour les éléments HTML5 pour les navigateurs plus anciens
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+// Réinitialisation des listes
+ol, ul {
+  list-style: none;
+  padding: 0;
+}
+
+// Réinitialisation des citations
+blockquote, q {
+  quotes: none;
+}
+
+blockquote::before, blockquote::after,
+q::before, q::after {
+  content: '';
+  content: none;
+}
+
+// Réinitialisation des tables
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+html, body {
+  height: 100%; /* Assurez-vous que html et body occupent 100% de la hauteur */
+  margin: 0;
+  padding: 0;
+  overflow: auto;  // Permet le défilement si nécessaire
+  
+  }

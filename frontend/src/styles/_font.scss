@@ -1,0 +1,68 @@
+// Variables pour les chemins des polices
+$font-path: '/fonts/';
+
+// Déclaration de la police "Anonymous Pro"
+@font-face {
+  font-family: 'Anonymous Pro';
+  src: url(#{$font-path}anonymous-pro-regular.woff2) format('woff2'),
+       url(#{$font-path}anonymous-pro-regular.woff) format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Anonymous Pro';
+  src: url(#{$font-path}anonymous-pro-bold.woff2) format('woff2'),
+       url(#{$font-path}anonymous-pro-bold.woff) format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Anonymous Pro';
+  src: url(#{$font-path}anonymous-pro-regular-italic.woff2) format('woff2'),
+       url(#{$font-path}anonymous-pro-regular-italic.woff) format('woff');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Anonymous Pro';
+  src: url(#{$font-path}anonymous-pro-bold-italic.woff2) format('woff2'),
+       url(#{$font-path}anonymous-pro-bold-italic.woff) format('woff');
+  font-weight: 700;
+  font-style: italic;
+}
+
+// Déclaration de la police "Inter"
+@font-face {
+  font-family: 'Inter';
+  src: url(#{$font-path}inter-regular.woff2) format('woff2'),
+       url(#{$font-path}inter-regular.woff) format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url(#{$font-path}inter-bold.woff2) format('woff2'),
+       url(#{$font-path}inter-bold.woff) format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url(#{$font-path}inter-regular-italic.woff2) format('woff2'),
+       url(#{$font-path}inter-regular-italic.woff) format('woff');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url(#{$font-path}inter-bold-italic.woff2) format('woff2'),
+       url(#{$font-path}inter-bold-italic.woff) format('woff');
+  font-weight: 700;
+  font-style: italic;
+}

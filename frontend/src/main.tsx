@@ -1,13 +1,12 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import "./styles/reset.css"
-import "./index.css"
-import "./styles/font.css"
+// src/index.tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { BrowserRouter as Router } from 'react-router-dom';
+import './styles/style.scss';  // Importation des styles SCSS
 
-createRoot(document.getElementById("root") as HTMLElement).render(
-  <StrictMode>
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <Router>
     <App />
-  </StrictMode>,
+  </Router>
 );

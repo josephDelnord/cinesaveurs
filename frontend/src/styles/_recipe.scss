@@ -1,0 +1,241 @@
+@use 'variables' as *;
+
+// Conteneur principal de la recette
+.recipe {
+  margin: 0 auto;
+  padding: $spacing-recipe;
+  background-color: $background-color;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: $font-family-primary;
+  max-width: 1200px;
+
+  h1 {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-primary-title;
+    color: $primary-color;
+    padding-bottom: 3rem;
+    position: relative;
+    text-align: center;
+
+  }
+
+  // Image de la recette
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    margin-top: 100spx;
+  }
+
+  h2, strong {
+    color: $primary-color; 
+    font-family: $font-family-primary;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-secondary-title;
+    color: $primary-color;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  }
+
+  p strong::after {
+    content: " "; /* Ajoute un espace après le texte du strong */
+  }
+  
+  // Description générale de la recette
+  .description {
+    font-family: $font-family-secondary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-text-description;
+    color: $text-color-secondary;
+    margin-bottom: 30px;
+
+    strong {
+      font-weight: $font-weight-bold;
+      color: $text-color-primary;
+    }
+  }
+
+  .anecdote {
+    font-family: $font-family-secondary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-text-description;
+    color: $text-color-secondary;
+    margin-bottom: 30px;
+    
+    strong {
+      font-weight: $font-weight-bold;
+      color: $primary-color;
+    }
+    }
+
+  // Section Catégorie et Source
+  .category, .source {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-text-description;
+    color: $text-color-tertiary;
+    margin-bottom: 20px;
+
+    strong {
+      font-weight: $font-weight-bold;
+      color: $primary-color;
+    }
+  }
+
+  // Date de création
+  .date {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-text-description;
+    color: $text-color-quaternary;
+    margin-bottom: 30px;
+  }
+
+  // Section des ingrédients
+  h2 {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-secondary-title;
+    color: $primary-color;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  }
+
+  ul.ingredients {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-text-description;
+    color: $text-color-tertiary;
+    list-style-type: none;  // Retirer les puces par défaut
+    padding-left: 20px;
+  
+    li {
+      margin-bottom: 15px;
+      position: relative;
+      padding-left: 25px;
+  
+      &::before {
+        content: "•";  // La puce
+        font-size: 1.5rem;
+        color: $primary-color;  // Couleur de la puce
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+  }
+  
+  ol.instructions {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-text-description;
+    color: $text-color-tertiary;
+    list-style-type: none;  // Retirer les puces par défaut
+    padding-left: 20px;
+  
+    counter-reset: step;  // Réinitialiser le compteur au début de la liste
+    li {
+      counter-increment: step;  // Incrémenter le compteur pour chaque étape
+      margin-bottom: 15px;
+      position: relative;
+      padding-left: 30px;
+  
+      .step-number {
+        font-weight: $font-weight-bold;
+        color: $accent-color;
+        margin-right: 10px;
+      }
+  
+      &::before {
+        content: counter(step) ". ";  // Afficher le numéro de l'étape automatiquement
+        color: $primary-color;  // Couleur de la puce
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+  }
+  
+  // Gestion du chargement et des erreurs
+  .loading, .error, .not-found {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-tertiary-title;
+    color: $error-color;
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  // Classe de message pour une recette non trouvée
+  .not-found {
+    color: $error-color;
+    font-size: 1.2rem;
+  }
+
+  // Boutons
+  .button {
+    background-color: $background-color-button;
+    color: $text-color-button;
+    border-radius: $border-radius-button;
+    padding: 10px 20px;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    margin-top: 20px;
+    width: $size-button;
+    height: $size-button;
+    line-height: $size-button;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: $hover-background-color-button;
+      color: $hover-text-color-button;
+      transform: scale(1.1);
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: $breakpoint-sm) {
+  .recipe {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .ingredients,
+  .instructions {
+    font-size: 1rem;
+  }
+
+  .button {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .recipe {
+    padding: 30px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+}

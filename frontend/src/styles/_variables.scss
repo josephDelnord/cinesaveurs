@@ -1,0 +1,48 @@
+// src/styles/_variables.scss
+
+// 1. Palette de Couleurs
+$primary-color: #E65126; // orange
+$secondary-color: #333333; // gris foncé
+$accent-color: #ffc107; // jaune
+$error-color: #dc3545; // rouge
+$background-color: #F7EEDF; // beige
+$background-color-light: #FDF6F0; // beige clair
+$text-color-primary: #E65126; // orange
+$text-color-secondary: #202020; // gris très foncé
+$text-color-tertiary: #333333; // gris foncé
+$text-color-quaternary: #ffffff; // blanc
+
+// 2. Typographie
+$font-family-primary: 'Inter', sans-serif; // police principale
+$font-family-secondary: 'Anonymous Pro', sans-serif; // police secondaire
+
+$font-size-primary-title: 74px; // titre principal (h1)
+$font-size-secondary-title: 44px; // titre secondaire (h2)
+$font-size-tertiary-title: 34px; // titre tertiaire (h3)
+$font-size-text-description: 20px; // description
+
+$font-weight-bold: 'Bold'; // gras
+$font-weight-regular: 'Regular'; // normal
+
+$primary-title: $font-weight-bold, $font-size-primary-title, #E65126; // titre principal
+$secondary-title: $font-weight-bold, $font-size-secondary-title, #202020; // titre secondaire
+$tertiary-title: $font-weight-bold, $font-size-tertiary-title, #E65126; // titre tertiaire
+$text-description: $font-weight-regular, $font-size-text-description, #333333; // description
+
+// 3. Boutons
+$background-color-button: #E65126; // orange
+$text-color-button: #ffffff; // blanc
+$border-radius-button: 50px; // arrondi du bouton
+$hover-background-color-button: #FAC5B6; // orange clair
+$hover-text-color-button: #E65126; // orange foncé
+$size-button: 60px; // taille du bouton
+$hover-size-button: 70px; // taille du bouton au survol
+
+// 4. Espacements
+$spacing-recipe: 60px; // espacement de recettes
+$spacing-nav: 100px; // espacement de navigation
+
+// 5. Breakpoints pour responsive design
+$breakpoint-sm: 480px; // petit écran
+$breakpoint-md: 768px; // écran moyen
+$breakpoint-lg: 1024px; // grand écran

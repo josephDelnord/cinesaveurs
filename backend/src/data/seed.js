@@ -77,7 +77,7 @@ async function seedDatabase() {
         // Créer des utilisateurs avec des données fictives
         const users = await User.create([
             {
-                name: 'Admin User',
+                username: 'Admin User',
                 email: 'admin@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -85,7 +85,7 @@ async function seedDatabase() {
                 role: roles.find(r => r.role_name === 'admin')._id,
             },
             {
-                name: 'Guest User',
+                username: 'Guest User',
                 email: 'guest@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -93,7 +93,7 @@ async function seedDatabase() {
                 role: roles.find(r => r.role_name === 'guest')._id,
             },
             {
-                name: 'Chef Gordon Ramsay',
+                username: 'Chef Gordon Ramsay',
                 email: 'gordon@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -101,7 +101,7 @@ async function seedDatabase() {
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
-                name: 'Regular User',
+                username: 'Regular User',
                 email: 'user@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -109,7 +109,7 @@ async function seedDatabase() {
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
-                name: 'Alice Dupont',
+                username: 'Alice Dupont',
                 email: 'alice.dupont@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -117,7 +117,7 @@ async function seedDatabase() {
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
-                name: 'Bob Martin',
+                username: 'Bob Martin',
                 email: 'bob.martin@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -125,7 +125,7 @@ async function seedDatabase() {
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
-                name: 'Claire Lefevre',
+                username: 'Claire Lefevre',
                 email: 'claire.lefevre@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -133,7 +133,7 @@ async function seedDatabase() {
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
-                name: 'David Leclerc',
+                username: 'David Leclerc',
                 email: 'david.leclerc@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -141,7 +141,7 @@ async function seedDatabase() {
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
-                name: 'Eva Durand',
+                username: 'Eva Durand',
                 email: 'eva.durand@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -149,7 +149,7 @@ async function seedDatabase() {
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
-                name: 'Frank Sorel',
+                username: 'Frank Sorel',
                 email: 'frank.sorel@example.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -157,7 +157,7 @@ async function seedDatabase() {
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
-                name: 'Jon Snow',
+                username: 'Jon Snow',
                 email: 'jonsnow@got.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -165,7 +165,7 @@ async function seedDatabase() {
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
-                name: 'Sherlock Holmes',
+                username: 'Sherlock Holmes',
                 email: 'sherlock@bakerstreet.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -173,7 +173,7 @@ async function seedDatabase() {
                 role: roles.find(r => r.role_name === 'user')._id,
             },
             {
-                name: 'Tony Stark',
+                username: 'Tony Stark',
                 email: 'tony.stark@starkindustries.com',
                 password: 'Password@12345',
                 confirmPassword: 'Password@12345',
@@ -957,7 +957,7 @@ async function seedDatabase() {
                 instructions: [instructions[0]._id, instructions[1]._id, instructions[2]._id, instructions[3]._id],
                 source: 'Adventure Time',
                 category: [categories[2]._id],
-                image: '../../public/images/img_recette_test.jpg',
+                image: '/img1.jpg',
             },
             {
                 title: 'Scones aux Champignons du Pays des Merveilles',
@@ -967,7 +967,7 @@ async function seedDatabase() {
                 instructions: [instructions[4]._id, instructions[5]._id, instructions[6]._id, instructions[7]._id, instructions[8]._id, instructions[9]._id],
                 source: 'Alice au Pays des Merveilles',
                 category: [categories[1]._id],
-                image: '../../public/images/img_recette_test.jpg',
+                image: '/img2.jpg',
             },
             {
                 title: 'Shawarma',
@@ -977,7 +977,7 @@ async function seedDatabase() {
                 instructions: [instructions[10]._id, instructions[11]._id, instructions[12]._id, instructions[13]._id, instructions[14]._id, instructions[15]._id, instructions[16]._id],
                 source: 'Avengers',
                 category: [categories[1]._id],
-                image: '../../public/images/img_recette_test.jpg',
+                image: '/img3.jpg',
             },
             {
                 title: 'Buffy\'s Chocolate Caramel Stakes',
@@ -987,7 +987,7 @@ async function seedDatabase() {
                 instructions: [instructions[17]._id, instructions[18]._id, instructions[19]._id],
                 source: 'Buffy the Vampire Slayer',
                 category: [categories[1]._id],
-                image: '../../public/images/img_recette_test.jpg',
+                image: '/img4.jpg',
             },
             {
                 title: 'Cinderella\'s Butterfly Cupcakes',
@@ -997,7 +997,7 @@ async function seedDatabase() {
                 instructions: [instructions[20]._id, instructions[21]._id, instructions[22]._id, instructions[23]._id, instructions[24]._id, instructions[25]._id, instructions[26]._id, instructions[27]._id, instructions[28]._id, instructions[29]._id],
                 source: 'Cinderella (2015)',
                 category: [categories[2]._id],
-                image: '../../public/images/img_recette_test.jpg',
+                image: '/img5.jpg',
 
             },
             {
@@ -1008,7 +1008,7 @@ async function seedDatabase() {
                 instructions: [instructions[30]._id, instructions[31]._id, instructions[32]._id],
                 source: 'Daredevil',
                 category: [categories[0]._id],
-                image: '../../public/images/img_recette_test.jpg',
+                image: '/img6.jpg',
             },
             {
                 title: 'Mini Minion Pizza',
@@ -1018,7 +1018,7 @@ async function seedDatabase() {
                 instructions: [instructions[33]._id, instructions[34]._id, instructions[35]._id, instructions[36]._id, instructions[37]._id],
                 source: 'Fête Minion',
                 category: [categories[1]._id],
-                image: '../../public/images/img_recette_test.jpg',
+                image: '/img7.jpg',
             },
             {
                 title: 'Biscuit Dodger à la Confiture',
@@ -1028,7 +1028,7 @@ async function seedDatabase() {
                 instructions: [instructions[38]._id, instructions[39]._id, instructions[40]._id, instructions[41]._id, instructions[42]._id],
                 source: 'Doctor Who',
                 category: [categories[1]._id],
-                image: '../../public/images/img_recette_test.jpg',
+                image: '/img8.jpg',
             },
             {
                 title: 'Pot de Crème à la Citrouille Épices',
@@ -1038,7 +1038,7 @@ async function seedDatabase() {
                 instructions: [instructions[43]._id, instructions[44]._id, instructions[45]._id],
                 source: 'Harry Potter',
                 category: [categories[2]._id],
-                image: '../../public/images/img_recette_test.jpg',
+                image: '/img9.jpg',
             },
             {
                 title: 'Peanut Butter Chocolate Cups',
@@ -1048,7 +1048,7 @@ async function seedDatabase() {
                 instructions: [ instructions[46]._id, instructions[47]._id, instructions[48]._id, instructions[49]._id, instructions[50]._id, instructions[51]._id],
                 source: 'Reese\'s Peanut Butter Cups',
                 category: [categories[2]._id],
-                image: '../../public/images/img_recette_test.jpg',
+                image: '/img10.jpg',
             },
             
         ]);

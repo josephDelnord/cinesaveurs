@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 // Modèle de données pour les utilisateurs
 const userSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: true,
   },
