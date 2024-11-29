@@ -1,0 +1,28 @@
+@use 'variables' as *;
+
+.user-profile {
+  background-color: $background-color-light;
+  padding: $spacing-recipe;
+  border-radius: 10px;
+
+  &__title {
+    font-family: $font-family-primary;
+    font-size: $font-size-secondary-title;
+    color: $text-color-primary;
+    margin-bottom: 20px;
+  }
+
+  &__details {
+    font-family: $font-family-secondary;
+    color: $text-color-secondary;
+
+    &__item {
+      font-size: $font-size-text-description;
+      margin-bottom: 15px;
+      strong {
+        font-weight: $font-weight-bold;
+        color: $text-color-primary;
+      }
+    }
+  }
+}

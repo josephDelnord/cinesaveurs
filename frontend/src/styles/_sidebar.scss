@@ -1,0 +1,53 @@
+@use 'variables' as *; /* Importation des variables SCSS */
+
+/* Sidebar */
+.sidebar {
+  background-color: $secondary-color; /* Fond sombre pour le sidebar */
+  color: $text-color-quaternary; /* Texte blanc */
+  padding: 2rem;
+  width: 250px;
+  height: 100vh;
+  position: fixed; /* Position fixe à gauche */
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: block; /* Par défaut, le sidebar est visible */
+
+  h3 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: $primary-color; /* Titre en orange */
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 1.5rem;
+
+      a {
+        text-decoration: none;
+        color: $text-color-quaternary; /* Texte blanc pour les liens */
+        font-size: 1.3rem;
+        display: block;
+        padding: 0.5rem 1rem;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: $accent-color; /* Jaune clair au survol */
+        }
+
+        &.active {
+          background-color: $primary-color; /* Fond orange pour l'élément actif */
+        }
+      }
+    }
+  }
+}
+
+/* Si l'utilisateur n'est pas admin, cacher le sidebar */
+.sidebar[style*="display: none"] {
+  display: none;
+}

@@ -1,0 +1,50 @@
+// Styles généraux pour la page 404
+@use 'variables' as *;
+
+.not-found-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: $background-color; 
+    color: $text-color-primary;           
+    font-family: $font-family-primary;  
+  
+    h1 {
+      font-size: 4rem;
+      font-weight: $font-weight-bold;
+      color: $primary-color;             
+      margin-bottom: 50px;
+      position: relative;
+
+    }
+  
+    p {
+      font-size: 1.5rem;
+      color: $text-color-secondary;     
+      margin-bottom: 50px;
+      text-align: center;
+      width: 80%;
+      max-width: 600px;
+    }
+  
+    a {
+      padding: 10px 20px;
+      background-color: $primary-color; 
+      color: $text-color-quaternary; 
+      text-decoration: none;
+      border-radius: $border-radius-button;
+      font-size: 1rem;
+      font-weight: $font-weight-bold;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      margin-bottom: 300px;
+
+      &:hover {
+        background-color: $hover-background-color-button;  
+        color: $hover-text-color-button;                   
+        transform: scale(1.05);                           
+      }
+    }
+  }
+  

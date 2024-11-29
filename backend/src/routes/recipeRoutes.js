@@ -9,7 +9,9 @@ import {
   addRecipe, 
   updateRecipe, 
   deleteRecipe, 
-  searchRecipes 
+  searchRecipes,
+  addComment,
+  addOrUpdateScore
 } from '../controllers/recipeController.js';
 
 const router = express.Router();
@@ -245,5 +247,75 @@ router.delete('/:id', authMiddleware, isAdmin, deleteRecipe);
  *         description: "Requête invalide"
  */
 router.post('/research', searchRecipes);
+
+/**
+ * @swagger
+ * /comments:
+ *   post:
+ *     summary: "Ajouter un commentaire (admin ou utilisateur lui-même)"
+ *     description: "Permet à un utilisateur d'ajouter un commentaire sur une recette."
+ *     tags: [Commentaires]
+ *     security:
+ *       - Bearer: []
+ *     requestBody:
+ *       description: "Commentaire à ajouter"
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               recipeId:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: "Commentaire ajouté avec succès"
+ *       400:
+ *         description: "Données invalides"
+ *       401:
+ *         description: "Non autorisé"
+ *       500:
+ *       description: "Erreur serveur"
+ */
+router.post('/:id/comments', authMiddleware, isAdminOrSelf, addComment); 
+
+/**
+ * @swagger
+ * /scores:
+ *   post:
+ *     summary: "Ajouter ou mettre à jour un score pour une recette (admin ou utilisateur lui-même)"
+ *     tags:
+ *       - Scores
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - score
+ *               - recipeId
+ *               - userId
+ *             properties:
+ *               score:
+ *                 type: number
+ *                 example: 4
+ *               recipeId:
+ *                 type: string
+ *                 example: "60b5f9072f8fb814f470603b"
+ *               userId:
+ *                 type: string
+ *                 example: "60b5f9072f8fb814f470603a"
+ *     responses:
+ *       200:
+ *         description: Le score a été mis à jour ou ajouté avec succès.
+ *       400:
+ *         description: Données invalides ou manquantes.
+ *       500:
+ *         description: Erreur serveur.
+ */
+router.post('/id/scores', authMiddleware, isAdminOrSelf, addOrUpdateScore);
 
 export default router;

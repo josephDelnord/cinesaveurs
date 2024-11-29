@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
-import  dotenv from 'dotenv';
+import dotenv from 'dotenv';
 dotenv.config();
 
 // Middleware pour vérifier le token JWT
@@ -25,7 +25,7 @@ const authMiddleware = async (req, res, next) => {
     
     next();
   } catch (error) {
-    return res.status(403).json({ error, message: 'Token invalide' });
+    return res.status(403).json({ message: 'Token invalide ou expiré', error });
   }
 };
 

@@ -6,6 +6,12 @@
   min-height: 100vh;  /* Assurez-vous que la hauteur minimale occupe toute la fenêtre */
 }
 
+.main-content {
+  margin-left: 250px; // Donne de l'espace à gauche pour le Sidebar
+  padding: 20px; // Espacement interne du contenu principal
+  flex-grow: 1; // Le contenu prend tout l'espace restant
+}
+
 .content {
   flex: 1;  /* Permet à ce div de prendre tout l'espace restant */
 }

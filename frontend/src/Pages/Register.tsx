@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import myAxiosInstance from '../axios/axios';
-import { saveTokenAndPseudoInLocalStorage } from '../localstorage/localstorage';
+import { saveTokenAndPseudoInLocalStorage, decodeToken } from '../localstorage/localstorage';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -16,13 +16,6 @@ const Register = () => {
   const navigate = useNavigate(); // Initialiser useNavigate
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
-    console.log("Données envoyées :", {
-      username,
-      email,
-      password,
-      role,
-    });
   
     // Vérification des mots de passe
     if (password !== confirmPassword) {
@@ -49,23 +42,26 @@ const Register = () => {
         role,
       });
   
-      console.log(response.data);
-  
       // Sauvegarder le token et le pseudo dans le localStorage
       const { token } = response.data;
-      saveTokenAndPseudoInLocalStorage(username, token);
+      const decodedToken = decodeToken(token);
+
+      if (!decodedToken || !decodedToken.userId || !decodedToken.role) {
+        throw new Error('Le token ne contient pas un userId ou un role valide');
+      }
+
+      saveTokenAndPseudoInLocalStorage(username, token, decodedToken.role, decodedToken.userId);
   
       // Attendre un court instant avant la redirection
       setTimeout(() => {
-        // Rediriger l'utilisateur vers la page de connexion après l'inscription réussie
-        navigate('/login');
+        // Rediriger l'utilisateur vers la page d'accueil après l'inscription réussie
+        navigate('/');
       }, 500); // Vous pouvez ajuster le délai si nécessaire (en ms)
   
     } catch (err) {
       setLoading(false);
   
       if (axios.isAxiosError(err) && err.response) {
-        console.error("Détails de l'erreur : ", err.response?.data);
         setError(err.response?.data?.message || "Une erreur s'est produite lors de l'inscription.");
       } else {
         setError("Une erreur s'est produite lors de l'inscription.");
@@ -76,54 +72,53 @@ const Register = () => {
   };
   
   return (
-<div className="register-page">
-  <h2>Créer un compte</h2>
-  <form onSubmit={handleRegister}>
-    {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div className="register-page">
+      <h2>Créer un compte</h2>
+      <form onSubmit={handleRegister}>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
 
-    <input
-      type="text"
-      placeholder="Nom"
-      value={username}
-      onChange={(e) => setUsername(e.target.value)}
-    />
-    <input
-      type="email"
-      placeholder="Email"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
-    />
-    <input
-      type="password"
-      placeholder="Mot de passe"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-    />
-    <input
-      type="password"
-      placeholder="Confirmer le mot de passe"
-      value={confirmPassword}
-      onChange={(e) => setConfirmPassword(e.target.value)}
-    />
-    {/* Dropdown pour choisir le rôle */}
-    <select value={role} onChange={(e) => setRole(e.target.value)}>
-      <option value="">Sélectionner un rôle</option>
-      <option value="admin">Admin</option>
-      <option value="user">Utilisateur</option>
-    </select>
+        <input
+          type="text"
+          placeholder="Nom"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Mot de passe"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Confirmer le mot de passe"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        {/* Dropdown pour choisir le rôle */}
+        <select value={role} onChange={(e) => setRole(e.target.value)}>
+          <option value="">Sélectionner un rôle</option>
+          <option value="admin">Admin</option>
+          <option value="user">Utilisateur</option>
+        </select>
 
-    <button type="submit" disabled={loading}>
-      {loading ? "Chargement..." : "S'inscrire"}
-    </button>
-  </form>
+        <button type="submit" disabled={loading}>
+          {loading ? "Chargement..." : "S'inscrire"}
+        </button>
+      </form>
 
-  <div className="login-link">
-    <p>
-      Vous avez déjà un compte ? <a href="/login">Se connecter</a>
-    </p>
-  </div>
-</div>
-
+      <div className="login-link">
+        <p>
+          Vous avez déjà un compte ? <a href="/login">Se connecter</a>
+        </p>
+      </div>
+    </div>
   );
 };
 

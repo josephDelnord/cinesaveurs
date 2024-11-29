@@ -12,6 +12,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto; /* Permet le défilement vertical si nécessaire */
+
   /* Titre principal */
   h2 {
     font-size: 3em;
@@ -25,38 +26,35 @@
 /* Conteneur principal de la barre de recherche */
 .search-container {
   position: fixed; /* Pour positionner le bouton de recherche */
-  top: 120px; /* Décalage de 60px du haut de la page */
-  right: 90px; /* Espacement de 20px du bord droit */
+  top: 120px; /* Décalage de 120px du haut de la page */
+  right: 90px; /* Espacement de 90px du bord droit */
   display: flex; /* Affichage en ligne pour l'input et le bouton */
   align-items: center; /* Aligner verticalement l'input et le bouton */
   z-index: 1000; /* Assurez-vous que la barre est au-dessus des autres éléments */
   margin-top: 2rem;
- 
+
   /* L'input de recherche */
   .search-input {
     padding: 10px;
-    border: 1px solid #ccc; /* Bordure grise */
-    border-radius: 4px; /* Coins arrondis */
+    border: 1px solid #ccc;
+    border-radius: 4px;
     font-size: 16px;
-    width: 250px; /* Largeur de l'input */
-    margin-right: 10px; /* Espacement entre l'input et le bouton */
-    position: relative; /* Pour positionner le bouton de recherche */
-  
-    }
+    width: 250px;
+    margin-right: 10px;
+  }
 
   /* Le bouton de recherche */
   .search-button {
     padding: 10px 15px;
-    background-color: #ff6f61; /* Couleur de fond rouge clair */
+    background-color: #ff6f61;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    position: relative;
 
     &:hover {
-      background-color: #ff4e40; /* Couleur de fond plus foncée au survol */
+      background-color: #ff4e40;
     }
   }
 }
@@ -68,8 +66,7 @@
   justify-content: space-around;
   gap: $spacing-recipe;
   margin-top: 2vh;
-  padding-bottom: 2rem;  /* Un peu de marge au bas pour éviter que les cartes ne soient coupées */
-  
+  padding-bottom: 2rem;
 }
 
 /* Card de recette */
@@ -91,7 +88,7 @@
   transition: transform 0.1s ease-in-out;
   background-color: $background-color;
   border-radius: 10px;
-
+  
   &:hover {
     transform: scale(1.01);
   }
@@ -109,10 +106,10 @@
   p {
     font-family: $font-family-secondary;
     text-align: justify;
-    padding: 0 1rem;
-    font-size: 1rem;
+    padding: 1rem;
+    font-size: 0.9rem;
     margin: 0.5rem 0;
-
+    margin-top: 0;
   }
 
   h2 {
@@ -123,13 +120,12 @@
     text-transform: uppercase;
     text-align: right;
     margin: 0.5rem 0;
-    position: absolute; 
-    bottom: 0;         
-    right: 0;          
-    width: 100%;       
-    text-align: right; 
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    padding: 2rem;
     padding: 0.5rem 1rem;
-
   }
 
   a {
@@ -142,22 +138,21 @@
     border-radius: 1.5rem;
     transition: background-color 0.3s;
     border: solid 1px $accent-color;
-  
+
     position: absolute;
-    top: -1rem;    
-    left: -1rem;   
-    z-index: -1;  
-    transform: translate(10%, 10%); 
-  
-    /* Permet au bouton de se cacher partiellement derrière la photo */
+    top: -1rem;
+    left: -1rem;
+    z-index: -1;
+    transform: translate(10%, 10%);
+
     &:hover {
       background-color: $primary-color;
       color: $text-color-quaternary;
       border: solid 1px $primary-color;
-
     }
   }
 }
+
 /* Image de la carte de recette */
 .recipe-card img {
   width: 100%;
@@ -210,12 +205,10 @@
 /* Style pour le titre de la recette populaire */
 .title-popular-recipe {
   margin-bottom: 0.4rem;
-  margin-right: 50rem;
   padding-bottom: 0;
   bottom: 0;
-  bottom: 0;  /* Déplace le titre vers le haut pour le coller au conteneur populaire */
-
 }
+
 /* Recette populaire */
 .popular-recipe {
   position: relative;
@@ -228,20 +221,19 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: relative;
-  top: -1.5rem;  /* Déplace le titre vers le haut pour le coller au conteneur populaire */
+  top: -1.5rem;
 
   /* Image de la recette */
   img {
-    position: absolute;   
-    bottom: 0;            
-    right: 0;            
-    max-width: 100%;      
-    max-height: 100%;    
-    height: auto;        
-    width: auto;          
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    width: auto;
     border-radius: 65% 34% 25% 3% / 62% 0% 0% 38%;
-    }
+  }
 
   /* Titre de la recette */
   h4 {
@@ -281,40 +273,41 @@
     position: relative;
     top: -11rem;
     border: solid 1px blue;
-     
-.popular-score .popular-stars{
+
+    .popular-stars {
       font-family: $font-family-primary;
       font-size: 1.5rem;
       color: $text-color-quaternary;
       text-align: justify;
       text-decoration: underline;
-     }
+    }
   }
 
   /* Bouton "Voir la recette" */
-  a {       
-    font-family: $font-family-primary;       
-    font-size: 1.2rem;  /* Réduire la taille du texte */       
-    color: $text-color-quaternary;       
-    text-decoration: none;       
-    padding: 0.5rem 1rem; /* Garder un padding raisonnable */       
-    background-color: $secondary-color;       
-    border-radius: $border-radius-button;       
-    transition: background-color 0.3s;       
+  a {
+    font-family: $font-family-primary;
+    font-size: 1.2rem;
+    color: $text-color-quaternary;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    background-color: $secondary-color;
+    border-radius: $border-radius-button;
+    transition: background-color 0.3s;
 
-    position: absolute;       
-    left: 45%;  /* Le positionner au centre */       
-    bottom: 1rem;  /* Le positionner à droite et légèrement en haut */       
-    z-index: 1;        
-    transform: translate(15%, 15%);  /* Limiter la largeur du bouton pour éviter qu'il devienne trop grand */       
-    max-width: 150px; /* Taille maximale du bouton */  
+    position: absolute;
+    left: 45%;
+    bottom: 1rem;
+    z-index: 1;
+    transform: translate(15%, 15%);
+    max-width: 150px;
 
-      &:hover {         
-        background-color: $hover-background-color-button;         
-        color: $hover-text-color-button;         
-      }
+    &:hover {
+      background-color: $hover-background-color-button;
+      color: $hover-text-color-button;
+    }
+  }
 }
-}
+
 /* Liste d'erreur */
 .error-message {
   color: $error-color;
@@ -333,7 +326,7 @@
   }
 
   .recipe-card {
-    width: 80%;  /* Cartes de recette plus larges sur mobile */
+    width: 80%;
     height: auto;
     margin-inline: 0;
     margin-bottom: 1rem;
@@ -362,7 +355,7 @@
   }
 
   .recipe-card {
-    width: 48%;  /* Ajuste la largeur des cartes */
+    width: 48%;
     height: auto;
     margin-bottom: 1.5rem;
   }
@@ -380,7 +373,7 @@
   }
 
   .recipe-card {
-    width: 23%;  /* Cartes plus petites sur grand écran */
+    width: 23%;
     height: 45vh;
     margin-bottom: 2%;
   }

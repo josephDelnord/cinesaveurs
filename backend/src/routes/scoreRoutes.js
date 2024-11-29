@@ -1,7 +1,7 @@
 import express from 'express';
 import { getScoresByRecipe, getScoreByUserAndRecipe, addOrUpdateScore, deleteScore } from '../controllers/scoreController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
-import { isAdmin, isAdminOrSelf } from '../middlewares/roleMiddleware.js';
+import { isAdmin } from '../middlewares/roleMiddleware.js';
 
 const router = express.Router();
 
@@ -40,7 +40,7 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur.
  */
-router.post('/recipeId', authMiddleware, isAdminOrSelf, addOrUpdateScore);
+router.post('/:recipeId', authMiddleware, addOrUpdateScore);
 
 /**
  * @swagger
@@ -64,7 +64,7 @@ router.post('/recipeId', authMiddleware, isAdminOrSelf, addOrUpdateScore);
  *       500:
  *         description: Erreur serveur.
  */
-router.get('/:recipeId', authMiddleware, isAdmin, getScoresByRecipe);
+router.get('/:recipeId', authMiddleware, getScoresByRecipe);
 
 /**
  * @swagger
@@ -88,7 +88,7 @@ router.get('/:recipeId', authMiddleware, isAdmin, getScoresByRecipe);
  *       500:
  *         description: Erreur serveur.
  */
-router.get('/:recipeId', authMiddleware, isAdmin, getScoreByUserAndRecipe);
+router.get('/:recipeId', authMiddleware, getScoreByUserAndRecipe);
 
 /**
  * @swagger

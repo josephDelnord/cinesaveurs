@@ -1,0 +1,51 @@
+@use 'variables' as *;
+
+.admin-profile {
+  background-color: $background-color-light;
+  padding: $spacing-recipe;
+  border-radius: 10px;
+
+  &__title {
+    font-family: $font-family-primary;
+    font-size: $font-size-secondary-title;
+    color: $text-color-primary;
+    margin-bottom: 20px;
+  }
+
+  &__details {
+    font-family: $font-family-secondary;
+    color: $text-color-secondary;
+
+    &__item {
+      font-size: $font-size-text-description;
+      margin-bottom: 15px;
+      strong {
+        font-weight: $font-weight-bold;
+        color: $text-color-primary;
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  &__button {
+    background-color: $background-color-button;
+    color: $text-color-button;
+    border: none;
+    padding: 10px 20px;
+    font-size: $font-size-text-description;
+    border-radius: $border-radius-button;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background-color: $hover-background-color-button;
+      color: $hover-text-color-button;
+      transform: scale(1.1);
+    }
+  }
+}

@@ -22,9 +22,13 @@ const isUser = (req, res, next) => {
 
 // Middleware pour vérifier si l'utilisateur est un administrateur ou l'utilisateur lui-même
 const isAdminOrSelf = async (req, res, next) => {
-  const userId = req.params.userId; // ID de l'utilisateur à vérifier (paramètre de la route)
+  const userId = req.params.userId;  // ID de l'utilisateur à vérifier (paramètre de la route)
   const loggedInUserId = req.userId; // ID de l'utilisateur connecté via le token JWT
   const userRole = req.userRole;     // Récupéré dans le middleware de protection du JWT
+
+  console.log(`userId dans l'URL: ${userId}`);
+  console.log(`loggedInUserId dans le token: ${loggedInUserId}`);
+  console.log(`role de l'utilisateur connecté: ${userRole}`);
 
   // Vérifier si l'utilisateur connecté est un administrateur
   if (userRole === 'admin') {

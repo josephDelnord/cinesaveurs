@@ -26,7 +26,7 @@ export const getUserInfo = async (req, res) => {
     // Retourner les informations de l'utilisateur
     return res.status(200).json({
       id: user._id,
-      name: user.name,
+      username: user.username,
       email: user.email,
       status: statusName,  // Affichage du nom du statut
       role: roleName,      // Affichage du nom du rôle

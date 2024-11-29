@@ -2,7 +2,7 @@
 import express from 'express';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import { addComment, getCommentsByRecipe, updateComment, deleteComment } from '../controllers/commentController.js';
-import { isAdmin, isAdminOrSelf } from '../middlewares/roleMiddleware.js';
+import { isAdmin } from '../middlewares/roleMiddleware.js';
 
 const router = express.Router();
 
@@ -37,7 +37,7 @@ const router = express.Router();
  *       500:
  *       description: "Erreur serveur"
  */
-router.post('/:recipeId', authMiddleware, isAdminOrSelf, addComment); 
+router.post('/:recipeId', authMiddleware, addComment); 
 
 /**
  * @swagger

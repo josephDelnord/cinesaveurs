@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import RecipeCard from '../components/RecipeCard';
-import type { IRecipe } from '../@types/recipe';
+import type { IRecipe } from '../@types/Recipe';
 
 const Recipes: React.FC = () => {
   const [recipes, setRecipes] = useState<IRecipe[]>([]); // Liste des recettes

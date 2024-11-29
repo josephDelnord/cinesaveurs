@@ -6,6 +6,11 @@ import { addRecipeSchema, updateRecipeSchema } from '../validation/schemas/recip
 import addIngredientSchema from '../validation/schemas/ingredientValidation.js';
 import addInstructionSchema from '../validation/schemas/instructionValidation.js';
 import categoryValidationSchema from '../validation/schemas/categoryValidation.js';
+import Comment from '../models/Comment.js';
+import validateCommentSchema from '../validation/schemas/commentValidation.js';
+import Score from '../models/Score.js';
+import User from '../models/User.js';
+import scoreValidationSchema from '../validation/schemas/scoreValidation.js';
 
 // Récupérer toutes les recettes avec les ingrédients et instructions peuplés
 export const getRecipes = async (req, res) => {
@@ -306,3 +311,85 @@ export const searchRecipes = async (req, res) => {
         return res.status(500).json({ message: 'Erreur serveur' });
     }
 };
+
+// Ajouter un commentaire
+export const addComment = async (req, res) => {
+    // Récupérer les données du corps de la requête
+    const { content, recipeId } = req.body;
+    // Récupérer l'ID de l'utilisateur connecté
+    const userId = req.userId;
+  
+    // Validation des données
+    const { error } = validateCommentSchema({ content, recipeId, userId });
+    // Si les données sont invalides, renvoyer une réponse d'erreur
+    if (error) {
+      return res.status(400).json({ message: error.details.map(x => x.message).join(', ') });
+    }
+  
+    try {
+      // Vérifier si la recette existe
+      const recipe = await Recipe.findById(recipeId);
+      if (!recipe) {
+        return res.status(404).json({ message: 'Recette non trouvée' });
+      }
+  
+      // Créer un nouveau commentaire
+      const newComment = new Comment({
+        content,
+        user: userId,
+        recipe: recipeId,
+      });
+  
+      // Sauvegarder le commentaire
+      await newComment.save();
+  
+      return res.status(201).json({ message: 'Commentaire ajouté avec succès', comment: newComment });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Erreur serveur lors de l\'ajout du commentaire' });
+    }
+  };
+
+  // Ajouter ou mettre à jour une note pour une recette
+export const addOrUpdateScore = async (req, res) => {
+    const { score, recipeId } = req.body;
+    const userId = req.userId;
+  
+    try {
+      // Validation avec Joi
+      await scoreValidationSchema.validateAsync({ score, recipeId, userId });
+  
+      // Vérifier si la recette existe
+      const recipe = await Recipe.findById(recipeId);
+      if (!recipe) {
+        return res.status(404).json({ message: 'Recette non trouvée' });
+      }
+  
+      // Vérifier si l'utilisateur existe
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'Utilisateur non trouvé' });
+      }
+  
+      // Utiliser la méthode statique updateOrCreate pour gérer l'ajout ou la mise à jour du score
+      const updatedScore = await Score.updateOrCreate(userId, recipeId, score);
+  
+      return res.status(updatedScore.isNew ? 201 : 200).json({
+        message: updatedScore.isNew ? 'Score ajouté avec succès' : 'Score mis à jour avec succès',
+        score: updatedScore,
+      });
+    } catch (error) {
+      if (error.isJoi) {
+        return res.status(400).json({
+          message: 'Données invalides',
+          errors: error.details.map(err => ({
+            message: err.message,
+            path: err.path,
+          })),
+        });
+      }
+  
+      console.error(error);
+      return res.status(500).json({ message: 'Erreur serveur lors de la mise à jour de la note' });
+    }
+  };

@@ -1,89 +1,100 @@
+import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import myAxiosInstance from '../axios/axios';
-import { saveTokenAndPseudoInLocalStorage, getTokenAndPseudoFromLocalStorage, removePseudoAndTokenFromLocalStorage } from '../localstorage/localstorage';
+import { saveTokenAndPseudoInLocalStorage, getTokenAndPseudoFromLocalStorage } from '../localstorage/localstorage';
+
+// Fonction pour gérer la connexion
+const authenticateUser = async (email: string, password: string, setToken: React.Dispatch<React.SetStateAction<string>>, setUsername: React.Dispatch<React.SetStateAction<string>>, setError: React.Dispatch<React.SetStateAction<string>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>, navigate: ReturnType<typeof useNavigate>) => {
+  if (!email || !password) {
+    setError('Veuillez remplir tous les champs');
+    return;
+  }
+
+  setLoading(true);
+  setError('');
+
+  try {
+    const response = await myAxiosInstance.post('/api/auth/login', { email, password });
+
+    const { token, user } = response.data;
+    const { username, id: userId, role } = user;
+
+    if (!token || !username) {
+      throw new Error('Token ou pseudo manquant dans la réponse');
+    }
+
+    // Sauvegarder les informations dans le localStorage
+    saveTokenAndPseudoInLocalStorage(username, token, role, userId);
+    localStorage.setItem('userId', userId);
+    localStorage.setItem('role', role);
+
+    setToken(token);
+    setUsername(username);
+
+    // Redirection après une seconde
+    setTimeout(() => {
+      navigate('/'); // Redirection après connexion
+    }, 1000);
+  } catch (err) {
+    setLoading(false);
+
+    // Gestion des erreurs
+    if (axios.isAxiosError(err)) {
+      if (err.response) {
+        console.error('Erreur de connexion:', err.response);
+        setError(err.response?.data?.message || "Une erreur s'est produite lors de la connexion.");
+      } else {
+        console.error('Erreur réseau:', err);
+        setError("Erreur réseau, veuillez vérifier votre connexion.");
+      }
+    } else {
+      console.error('Erreur inconnue:', err);
+      setError("Une erreur s'est produite. Veuillez réessayer.");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 
 function Login() {
-  // États pour gérer les champs du formulaire et les erreurs
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [token, setToken] = useState<string>('');
-  const [username, setUsername] = useState<string>('');  // Nouveau état pour le pseudo
+  const [username, setUsername] = useState<string>(''); 
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  // Vérifier si l'utilisateur est déjà connecté au chargement de la page
+  const navigate = useNavigate();
+
+  // Chargement des données depuis le localStorage lors du premier rendu
   useEffect(() => {
-    const { token, pseudo } = getTokenAndPseudoFromLocalStorage();
-    if (token && pseudo) {
+    const { token, username } = getTokenAndPseudoFromLocalStorage();
+    if (token && username) {
       setToken(token);
-      setUsername(pseudo); // Stocker le pseudo dans l'état lors du chargement
+      setUsername(username); 
     }
   }, []);
 
-  // Fonction pour gérer la connexion
+  // Gestion de la soumission du formulaire
   const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault(); // Empêche l'envoi par défaut du formulaire
-
-    // Vérifier que l'email et le mot de passe ne sont pas vides
-    if (!email || !password) {
-      setError('Veuillez remplir tous les champs');
-      return;
-    }
-
-    setLoading(true);
-    setError(''); // Réinitialise les erreurs précédentes
-
-    // Envoi des données au backend pour vérifier les identifiants
-    myAxiosInstance.post('/api/auth/login', { email, password })
-      .then(response => {
-        const { token, pseudo } = response.data; // Supposons que la réponse contienne un token et un pseudo
-        saveTokenAndPseudoInLocalStorage(pseudo, token); // Sauvegarder pseudo et token dans localStorage
-        setToken(token);
-        setUsername(pseudo);  // Mettre à jour l'état du pseudo
-        setLoading(false);
-      })
-      .catch(err => {
-        setError('Identifiants incorrects. Essayez à nouveau.');
-        setLoading(false);
-        console.error('Erreur de connexion:', err);
-      });
-  };
-
-  const handleLogout = () => {
-    // Supprimer le token d'Axios et réinitialiser l'état
-    removePseudoAndTokenFromLocalStorage();
-    setToken('');
-    setUsername(''); // Réinitialiser le pseudo à la déconnexion
-  };
-
-  const fetchData = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    event.preventDefault();
-    setLoading(true);
-    setError('');
-
-    myAxiosInstance.get('/api/protected/data', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(response => {
-        console.log('Données protégées:', response.data);
-        setLoading(false);
-      })
-      .catch(err => {
-        setError('Erreur lors de la récupération des données.');
-        setLoading(false);
-        console.error('Erreur de récupération des données:', err);
-      });
+    e.preventDefault();
+    authenticateUser(email, password, setToken, setUsername, setError, setLoading, navigate);
   };
 
   return (
     <div className="login-page">
       {token ? (
         <div className="logged-in">
-          <h1>Bienvenue, {username}!</h1> {/* Affichage du pseudo */}
-          <button onClick={handleLogout}>Se déconnecter</button>
-          <button onClick={fetchData}>Récupérer des données protégées</button>
+          <h1>Bienvenue, {username || 'Utilisateur'}!</h1>
+          <button onClick={() => {
+            localStorage.clear(); // Efface toutes les informations stockées
+            setToken('');
+            setUsername('');
+            navigate('/login'); // Redirection vers la page de connexion
+          }}>
+            Déconnexion
+          </button>
         </div>
       ) : (
         <div className="login-form">

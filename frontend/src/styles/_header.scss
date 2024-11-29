@@ -29,6 +29,7 @@ h1 {
     justify-content: center;
     align-items: center;
     margin-bottom: 10rem;
+    margin-right: 17rem;
     width: 100%;
     position: relative;
 
@@ -115,7 +116,7 @@ h1 {
     }
 }
 
-// Media queries pour le responsive
+/* Media queries pour le responsive */
 @media screen and (max-width: 768px) {
     #header {
         height: auto;

@@ -18,7 +18,6 @@
     padding-bottom: 3rem;
     position: relative;
     text-align: center;
-
   }
 
   // Image de la recette
@@ -27,74 +26,27 @@
     height: auto;
     border-radius: 10px;
     margin-bottom: 30px;
-    margin-top: 100spx;
+    margin-top: 50px; // Ajuster pour plus de lisibilité
   }
 
-  h2, strong {
-    color: $primary-color; 
-    font-family: $font-family-primary;
-    font-weight: $font-weight-bold;
-    font-size: $font-size-secondary-title;
-    color: $primary-color;
-    margin-top: 30px;
-    margin-bottom: 15px;
-  }
-
-  p strong::after {
-    content: " "; /* Ajoute un espace après le texte du strong */
-  }
-  
-  // Description générale de la recette
-  .description {
+  // Description et anecdote de la recette
+  p {
     font-family: $font-family-secondary;
     font-weight: $font-weight-regular;
     font-size: $font-size-text-description;
     color: $text-color-secondary;
-    margin-bottom: 30px;
-
-    strong {
-      font-weight: $font-weight-bold;
-      color: $text-color-primary;
-    }
-  }
-
-  .anecdote {
-    font-family: $font-family-secondary;
-    font-weight: $font-weight-regular;
-    font-size: $font-size-text-description;
-    color: $text-color-secondary;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     
     strong {
       font-weight: $font-weight-bold;
       color: $primary-color;
     }
-    }
-
-  // Section Catégorie et Source
-  .category, .source {
-    font-family: $font-family-primary;
-    font-weight: $font-weight-regular;
-    font-size: $font-size-text-description;
-    color: $text-color-tertiary;
-    margin-bottom: 20px;
-
-    strong {
-      font-weight: $font-weight-bold;
-      color: $primary-color;
-    }
   }
 
-  // Date de création
-  .date {
-    font-family: $font-family-primary;
-    font-weight: $font-weight-regular;
-    font-size: $font-size-text-description;
-    color: $text-color-quaternary;
-    margin-bottom: 30px;
-  }
+// Ingrédients et instructions
+.content-wrapper {
+  margin-top: $spacing-recipe;
 
-  // Section des ingrédients
   h2 {
     font-family: $font-family-primary;
     font-weight: $font-weight-bold;
@@ -104,55 +56,47 @@
     margin-bottom: 15px;
   }
 
-  ul.ingredients {
+  ul.ingredients, ol.instructions {
     font-family: $font-family-primary;
     font-weight: $font-weight-regular;
     font-size: $font-size-text-description;
     color: $text-color-tertiary;
-    list-style-type: none;  // Retirer les puces par défaut
     padding-left: 20px;
-  
-    li {
-      margin-bottom: 15px;
-      position: relative;
-      padding-left: 25px;
-  
-      &::before {
-        content: "•";  // La puce
-        font-size: 1.5rem;
-        color: $primary-color;  // Couleur de la puce
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-    }
+    list-style-type: none;  // Retirer les puces par défaut
   }
-  
+
+  ul.ingredients li,
+  ol.instructions li {
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 35px; // Ajuster l'espace pour la numérotation
+  }
+
+  ul.ingredients li::before {
+    content: "•";
+    font-size: 1.5rem;
+    color: $primary-color;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  // Numérotation des instructions
   ol.instructions {
-    font-family: $font-family-primary;
-    font-weight: $font-weight-regular;
-    font-size: $font-size-text-description;
-    color: $text-color-tertiary;
-    list-style-type: none;  // Retirer les puces par défaut
-    padding-left: 20px;
-  
-    counter-reset: step;  // Réinitialiser le compteur au début de la liste
+    counter-reset: instruction-counter; // Initialise le compteur à zéro
+
     li {
-      counter-increment: step;  // Incrémenter le compteur pour chaque étape
+      counter-increment: instruction-counter; // Incrémente le compteur pour chaque étape
       margin-bottom: 15px;
       position: relative;
-      padding-left: 30px;
-  
-      .step-number {
-        font-weight: $font-weight-bold;
-        color: $accent-color;
-        margin-right: 10px;
-      }
-  
+
+      // Numéro de l'étape
       &::before {
-        content: counter(step) ". ";  // Afficher le numéro de l'étape automatiquement
-        color: $primary-color;  // Couleur de la puce
+        content: counter(instruction-counter) ". "; // Affiche le numéro de l'étape
+        color: $primary-color; // Appliquer la couleur orange
+        font-weight: $font-weight-bold; // Mettre en gras
+        font-size: 1.2rem; // Taille de la numérotation
         position: absolute;
         left: 0;
         top: 50%;
@@ -160,47 +104,98 @@
       }
     }
   }
-  
-  // Gestion du chargement et des erreurs
-  .loading, .error, .not-found {
+}
+
+  // Note moyenne
+  .average-rating {
     font-family: $font-family-primary;
     font-weight: $font-weight-regular;
     font-size: $font-size-tertiary-title;
-    color: $error-color;
-    text-align: center;
-    margin-top: 40px;
-  }
+    color: $text-color-tertiary;
+    margin-top: 30px;
 
-  // Classe de message pour une recette non trouvée
-  .not-found {
-    color: $error-color;
-    font-size: 1.2rem;
-  }
-
-  // Boutons
-  .button {
-    background-color: $background-color-button;
-    color: $text-color-button;
-    border-radius: $border-radius-button;
-    padding: 10px 20px;
-    font-family: $font-family-primary;
-    font-weight: $font-weight-bold;
-    text-transform: uppercase;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-    margin-top: 20px;
-    width: $size-button;
-    height: $size-button;
-    line-height: $size-button;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background-color: $hover-background-color-button;
-      color: $hover-text-color-button;
-      transform: scale(1.1);
+    h3 {
+      font-size: 1.5rem;
+      color: $primary-color;
     }
   }
+
+  // Section des commentaires
+  .comment-section {
+    margin-top: 40px;
+
+    h3 {
+      font-family: $font-family-primary;
+      font-weight: $font-weight-bold;
+      font-size: $font-size-secondary-title;
+      color: $primary-color;
+      margin-bottom: 15px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid $text-color-tertiary;
+      font-family: $font-family-secondary;
+      font-size: $font-size-text-description;
+      margin-bottom: 20px;
+      resize: vertical;
+    }
+
+    .rating {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+
+      span {
+        font-size: 1.5rem;
+        cursor: pointer;
+
+        &.filled {
+          color: $accent-color;
+        }
+      }
+    }
+
+    button {
+      background-color: $background-color-button;
+      color: $text-color-button;
+      border-radius: $border-radius-button;
+      padding: 10px 20px;
+      font-family: $font-family-primary;
+      font-weight: $font-weight-bold;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: $hover-background-color-button;
+        color: $hover-text-color-button;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  // Message pour redirection
+  .redirect-message {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-text-description;
+    color: $text-color-secondary;
+    margin-top: 30px;
+    
+    button {
+      background: none;
+      color: $primary-color;
+      border: none;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  }
+
 }
 
 // Responsive Design
@@ -222,6 +217,16 @@
     font-size: 1rem;
   }
 
+  .comment-section textarea {
+    font-size: 1rem;
+  }
+
+  .rating {
+    span {
+      font-size: 1.2rem;
+    }
+  }
+
   .button {
     width: 50px;
     height: 50px;
@@ -237,5 +242,9 @@
 
   h1 {
     font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
   }
 }
