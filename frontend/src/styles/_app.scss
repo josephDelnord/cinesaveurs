@@ -1,5 +1,3 @@
-/* App.scss (ou style.scss selon votre configuration) */
-
 .app {
   display: flex;
   flex-direction: column;
@@ -7,9 +5,14 @@
 }
 
 .main-content {
-  margin-left: 250px; // Donne de l'espace à gauche pour le Sidebar
-  padding: 20px; // Espacement interne du contenu principal
-  flex-grow: 1; // Le contenu prend tout l'espace restant
+  padding: 20px; /* Espacement interne du contenu principal */
+  flex-grow: 1; /* Le contenu prend tout l'espace restant */
+  transition: margin-left 0.3s ease; /* Transition pour décaler le contenu */
+}
+
+/* Appliquez un margin-left lorsque la sidebar est visible */
+.app-with-sidebar .main-content {
+  margin-left: 250px; /* Réserver l'espace à gauche pour la sidebar */
 }
 
 .content {

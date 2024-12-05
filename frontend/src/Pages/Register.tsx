@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import myAxiosInstance from '../axios/axios';
 import { saveTokenAndPseudoInLocalStorage, decodeToken } from '../localstorage/localstorage';
 import { useNavigate } from 'react-router-dom';
@@ -111,13 +112,13 @@ const Register = () => {
         <button type="submit" disabled={loading}>
           {loading ? "Chargement..." : "S'inscrire"}
         </button>
-      </form>
-
-      <div className="login-link">
+        <div className="login-link">
         <p>
           Vous avez déjà un compte ? <a href="/login">Se connecter</a>
         </p>
       </div>
+      </form>
+
     </div>
   );
 };

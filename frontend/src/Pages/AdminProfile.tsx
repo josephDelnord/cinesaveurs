@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import type React from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import myAxiosInstance from '../axios/axios';
-import { IUser } from '../@types/User';
+import type { IUser } from '../@types/User';
 
 const AdminProfile: React.FC = () => {
   // Récupérer l'ID utilisateur depuis les paramètres de l'URL

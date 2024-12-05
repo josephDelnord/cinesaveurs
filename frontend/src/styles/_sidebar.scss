@@ -2,7 +2,7 @@
 
 /* Sidebar */
 .sidebar {
-  background-color: $secondary-color; /* Fond sombre pour le sidebar */
+  background-color: rgba(51, 51, 51, 0.8); /* Utilisation directe de RGBA pour une couleur hex #333 avec opacité de 0.8 */
   color: $text-color-quaternary; /* Texte blanc */
   padding: 2rem;
   width: 250px;
@@ -11,7 +11,8 @@
   top: 0;
   left: 0;
   z-index: 1000;
-  display: block; /* Par défaut, le sidebar est visible */
+  display: block; /* Par défaut, la sidebar est visible */
+  transition: all 0.3s ease; /* Transition pour un effet fluide */
 
   h3 {
     font-size: 1.8rem;
@@ -45,9 +46,25 @@
       }
     }
   }
+
+  /* Si l'utilisateur n'est pas admin, masquer la sidebar */
+  &.hidden {
+    display: none;
+  }
 }
 
-/* Si l'utilisateur n'est pas admin, cacher le sidebar */
-.sidebar[style*="display: none"] {
-  display: none;
+/* Responsiveness */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px; /* Réduire la taille de la sidebar pour les petits écrans */
+    display: none; /* Masquer la sidebar par défaut sur petits écrans */
+    position: absolute; /* Position absolue pour les petits écrans */
+    top: 0;
+    left: -250px; /* Masquer la sidebar hors de l'écran */
+    transition: left 0.3s ease; /* Transition pour le slide */
+  }
+
+  .sidebar.visible {
+    left: 0; /* Afficher la sidebar lorsqu'elle est visible */
+  }
 }

@@ -40,6 +40,7 @@ function Header() {
             <>
               <li><Link to="/register" onClick={closeMenu}>Inscription</Link></li>
               <li><Link to="/login" onClick={closeMenu}>Connexion</Link></li>
+              <li><Link to="/about" onClick={closeMenu}>A propos</Link></li>
             </>
           ) : (
             <>
@@ -48,23 +49,23 @@ function Header() {
             </>
           )}
           
-          <li><Link to="/about" onClick={closeMenu}>A propos</Link></li>
-          
           {userRole === 'admin' && (
             <li><Link to="/admin/dashboard" onClick={closeMenu}>Dashboard</Link></li>
           )}
         </ul>
       </nav>
 
-      <div
+      <button
+        type="button"
         className={`burger-menu ${isMenuOpen ? 'open' : ''}`}
         onClick={toggleMenu}
+        onKeyUp={(e) => { if (e.key === 'Enter') toggleMenu(); }}
         aria-label="Menu burger"
       >
-        <span className="burger-icon"></span>
-        <span className="burger-icon"></span>
-        <span className="burger-icon"></span>
-      </div>
+        <span className="burger-icon" />
+        <span className="burger-icon" />
+        <span className="burger-icon" />
+      </button>
     </div>
   );
 }

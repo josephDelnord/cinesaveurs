@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Sidebar: React.FC = () => {
@@ -16,22 +17,22 @@ const Sidebar: React.FC = () => {
   }
 
   const links = [
-    { to: '/admin/dashboard', text: 'Dashboard' },
-    { to: '/admin/dashboard/users', text: 'Users' },
-    { to: '/admin/dashboard/roles', text: 'Roles' },
-    { to: '/admin/dashboard/recipes', text: 'Recipes' },
-    { to: '/admin/dashboard/categories', text: 'Categories' },
-    { to: '/admin/dashboard/comments', text: 'Comments' },
-    { to: '/admin/dashboard/scores', text: 'Scores' },
-    { to: '/admin/dashboard/settings', text: 'Settings' },
+    { id: 'dashboard', to: '/admin/dashboard', text: 'Dashboard' },
+    { id: 'users', to: '/admin/dashboard/users', text: 'Users' },
+    { id: 'roles', to: '/admin/dashboard/roles', text: 'Roles' },
+    { id: 'recipes', to: '/admin/dashboard/recipes', text: 'Recipes' },
+    { id: 'categories', to: '/admin/dashboard/categories', text: 'Categories' },
+    { id: 'comments', to: '/admin/dashboard/comments', text: 'Comments' },
+    { id: 'scores', to: '/admin/dashboard/scores', text: 'Scores' },
+    { id: 'settings', to: '/admin/dashboard/settings', text: 'Settings' },
   ];
 
   return (
     <div className="sidebar">
       <h3>Admin Panel</h3>
       <ul>
-        {links.map((link, index) => (
-          <li key={index}>
+        {links.map((link) => (
+          <li key={link.id}>
             <NavLink
               to={link.to}
               className={({ isActive }) => (isActive ? 'active' : '')}

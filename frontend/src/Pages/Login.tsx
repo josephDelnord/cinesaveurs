@@ -87,12 +87,15 @@ function Login() {
       {token ? (
         <div className="logged-in">
           <h1>Bienvenue, {username || 'Utilisateur'}!</h1>
-          <button onClick={() => {
-            localStorage.clear(); // Efface toutes les informations stockées
-            setToken('');
-            setUsername('');
-            navigate('/login'); // Redirection vers la page de connexion
-          }}>
+          <button
+            type="button"
+            onClick={() => {
+              localStorage.clear(); // Efface toutes les informations stockées
+              setToken('');
+              setUsername('');
+              navigate('/login'); // Redirection vers la page de connexion
+            }}
+          >
             Déconnexion
           </button>
         </div>

@@ -16,25 +16,24 @@
     text-align: center;
     font-size: $font-size-secondary-title;
     color: $primary-color;
-    margin-bottom: 5rem; // Espace sous le titre
+    margin-top: 6rem; // Réduit l'écart pour les petits écrans
   }
 
   form {
     background-color: $background-color-light;
-    padding: 6rem;
-    padding-bottom: 5rem; // Espace sous le formulaire
+    padding: 4rem 3rem; // Réduction du padding pour mieux s'adapter aux petits écrans
+    margin-bottom: 5rem;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 500px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; // Pour que les éléments se placent l'un après l'autre
-    position: relative; // Utilisé pour contrôler le placement des éléments
+    justify-content: flex-start;
 
     input, select {
       width: 100%;
-      padding: 2rem;
+      padding: 1.5rem; // Ajustement pour plus d'espace dans les champs
       margin: 0.75rem 0;
       border: 1px solid $secondary-color;
       border-radius: 5px;
@@ -63,8 +62,9 @@
 
     button {
       width: 100%;
-      padding: 2rem;
+      padding: 1.8rem; // Ajustement du padding pour une meilleure expérience sur mobile
       margin-top: 1rem;
+      margin-bottom: 2rem;
       border: none;
       background-color: $primary-color;
       color: $text-color-quaternary;
@@ -85,7 +85,7 @@
         cursor: not-allowed;
       }
     }
-    
+
     p {
       color: $error-color;
       text-align: center;
@@ -96,21 +96,21 @@
 
   .login-link {
     display: flex;
-    justify-content: center; 
-    position: relative; 
-    top: 2rem; 
-    
+    justify-content: center;
+    position: relative;
+    top: 2rem;
+
     p {
       color: $text-color-primary;
       font-size: 1rem;
       margin: 0;
     }
-  
+
     a {
       color: $primary-color;
       text-decoration: none;
       font-weight: $font-weight-bold;
-  
+
       &:hover {
         text-decoration: underline;
       }
@@ -118,15 +118,51 @@
   }
 
   @media screen and (max-width: $breakpoint-md) {
-    padding: 1rem;
+    padding: 1rem; // Réduction des padding sur mobile
 
     h2 {
-      font-size: 2rem;
+      font-size: 2rem; // Ajustement de la taille du titre pour les petits écrans
+      margin-top: 4rem; // Réduction de la marge au-dessus du titre
     }
 
     form {
       max-width: 100%;
-      padding: 1.5rem;
+      padding: 2rem; // Ajustement du padding
+      margin-right: 10%; // Décalage du formulaire vers la gauche
+      transform: translateX(-10%);  // Décalage à gauche
+
+    }
+
+    input, select {
+      padding: 1.2rem; // Réduction du padding dans les champs de saisie
+    }
+
+    button {
+      padding: 1.6rem; // Ajustement du padding du bouton
+    }
+
+    .login-link {
+      top: 1rem; // Ajustement de la position du lien
+    }
+  }
+
+  @media screen and (max-width: $breakpoint-sm) {
+    h2 {
+      font-size: 1.8rem; // Taille de police encore plus petite pour les très petits écrans
+      margin-top: 2rem; // Ajustement de la marge pour les écrans très petits
+    }
+
+    form {
+      padding: 1.5rem; // Padding supplémentaire réduit pour les petits écrans
+      margin-right: 15%; // Plus de décalage pour les petits écrans
+    }
+
+    input, select {
+      padding: 1rem; // Plus petit padding pour optimiser l'espace
+    }
+
+    button {
+      padding: 1.4rem; // Taille plus petite du bouton
     }
   }
 }

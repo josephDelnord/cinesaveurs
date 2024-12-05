@@ -2,181 +2,133 @@
 
 #header {
     position: relative;
-    top: 0;
     display: flex;
-    flex-direction: row;
-    width: 100vw;
-    height: 20vh;
-    align-items: center;
     justify-content: space-between;
-    border-radius: solid 1px $primary-color;
-}
-
-#logo-header {
-    height: 9vw;
-    padding-left: 2vw;
-    top: 1rem;
-    position: absolute;
-}
-
-h1 {
-    color: $primary-color;
-    position: absolute;
-}
-
-#nav {
-    display: flex;
-    justify-content: center;
     align-items: center;
-    margin-bottom: 10rem;
-    margin-right: 17rem;
-    width: 100%;
-    position: relative;
+    padding: 1rem 2rem;
+    background-color: $background-color;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  #logo-header {
+    height: 60px; /* Ajuster la taille du logo */
+    width: auto;
+  }
+  
+  #nav {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  #nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+  }
+  
+  #nav li {
+    display: inline-block;
+  }
+  
+  #nav a {
+    text-decoration: none;
+    color: $text-color-secondary;
+    font-family: $font-family-primary;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  #nav a:hover {
+    color: $primary-color;
+  }
 
-    ul {
-        display: flex;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        transition: max-height 0.3s ease-in-out;
-        top: 1rem;
-        right: 2rem;
-        position: absolute;
-
-        li {
-            margin: 0 2rem;
-
-            a {
-                text-decoration: none;
-                font-family: $font-family-primary;
-                font-size: 1.5rem;
-                color: $text-color-secondary;
-                transition: color 0.3s ease;
-                text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-                text-transform: uppercase;
-
-                &:hover {
-                    color: $primary-color;
-                }
-            }
-        }
-    }
-}
-
-/* Ligne allant de la droite vers le logo */
-#header::before {
+  /* Ligne allant de la droite vers le logo */
+  #header::before {
     content: '';
     position: absolute;
-    top: 50%;
+    top: 100%; /* Positionne la ligne juste sous la barre de navigation */
+    left: 0;
     right: 0;
-    width: calc(100vw - 10vw - 5vw);
+    width: 100%;
     height: 5px;
     background-color: $primary-color;
-    transform: translateY(-50%);
-}
+    transform: translateY(0);
+  }
 
-/* Menu burger */
-.burger-menu {
-    display: none;
+  /* Styles pour le menu burger */
+  .burger-menu {
+    display: none; /* Cacher le burger par défaut */
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     width: 30px;
-    height: 25px;
+    height: 30px;
+    background: transparent;
+    border: none;
     cursor: pointer;
-    position: absolute;
-    right: 2rem;
-    z-index: 1000;
-
-    .burger-icon {
-        width: 100%;
-        height: 4px;
-        background-color: $primary-color;
-        transition: 0.3s;
-    }
-
-    &.open {
-        .burger-icon {
-            &:nth-child(1) {
-                transform: rotate(45deg);
-                position: relative;
-                top: 8px;
-            }
-
-            &:nth-child(2) {
-                opacity: 0;
-            }
-
-            &:nth-child(3) {
-                transform: rotate(-45deg);
-                position: relative;
-                top: -8px;
-            }
-        }
-    }
-}
-
-/* Media queries pour le responsive */
-@media screen and (max-width: 768px) {
-    #header {
-        height: auto;
-        flex-direction: column;
-        position: relative;
-    }
-
-    #logo-header {
-        position: relative;
-        top: 0;
-        left: -12rem;
-        padding: 1rem;
-        height: 7vw;
-    }
-
-    #header::before {
-        display: none;
-    }
-
+    z-index: 1001;
+  }
+  
+  .burger-icon {
+    width: 100%;
+    height: 4px;
+    background-color: $primary-color;
+    margin: 4px 0;
+    transition: all 0.3s;
+  }
+  
+  /* Lorsque le menu burger est ouvert */
+  .burger-menu.open .burger-icon:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  
+  .burger-menu.open .burger-icon:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .burger-menu.open .burger-icon:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+  
+  #nav.open {
+    display: block; /* Affiche le menu en mode burger */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #nav.open ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  #nav.open a {
+    font-size: 1.5rem;
+    color: $text-color-quaternary;
+  }
+  
+  #nav.open a:hover {
+    color: $hover-text-color-button;
+  }
+  
+  /* Media queries pour le responsive */
+  @media (max-width: 768px) {
     #nav {
-        display: none; // Cache le menu desktop
-        
-        &.open {
-            display: block; // Affiche le menu burger
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 20vh);
-            background-color: white;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-
-            ul {
-                flex-direction: column;
-                position: static;
-                width: 100%;
-                align-items: center;
-
-                li {
-                    margin: 1rem 0;
-                    text-align: center;
-
-                    a {
-                        font-size: 2rem;
-                        display: block;
-                        width: 100%;
-                        padding: 0.5rem 0;
-                    }
-                }
-            }
-        }
+      display: none; /* Cache le menu sur mobile */
     }
-
+  
     .burger-menu {
-        display: flex; // Affiche le menu burger
-        top: 0;
-        right: 0;
-        position: absolute;
+      display: flex; /* Affiche le burger sur mobile */
     }
-}
+  
+    #nav.open {
+      display: block;
+    }
+  }
+  

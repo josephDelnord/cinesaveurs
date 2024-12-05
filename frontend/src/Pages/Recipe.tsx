@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import type React from 'react';
+import { useState, useEffect } from 'react';
 import myAxiosInstance from '../axios/axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { IRecipe } from '../@types/Recipe';
+import type { IRecipe } from '../@types/Recipe';
 import type { IComment } from '../@types/Comment';
 
 const Recipe: React.FC = () => {
@@ -133,8 +134,8 @@ const Recipe: React.FC = () => {
       <div className="content-wrapper">
         <h2>Ingrédients</h2>
         <ul className="ingredients">
-          {recipe.ingredients.map((ingredient, index) => (
-            <li key={index}>
+          {recipe.ingredients.map((ingredient) => (
+            <li key={ingredient.id}>
               {ingredient.name} : {ingredient.quantity} {ingredient.quantity_description} {ingredient.unit}
             </li>
           ))}
@@ -170,20 +171,26 @@ const Recipe: React.FC = () => {
           <div className="rating">
             <span>Note: </span>
             {[1, 2, 3, 4, 5].map((star) => (
-              <span
+              <button
                 key={star}
+                type="button"
                 className={`${rating >= star ? 'filled' : ''}`}
                 onClick={() => handleRatingChange(star)}
+                onKeyUp={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleRatingChange(star);
+                  }
+                }}
               >
                 ★
-              </span>
+              </button>
             ))}
           </div>
-          <button onClick={handleSubmitComment}>Soumettre</button>
+          <button type="button" onClick={handleSubmitComment}>Soumettre</button>
         </div>
       ) : (
         <p className='redirect-message'>
-          Veuillez vous <button onClick={handleRedirectToLogin}>connecter</button> pour ajouter un commentaire.
+          Veuillez vous <button type="button" onClick={handleRedirectToLogin}>connecter</button> pour ajouter un commentaire.
         </p>
       )}
 

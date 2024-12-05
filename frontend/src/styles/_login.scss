@@ -3,39 +3,39 @@
 
 // Page de connexion
 .login-page {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $background-color-light;
-    font-family: $font-family-primary;
-    padding: 2rem;
-    position: relative; // Permet de gérer le titre en position absolue
-    
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $background-color-light;
+  font-family: $font-family-primary;
+  padding: 2rem;
+  position: relative; // Permet de gérer le titre en position absolue
+
+  // Formulaire de connexion
   .login-form {
     background-color: $background-color-light;
-    padding: 7rem;
+    padding: 3rem 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 500px;
-    margin-top: 4rem; // Ajoutez un espacement entre le titre et le formulaire
-
     display: flex;
     flex-direction: column;
-    align-items: center; // Centre le contenu horizontalement
-    justify-content: flex-start; // Assure que le contenu commence du haut
-    
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 4rem;
+
     h1 {
-        position: absolute; 
-        top: 7rem; // Ajustez la distance par rapport au haut de la page
-        width: 100%;
-        text-align: center;
-        font-size: $font-size-secondary-title;
-        color: $primary-color;
-        margin: 0; // Enlever les marges par défaut
-        z-index: 10; // Assurez-vous que le titre est au-dessus du formulaire
+      position: absolute; 
+      top: 5rem; // Ajuste la position du titre
+      width: 100%;
+      text-align: center;
+      font-size: $font-size-secondary-title;
+      color: $primary-color;
+      margin: 0;
+      z-index: 10;
     }
 
     .error {
@@ -45,7 +45,8 @@
     }
 
     .input-group {
-      margin-bottom: $spacing-recipe; // Utilisation de l'espacement des recettes
+      width: 100%;
+      margin-bottom: $spacing-recipe; 
 
       label {
         font-family: $font-family-primary;
@@ -57,7 +58,7 @@
 
       input {
         width: 100%;
-        padding: 2rem;
+        padding: 1rem;
         font-size: $font-size-text-description;
         border: 1px solid #ddd;
         border-radius: 5px;
@@ -74,7 +75,7 @@
 
     button {
       width: 100%;
-      padding: 2rem;
+      padding: 1rem;
       background-color: $primary-color;
       color: $text-color-quaternary;
       font-size: $font-size-text-description;
@@ -88,7 +89,6 @@
         background-color: $hover-background-color-button;
         color: $hover-text-color-button;
         transform: scale(1.05);
-
       }
 
       &:disabled {
@@ -97,20 +97,22 @@
       }
     }
   }
+
+  // Section après connexion
   .logged-in {
     text-align: center;
     width: 100%;
-    max-width: 600px; // Limite la largeur maximale de la section à 600px
+    max-width: 600px;
     padding: 2rem;
     background-color: $background-color-light;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    margin-top: -10rem;
+    margin-top: -8rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  
+
     h1 {
       font-family: $font-family-primary;
       font-weight: $font-weight-bold;
@@ -120,7 +122,7 @@
       text-align: center;
       position: relative;
     }
-  
+
     button {
       padding: 0.8rem 2rem;
       font-size: $font-size-text-description;
@@ -132,30 +134,52 @@
       transition: background-color 0.3s ease, transform 0.3s ease;
       margin: 1rem 0;
       width: 100%;
-      max-width: 300px; // Limite la largeur du bouton à 300px
-  
+      max-width: 300px;
+
       &:hover {
         background-color: $hover-background-color-button;
         color: $hover-text-color-button;
         transform: scale(1.05);
       }
-  
+
       &:disabled {
         background-color: #bbb;
         cursor: not-allowed;
       }
     }
-  
+
     .user-info {
       margin-top: 2rem;
       font-family: $font-family-primary;
       font-size: $font-size-text-description;
       color: $text-color-secondary;
-  
+
       p {
         margin: 0.5rem 0;
       }
     }
   }
-  
+}
+
+// Responsivité
+@media screen and (max-width: 768px) {
+  .login-page {
+    padding: 1rem;
+
+    .login-form {
+      padding: 2rem 1rem;
+      max-width: 100%;
+      margin-top: 2rem;
+    }
+
+    .logged-in {
+      margin-top: -5rem;
+      max-width: 100%;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
 }

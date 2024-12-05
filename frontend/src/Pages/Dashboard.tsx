@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import myAxiosInstance from '../axios/axios';
 import type { IComment } from '../@types/Comment';
 import type { IScore } from '../@types/Score';
