@@ -86,13 +86,9 @@ const Recipes: React.FC = () => {
 
   return (
     <div className="recipes-page">
-      <h2>Bienvenue dans l'univers de Cine Délices</h2>
 
-      {/* Affichage des erreurs s'il y en a une */}
-      {error && <p className="error-message">{error}</p>}
-
-      {/* Barre de recherche */}
-      <div className="search-container">
+    {/* Barre de recherche */}
+    <div className="search-container">
         <input
           type="text"
           placeholder="Rechercher une recette"
@@ -104,6 +100,11 @@ const Recipes: React.FC = () => {
           Rechercher
         </button>
       </div>
+      
+      <h2>Bienvenue dans l'univers de Ciné Délices</h2>
+
+      {/* Affichage des erreurs s'il y en a une */}
+      {error && <p className="error-message">{error}</p>}
 
       {/* Affichage des cartes de recettes */}
       <div className="recipe-cards-container">

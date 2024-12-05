@@ -53,6 +53,11 @@
   }
 }
 
+/* Appliquez un margin-left lorsque la sidebar est visible */
+.app-with-sidebar .main-content {
+  margin-left: 250px; /* Réserver l'espace à gauche pour la sidebar */
+}
+
 /* Responsiveness */
 @media (max-width: 768px) {
   .sidebar {

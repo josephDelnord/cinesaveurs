@@ -1,14 +1,5 @@
 @use 'variables' as *;
 
-// Variables (optionnel pour personnaliser les couleurs, tailles, etc.)
-$footer-background-color: #333; // Couleur de fond du footer
-$footer-text-color: #fff; // Couleur du texte
-$footer-padding: 1.5rem; // Espacement du footer
-$footer-font-size: 1rem; // Taille du texte dans le footer
-$footer-font-family: 'Arial', sans-serif; // Police du footer
-$footer-border-top: 1px solid #444; // Bordure en haut du footer
-
-// Styles généraux pour le footer
 footer {
   background-color: $footer-background-color;
   color: $footer-text-color;
@@ -17,19 +8,19 @@ footer {
   font-size: $footer-font-size;
   font-family: $footer-font-family;
   width: 100%;
-  position: relative; // Permet au footer de rester en bas si nécessaire
+  position: relative; /* Fixe le footer en bas de la page */
   bottom: 0;
-
-  // Bordure en haut du footer
   border-top: $footer-border-top;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-  // Ajouter un espacement pour le texte
-  p {
-    margin: 0;
-  }
+footer p {
+  margin: 0;
+}
 
-  // Media query pour les petits écrans (mobile)
-  @media (max-width: 768px) {
+// Media query pour les petits écrans (mobile)
+@media (max-width: 768px) {
+  footer {
     padding: 1rem; // Réduire l'espacement sur les petits écrans
     font-size: 0.9rem; // Réduire la taille du texte sur les petits écrans
   }
