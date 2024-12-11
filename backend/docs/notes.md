@@ -1,4 +1,4 @@
-## pour créer la bdd mongodb
+# pour créer la bdd mongodb
 
 ```mongosh
 use cinedelicesdb
