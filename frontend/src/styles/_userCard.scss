@@ -1,0 +1,48 @@
+@use 'variables' as *; /* Importation des variables SCSS */
+
+// Conteneur principal de la carte utilisateur
+.user-card {
+  background-color: $background-color-light;
+  border: 1px solid $text-color-secondary;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-family: $font-family-primary;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  a {
+    text-decoration: none;
+    color: $primary-color;
+    font-size: $font-size-tertiary-title;
+    font-weight: $font-weight-bold;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $accent-color;
+    }
+  }
+
+  h3 {
+    font-size: $font-size-tertiary-title;
+    color: $text-color-primary;
+    margin: 0;
+  }
+
+  p {
+    font-size: $font-size-text-description;
+    color: $text-color-secondary;
+    margin: 0;
+    &:nth-child(2) {
+      font-weight: $font-weight-regular;
+    }
+  }
+}

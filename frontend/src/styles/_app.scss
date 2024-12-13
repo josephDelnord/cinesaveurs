@@ -1,33 +1,59 @@
+/* Généralités */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  scroll-behavior: smooth;
+  background-color: #f7eedf;
+}
+
+/* Wrapper principal */
 .app {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;  /* Assurez-vous que la hauteur minimale occupe toute la fenêtre */
+  min-height: 100vh; /* S'assurer que le contenu utilise toute la hauteur de la page */
 }
 
+/* Header fixe collé en haut de l'écran */
+header {
+  position: fixed;
+  top: 0; /* Collé en haut de l'écran */
+  left: 0;
+  height: 60px;
+  width: 100%; /* Prend toute la largeur de l'écran */
+  background-color: #4caf50;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* Conteneur principal avec flexbox */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Prend tout l'espace restant */
+  margin-top: 60px; /* Décalage pour tenir compte de la hauteur du header */
+}
+
+/* Contenu principal */
 .main-content {
-  padding: 20px; /* Espacement interne du contenu principal */
-  flex-grow: 1; /* Le contenu prend tout l'espace restant */
-  transition: margin-left 0.3s ease; /* Transition pour décaler le contenu */
+  flex-grow: 1; /* Occupe tout l'espace disponible entre le header et le footer */
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Appliquez un margin-left lorsque la sidebar est visible */
-.app-with-sidebar .main-content {
-  margin-left: 250px; /* Réserver l'espace à gauche pour la sidebar */
-}
-
-.content {
-  flex: 1;  /* Permet à ce div de prendre tout l'espace restant */
-}
-
+/* Footer en bas de la page */
 footer {
-  margin-top: auto; /* Pousse le footer vers le bas */
-}
-
-/* Défilement fluide */
-body {
-  scroll-behavior: smooth; /* Défilement fluide partout sur la page */
-  margin: 0;
-  padding: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #F7EEDF; /* Fond clair */
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 0.9em;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: auto; /* Force le footer à rester en bas de la page */
 }

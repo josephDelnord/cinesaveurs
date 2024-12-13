@@ -25,10 +25,15 @@ setupSwagger(app);
 
 // Middleware CORS
 app.use(cors({
-    origin: 'http://localhost:3000',  // L'URL de votre frontend en production
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Méthodes HTTP autorisées
-    allowedHeaders: ['Content-Type', 'Authorization'],  // En-têtes autorisés
-}));
+    origin: 'http://localhost:3000', // URL de votre frontend
+    credentials: true,  // Autoriser les credentials
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: [
+      'Content-Type', 
+      'Authorization', 
+      'Access-Control-Allow-Credentials'
+    ]
+  }));
 
 // Middleware pour parser les données JSON et URL-encoded
 app.use(express.json());

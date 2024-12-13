@@ -1,30 +1,37 @@
-// src/context/AuthContext.tsx
-import React, { createContext, useState, ReactNode } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
+import { getTokenAndPseudoFromLocalStorage } from "../localstorage/localstorage";
 
-interface AuthContextType {
-  user: { _id: string; username: string } | null;
-  login: (user: { _id: string; username: string }) => void;
-  logout: () => void;
+interface AuthContextProps {
+  isAdmin: boolean;
+  isLoading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextProps>({
+  isAdmin: false,
+  isLoading: true,
+});
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<{ _id: string; username: string } | null>(null);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const login = (user: { _id: string; username: string }) => {
-    setUser(user);
-  };
+  useEffect(() => {
+    const checkAuth = () => {
+      const user = getTokenAndPseudoFromLocalStorage();
+      if (user?.role === 'admin') {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+      setIsLoading(false);
+    };
 
-  const logout = () => {
-    setUser(null);
-  };
+    checkAuth();
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ isAdmin, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-export default AuthContext;
