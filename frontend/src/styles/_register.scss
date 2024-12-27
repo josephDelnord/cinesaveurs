@@ -16,7 +16,8 @@
     text-align: center;
     font-size: $font-size-secondary-title;
     color: $primary-color;
-    margin-top: 6rem; // Réduit l'écart pour les petits écrans
+    margin-top: 2rem; // Réduit l'écart pour les petits écrans
+    margin-bottom: 6rem;
   }
 
   form {
