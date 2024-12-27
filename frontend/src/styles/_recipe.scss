@@ -36,6 +36,7 @@
     font-size: $font-size-text-description;
     color: $text-color-secondary;
     margin-bottom: 20px;
+    text-align: justify;
     
     strong {
       font-weight: $font-weight-bold;
@@ -46,6 +47,7 @@
 // Ingrédients et instructions
 .content-wrapper {
   margin-top: $spacing-recipe;
+
 
   h2 {
     font-family: $font-family-primary;
@@ -63,6 +65,7 @@
     color: $text-color-tertiary;
     padding-left: 20px;
     list-style-type: none;  // Retirer les puces par défaut
+    text-align: justify;   // Justification du texte
   }
 
   ul.ingredients li,
@@ -70,6 +73,7 @@
     margin-bottom: 15px;
     position: relative;
     padding-left: 35px; // Ajuster l'espace pour la numérotation
+
   }
 
   ul.ingredients li::before {
@@ -90,6 +94,7 @@
       counter-increment: instruction-counter; // Incrémente le compteur pour chaque étape
       margin-bottom: 15px;
       position: relative;
+
 
       // Numéro de l'étape
       &::before {
