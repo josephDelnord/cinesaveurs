@@ -14,8 +14,10 @@ import validateCommentSchema from "../validation/schemas/commentValidation.js";
 import Score from "../models/Score.js";
 import User from "../models/User.js";
 import scoreValidationSchema from "../validation/schemas/scoreValidation.js";
+// import { cacheData, getData, invalidateCache } from "../cache/memcached.js"; // Importer les fonctions de cache
 
 // Récupérer toutes les recettes avec les ingrédients et instructions peuplés
+
 export const getRecipes = async (req, res) => {
   try {
     const recipes = await Recipe.find();
@@ -29,6 +31,41 @@ export const getRecipes = async (req, res) => {
     res.status(500).json({ message: "Error retrieving recipes" });
   }
 };
+
+// export const getRecipes = async (req, res) => {
+//   try {
+//     const cacheKey = "all_recipes"; // Utiliser une clé de cache pour les recettes
+
+//     // Vérifier si les recettes sont présentes dans le cache Memcached
+//     getData(cacheKey, async (err, cachedRecipes) => {
+//       if (err) {
+//         console.error("Erreur de récupération depuis Memcached:", err);
+//       }
+
+//       // Si les recettes sont dans le cache, les retourner
+//       if (cachedRecipes) {
+//         console.log("Recettes récupérées depuis le cache");
+//         return res.status(200).json(JSON.parse(cachedRecipes)); // Parser la valeur JSON du cache
+//       }
+//       // Si les recettes ne sont pas dans le cache, récupérer depuis la base de données
+//       const recipes = await Recipe.find(); // Vous pouvez ajouter des `.populate()` ici si nécessaire
+
+//       // Si aucune recette n'est trouvée, renvoyer un tableau vide
+//       if (!recipes.length) {
+//         return res.status(200).json([]);
+//       }
+
+//       // Mettre les recettes dans le cache pour la durée définie (1 heure = 3600 secondes)
+//       cacheData(cacheKey, JSON.stringify(recipes)); // Stocker les recettes sous forme de chaîne JSON
+
+//       // Retourner les recettes récupérées de la base de données
+//       return res.status(200).json(recipes);
+//     });
+//   } catch (error) {
+//     console.error("Erreur lors de la récupération des recettes:", error);
+//     res.status(500).json({ message: "Error retrieving recipes" });
+//   }
+// };
 
 // Récupérer une seule recette par son ID
 export const getRecipeById = async (req, res) => {
@@ -53,6 +90,48 @@ export const getRecipeById = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
+// // Récupérer une seule recette par son ID
+// export const getRecipeById = async (req, res) => {
+//   const { id } = req.params;
+//   const cacheKey = `recipe_${id}`; // Utiliser l'ID comme clé de cache
+
+//   try {
+//     // Vérifier si la recette est déjà dans le cache
+//     getData(cacheKey, async (err, cachedRecipe) => {
+//       if (err) {
+//         console.error("Erreur lors de la récupération depuis Memcached:", err);
+//       }
+
+//       // Si la recette est présente dans le cache, la renvoyer
+//       if (cachedRecipe) {
+//         console.log("Recette récupérée depuis le cache");
+//         return res.status(200).json(JSON.parse(cachedRecipe)); // Retourner la recette du cache
+//       }
+
+//       // Si la recette n'est pas dans le cache, la récupérer depuis la base de données
+//       const recipe = await Recipe.findById(id)
+//         .lean() // Récupérer un objet JavaScript pur pour éviter les problèmes de sérialisation
+//         .populate("category", "name")
+//         .populate("ingredients", "name quantity quantity_description unit")
+//         .populate("instructions", "step_number instruction");
+
+//       // Si la recette n'est pas trouvée, renvoyer une erreur 404
+//       if (!recipe) {
+//         return res.status(404).json({ message: "Recette non trouvée" });
+//       }
+
+//       // Mettre la recette dans le cache pour 1 heure (3600 secondes)
+//       cacheData(cacheKey, JSON.stringify(recipe)); // Stocker la recette dans le cache
+
+//       // Retourner la recette récupérée depuis la base de données
+//       return res.status(200).json(recipe);
+//     });
+//   } catch (error) {
+//     console.error("Erreur lors de la récupération de la recette:", error);
+//     res.status(500).json({ message: "Erreur serveur" });
+//   }
+// };
 
 // Récupérer les recettes par catégorie
 export const getRecipesByCategory = async (req, res) => {
@@ -179,6 +258,9 @@ export const addRecipe = async (req, res) => {
     // Sauvegarder la recette
     await newRecipe.save();
 
+    // Invalider le cache des recettes après l'ajout
+    // invalidateCache("all_recipes"); // Invalide le cache des recettes
+
     res.status(201).json({
       message: "Recette ajoutée avec succès",
       recipe: newRecipe,
@@ -293,6 +375,9 @@ export const updateRecipe = async (req, res) => {
     // Sauvegarder la recette
     await recipe.save();
 
+    // Invalider le cache des recettes après la mise à jour
+    // invalidateCache("all_recipes"); // Invalide le cache des recettes
+
     res.status(200).json({
       message: "Recette mise à jour avec succès",
       recipe,
@@ -312,6 +397,10 @@ export const deleteRecipe = async (req, res) => {
     if (!deletedRecipe) {
       return res.status(404).json({ message: "Recette non trouvée" });
     }
+
+    // Invalider le cache des recettes après la suppression
+    // invalidateCache("all_recipes"); // Invalide le cache des recettes
+
     res.status(200).json({ message: "Recette supprimée avec succès" });
   } catch (error) {
     console.error("Erreur lors de la suppression de la recette:", error);
@@ -319,7 +408,6 @@ export const deleteRecipe = async (req, res) => {
   }
 };
 
-// Rechercher des recettes par titre, source ou catégorie
 // Recherche de recettes par titre, source ou catégorie
 export const searchRecipes = async (req, res) => {
   // Extraire les critères de recherche depuis le corps de la requête
@@ -366,6 +454,29 @@ export const searchRecipes = async (req, res) => {
   }
 };
 
+// Récupérer les commentaires d'une recette
+export const getCommentsByRecipe = async (req, res) => {
+  const { recipeId } = req.params;
+  try {
+    // Chercher tous les commentaires associés à la recette
+    const comments = await Comment.find({ recipe: recipeId })
+      .populate("user", "name")
+      .populate("recipe", "title");
+    // Vérifier si des commentaires ont été trouvés
+    if (comments.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Aucun commentaire trouvé pour cette recette" });
+    }
+    return res.status(200).json(comments);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Erreur serveur lors de la récupération des commentaires",
+    });
+  }
+};
+
 // Ajouter un commentaire
 export const addComment = async (req, res) => {
   // Récupérer les données du corps de la requête
@@ -407,6 +518,121 @@ export const addComment = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Erreur serveur lors de l'ajout du commentaire" });
+  }
+};
+
+// Mettre à jour un commentaire
+export const updateComment = async (req, res) => {
+  const { commentId } = req.params;
+  const { content } = req.body;
+  const userId = req.userId;
+
+  // Validation des données
+  const { error } = validateCommentSchema({
+    content,
+    recipeId: req.body.recipeId,
+    userId,
+  });
+
+  // Vérifier si les données sont invalides
+  if (error) {
+    return res
+      .status(400)
+      .json({ message: error.details.map((x) => x.message).join(", ") });
+  }
+
+  try {
+    // Vérifier si le commentaire existe
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Commentaire non trouvé" });
+    }
+
+    // Vérifier que l'utilisateur est bien celui qui a créé le commentaire
+    if (comment.user.toString() !== userId.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Non autorisé à modifier ce commentaire" });
+    }
+
+    // Mettre à jour le commentaire
+    comment.content = content;
+    await comment.save();
+
+    return res
+      .status(200)
+      .json({ message: "Commentaire mis à jour avec succès", comment });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Erreur serveur lors de la mise à jour du commentaire",
+    });
+  }
+};
+
+// Supprimer un commentaire
+export const deleteComment = async (req, res) => {
+  const { commentId } = req.params;
+  const userId = req.userId;
+
+  try {
+    // Vérifier si le commentaire existe
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Commentaire non trouvé" });
+    }
+
+    // Vérifier que l'utilisateur est bien celui qui a créé le commentaire
+    if (comment.user.toString() !== userId.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Non autorisé à supprimer ce commentaire" });
+    }
+
+    // Supprimer le commentaire
+    await comment.remove();
+
+    return res
+      .status(200)
+      .json({ message: "Commentaire supprimé avec succès" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Erreur serveur lors de la suppression du commentaire",
+    });
+  }
+};
+
+// Récupérer les scores d'une recette
+export const getScoresByRecipe = async (req, res) => {
+  const { recipeId } = req.params;
+  console.log("Recipe ID:", recipeId);
+
+  try {
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ message: "Recette non trouvée" });
+    }
+
+    const scores = await Score.find({ recipe: recipeId }).populate("user");
+    if (scores.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Aucune note trouvée pour cette recette" });
+    }
+
+    const averageScore =
+      scores.reduce((sum, score) => sum + score.score, 0) / scores.length;
+
+    return res.status(200).json({
+      scores,
+      averageScore: Number.parseFloat(averageScore).toFixed(2),
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Erreur serveur lors de la récupération des scores" });
   }
 };
 
@@ -455,5 +681,38 @@ export const addOrUpdateScore = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Erreur serveur lors de la mise à jour de la note" });
+  }
+};
+
+// Supprimer un score
+export const deleteScore = async (req, res) => {
+  const { scoreId } = req.params;
+  const userId = req.userId; // Utilisateur authentifié
+
+  try {
+    const score = await Score.findById(scoreId);
+    if (!score) {
+      return res.status(404).json({ message: "Score non trouvé" });
+    }
+
+    // Vérifier que l'utilisateur est bien celui qui a ajouté ce score, ou qu'il est un administrateur
+    if (
+      score.user.toString() !== userId.toString() &&
+      req.userRole !== "admin"
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Non autorisé à supprimer ce score" });
+    }
+
+    // Supprimer le score
+    await score.remove();
+
+    return res.status(200).json({ message: "Score supprimé avec succès" });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Erreur serveur lors de la suppression du score" });
   }
 };

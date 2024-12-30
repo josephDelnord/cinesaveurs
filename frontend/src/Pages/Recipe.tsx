@@ -1,55 +1,66 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import myAxiosInstance from "../axios/axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import type { IRecipe } from "../@types/Recipe";
 import type { IComment } from "../@types/Comment";
+import { useCallback } from "react";
 
 const Recipe: React.FC = () => {
   const { id } = useParams(); // Récupérer l'ID de la recette
-  const navigate = useNavigate(); // Hook de redirection
   const [recipe, setRecipe] = useState<IRecipe | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [comment, setComment] = useState<IComment | string>(""); // Commentaire sous forme de string
+  const [comment, setComment] = useState<string>(""); // Commentaire sous forme de string
   const [rating, setRating] = useState<number>(0);
   const [averageRating, setAverageRating] = useState<number>(0);
   const [scores, setScores] = useState<number[]>([]); // Stocke les scores des utilisateurs
-  const isAuthenticated = localStorage.getItem("token");
-  const user = localStorage.getItem("userId") || "null";
+  const [comments, setComments] = useState<IComment[]>([]); // Stocke les commentaires des utilisateurs
+  const user = localStorage.getItem("userId") || "null"; // L'ID de l'utilisateur (ou null si non connecté)
 
-  useEffect(() => {
-    console.log("useEffect appelé avec id:", id); // Vérifier si l'ID est bien récupéré
+  // Fonction pour récupérer les données de la recette, des scores et des commentaires
+  const fetchData = useCallback(() => {
     if (id) {
       myAxiosInstance
-        .get(`/api/recipes/${id}`)
+        .get<IRecipe>(`/api/recipes/${id}`)
         .then((response) => {
-          console.log("Données de la recette reçues:", response.data); // Vérifier les données reçues
           setRecipe(response.data);
           setLoading(false);
         })
-        .catch((err) => {
-          console.error("Erreur de récupération de la recette", err);
+        .catch(() => {
           setError("Erreur de récupération de la recette");
           setLoading(false);
         });
 
       myAxiosInstance
-        .get(`/api/recipes/${id}/scores`)
+        .get<number[]>(`/api/recipes/${id}/scores`)
         .then((response) => {
-          console.log("Scores reçus:", response.data); // Vérifier les scores reçus
+          console.log(scores);
           const scoresData = response.data;
           setScores(scoresData);
           const average =
             scoresData.reduce((sum: number, score: number) => sum + score, 0) /
             scoresData.length;
-          setAverageRating(average || 0); // Calcul de la moyenne des scores
+          setAverageRating(average || 0);
         })
         .catch((err) => {
           console.error("Erreur lors de la récupération des scores", err);
         });
+
+      myAxiosInstance
+        .get<IComment[]>(`/api/recipes/${id}/comments`)
+        .then((response) => {
+          setComments(response.data);
+        })
+        .catch((err) => {
+          console.error("Erreur lors de la récupération des commentaires", err);
+        });
     }
-  }, [id]);
+  }, [id, scores]);
+
+  useEffect(() => {
+    fetchData(); // Charger les données lorsque le composant se monte
+  }, [fetchData]); // N'inclure que 'fetchData' dans les dépendances
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -60,61 +71,29 @@ const Recipe: React.FC = () => {
   };
 
   const handleSubmitComment = () => {
-    console.log("Commentaire:", comment); // Vérifiez la valeur du commentaire
-    console.log("Note:", rating); // Vérifiez la valeur de la note
-
-    if (!isAuthenticated) {
-      console.error("Utilisateur non authentifié");
-      return;
-    }
-
     if (!comment || rating === 0) {
       console.error("Veuillez remplir tous les champs (commentaire et note)");
       return;
     }
 
-    const token = localStorage.getItem("token"); // Récupérer le token du stockage local
-
-    // Vérifier si le token est présent
-    if (!token) {
-      console.error("Token manquant");
-      return;
-    }
-
     myAxiosInstance
-      .post(
-        `/api/comments/${id}`, // URL de l'API pour ajouter un commentaire
+      .post<IRecipe>(
+        `/api/recipes/${id}`, // URL de l'API pour ajouter un commentaire
         {
           content: comment,
           rating: rating,
-          userId: user, // L'ID de l'utilisateur connecté
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Ajout du token dans les en-têtes de la requête
-          },
+          userId: user, // L'ID de l'utilisateur (même si l'authentification est retirée)
         }
       )
-      .then((response) => {
-        console.log("Commentaire ajouté avec succès");
-        console.log(response.data);
+      .then(() => {
         setComment(""); // Réinitialiser le commentaire
         setRating(0); // Réinitialiser la note
-        const updatedScores = [...scores, rating];
-        setScores(updatedScores);
-        const updatedAverage =
-          updatedScores.reduce((sum, score) => sum + score, 0) /
-          updatedScores.length;
-        setAverageRating(updatedAverage); // Mettre à jour la note moyenne
+        fetchData(); // Récupérer à nouveau les commentaires et les scores à jour
       })
       .catch((err) => {
         console.error("Erreur lors de l'ajout du commentaire", err);
         setError("Erreur lors de l'ajout du commentaire");
       });
-  };
-
-  const handleRedirectToLogin = () => {
-    navigate("/login"); // Rediriger l'utilisateur vers la page de connexion
   };
 
   if (loading) return <div>Chargement...</div>;
@@ -172,47 +151,57 @@ const Recipe: React.FC = () => {
         <h3>Note moyenne : {averageRating.toFixed(1)} / 5</h3>
       </div>
 
+      <div className="comment-section">
+        <h3>Commentaires :</h3>
+        {comments.length > 0 ? (
+          comments.map((comment) => (
+            <div key={comment._id} className="comment">
+              <p>{comment.content}</p>
+              <p>Par {comment.user.username}</p>
+            </div>
+          ))
+        ) : (
+          <p>Aucun commentaire pour cette recette.</p>
+        )}
+      </div>
+
       {/* Formulaire pour ajouter un commentaire et une note */}
-      {isAuthenticated ? (
-        <div className="comment-section">
-          <h3>Ajouter un commentaire</h3>
-          <textarea
-            value={typeof comment === "string" ? comment : ""}
-            onChange={handleCommentChange}
-            placeholder="Votre commentaire..."
-            required
-          />
-          <div className="rating">
-            <span>Note: </span>
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                type="button"
-                className={`${rating >= star ? "filled" : ""}`}
-                onClick={() => handleRatingChange(star)}
-                onKeyUp={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    handleRatingChange(star);
-                  }
-                }}
-              >
-                ★
-              </button>
-            ))}
-          </div>
-          <button type="button" onClick={handleSubmitComment}>
-            Soumettre
-          </button>
+      <div className="comment-section">
+        <h3>Ajouter un commentaire</h3>
+        <textarea
+          value={typeof comment === "string" ? comment : ""}
+          onChange={handleCommentChange}
+          placeholder="Votre commentaire..."
+          required
+        />
+        <div className="rating">
+          <span>Note: </span>
+          {[1, 2, 3, 4, 5].map((star) => (
+            <button
+              key={star}
+              type="button"
+              className={`${rating >= star ? "filled" : ""}`}
+              onClick={() => handleRatingChange(star)}
+              onKeyUp={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  handleRatingChange(star);
+                }
+              }}
+            >
+              ★
+            </button>
+          ))}
         </div>
-      ) : (
-        <p className="redirect-message">
-          Veuillez vous{" "}
-          <button type="button" onClick={handleRedirectToLogin}>
-            connecter
-          </button>{" "}
-          pour ajouter un commentaire.
-        </p>
-      )}
+        <button type="button" onClick={handleSubmitComment}>
+          Soumettre
+        </button>
+      </div>
+
+      {/* Message pour inciter à se connecter, mais les utilisateurs non authentifiés peuvent encore ajouter un commentaire */}
+      <p className="redirect-message">
+        Vous n'êtes pas connecté, mais vous pouvez quand même ajouter un
+        commentaire.
+      </p>
     </div>
   );
 };

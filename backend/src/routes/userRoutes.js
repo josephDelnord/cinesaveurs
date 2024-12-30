@@ -1,19 +1,29 @@
-import express from 'express';
-import authMiddleware from '../middlewares/authMiddleware.js';
-import { isAdmin, isAdminOrSelf } from '../middlewares/roleMiddleware.js'; 
-import { getUserInfo, updateUser, deleteUser, getAllUsers, checkUserStatus, suspendUser, activateUser, banUser } from '../controllers/userController.js';  
+import express from "express";
+import authMiddleware from "../middlewares/authMiddleware.js";
+import { isAdmin, isAdminOrSelf } from "../middlewares/roleMiddleware.js";
+import {
+  getUserInfo,
+  updateUser,
+  deleteUser,
+  getAllUsers,
+  checkUserStatus,
+  suspendUser,
+  activateUser,
+  banUser,
+  getRoleById,
+} from "../controllers/userController.js";
 
 const router = express.Router();
 
 /**
  * @swagger
- * /users/{userId}:
+ * /users/{id}:
  *   get:
  *     summary: "Récupérer les informations d'un utilisateur"
  *     tags:
  *       - Utilisateurs
  *     parameters:
- *       - name: userId
+ *       - name: id
  *         in: path
  *         description: ID de l'utilisateur à récupérer
  *         required: true
@@ -42,17 +52,17 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur
  */
-router.get('/:userId', authMiddleware, isAdminOrSelf, getUserInfo);
+router.get("/:id", authMiddleware, isAdminOrSelf, getUserInfo);
 
 /**
  * @swagger
- * /users/{userId}:
+ * /users/{id}:
  *   put:
  *     summary: "Mettre à jour les informations d'un utilisateur"
  *     tags:
  *       - Utilisateurs
  *     parameters:
- *       - name: userId
+ *       - name: id
  *         in: path
  *         description: ID de l'utilisateur à mettre à jour
  *         required: true
@@ -127,17 +137,17 @@ router.get('/:userId', authMiddleware, isAdminOrSelf, getUserInfo);
  *       500:
  *         description: Erreur serveur
  */
-router.put('/:userId', authMiddleware, isAdminOrSelf, updateUser);
+router.put("/:id", authMiddleware, isAdminOrSelf, updateUser);
 
 /**
  * @swagger
- * /users/{userId}:
+ * /users/{id}:
  *   delete:
  *     summary: "Supprimer un utilisateur (accessible uniquement par un administrateur)"
  *     tags:
  *       - Utilisateurs
  *     parameters:
- *       - name: userId
+ *       - name: id
  *         in: path
  *         description: ID de l'utilisateur à supprimer
  *         required: true
@@ -154,7 +164,7 @@ router.put('/:userId', authMiddleware, isAdminOrSelf, updateUser);
  *       500:
  *         description: Erreur serveur
  */
-router.delete('/:userId', authMiddleware, isAdmin, deleteUser);
+router.delete("/:id", authMiddleware, isAdmin, deleteUser);
 
 /**
  * @swagger
@@ -171,11 +181,11 @@ router.delete('/:userId', authMiddleware, isAdmin, deleteUser);
  *       500:
  *         description: Erreur serveur
  */
-router.get('/', authMiddleware, isAdmin, getAllUsers);
+router.get("/", authMiddleware, isAdmin, getAllUsers);
 
 /**
  * @swagger
- * /users/{userId}/status:
+ * /users/{id}/status/{id}:
  *   get:
  *     summary: "Vérifier le statut de l'utilisateur"
  *     tags:
@@ -209,11 +219,11 @@ router.get('/', authMiddleware, isAdmin, getAllUsers);
  *       400:
  *         description: Données invalides
  */
-router.get('/:userId/status', authMiddleware, isAdminOrSelf, checkUserStatus);
+router.get("/:id/status/:id", authMiddleware, isAdminOrSelf, checkUserStatus);
 
 /**
  * @swagger
- * /users/{userId}/status:
+ * /users/{id}/status/{id}:
  *   put:
  *     summary: "Suspender un utilisateur"
  *     tags:
@@ -235,11 +245,11 @@ router.get('/:userId/status', authMiddleware, isAdminOrSelf, checkUserStatus);
  *       500:
  *         description: Erreur serveur
  */
-router.put('/:userId/status', authMiddleware, isAdmin, suspendUser);
+router.put("/:id/status/:id", authMiddleware, isAdmin, suspendUser);
 
 /**
  * @swagger
- * /users/{userId}/status:
+ * /users/{id}/status/{id}:
  *   put:
  *     summary: "Activer un utilisateur"
  *     tags:
@@ -261,11 +271,11 @@ router.put('/:userId/status', authMiddleware, isAdmin, suspendUser);
  *       500:
  *         description: Erreur serveur
  */
-router.put('/:userId/status', authMiddleware, isAdmin, activateUser);
+router.put("/:id/status/:id", authMiddleware, isAdmin, activateUser);
 
 /**
  * @swagger
- * /users/{userId}/status:
+ * /users/{id}/status/{id}:
  *   put:
  *     summary: "Bannir un utilisateur"
  *     tags:
@@ -287,6 +297,30 @@ router.put('/:userId/status', authMiddleware, isAdmin, activateUser);
  *       500:
  *         description: Erreur serveur
  */
-router.put('/:userId/status', authMiddleware, isAdmin, banUser);
+router.put("/:id/status/:id", authMiddleware, isAdmin, banUser);
+
+/**
+ * @swagger
+ * /users/{id}/roles/{id}:
+ *   get:
+ *     summary: "Récupérer un rôle par ID (admin seulement)"
+ *     tags:
+ *       - Rôles
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         type: string
+ *         description: ID du rôle à récupérer
+ *     responses:
+ *       200:
+ *         description: Rôle récupéré avec succès
+ *       404:
+ *         description: Rôle non trouvé
+ *       500:
+ *         description: Erreur serveur
+ */
+
+router.get("/:id", authMiddleware, isAdmin, getRoleById);
 
 export default router;

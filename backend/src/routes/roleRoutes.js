@@ -1,7 +1,11 @@
-import express from 'express';
-import authMiddleware from '../middlewares/authMiddleware.js';
-import { isAdmin, isAdminOrSelf } from '../middlewares/roleMiddleware.js';
-import { getAllRoles, getRoleById, createRole, deleteRole } from '../controllers/roleController.js';
+import express from "express";
+import authMiddleware from "../middlewares/authMiddleware.js";
+import { isAdmin, isAdminOrSelf } from "../middlewares/roleMiddleware.js";
+import {
+  getAllRoles,
+  createRole,
+  deleteRole,
+} from "../controllers/roleController.js";
 
 const router = express.Router();
 
@@ -18,35 +22,11 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur
  */
-router.get('/', authMiddleware, isAdminOrSelf, getAllRoles);
+router.get("/", authMiddleware, isAdminOrSelf, getAllRoles);
 
 /**
  * @swagger
- * /roles/{id}:
- *   get:
- *     summary: "Récupérer un rôle par ID (admin seulement)"
- *     tags:
- *       - Rôles
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         type: string
- *         description: ID du rôle à récupérer
- *     responses:
- *       200:
- *         description: Rôle récupéré avec succès
- *       404:
- *         description: Rôle non trouvé
- *       500:
- *         description: Erreur serveur
- */
-
-router.get('/:id', authMiddleware, isAdmin, getRoleById);
-
-/**
- * @swagger
- * /roles/addRole:
+ * /roles/createRole:
  *   post:
  *     summary: "Créer un nouveau rôle (admin seulement)"
  *     tags:
@@ -74,7 +54,7 @@ router.get('/:id', authMiddleware, isAdmin, getRoleById);
  *       500:
  *         description: Erreur serveur
  */
-router.post('/', authMiddleware, isAdmin, createRole);
+router.post("/createRole", authMiddleware, isAdmin, createRole);
 
 /**
  * @swagger
@@ -99,6 +79,6 @@ router.post('/', authMiddleware, isAdmin, createRole);
  *       500:
  *         description: Erreur serveur
  */
-router.delete('/:id', authMiddleware, isAdmin, deleteRole);
+router.delete("/:id", authMiddleware, isAdmin, deleteRole);
 
 export default router;

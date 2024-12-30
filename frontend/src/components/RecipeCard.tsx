@@ -1,5 +1,5 @@
-import type React from 'react';
-import { Link } from 'react-router-dom';
+import type React from "react";
+import { Link } from "react-router-dom";
 
 interface RecipeCardProps {
   _id: string;
@@ -9,7 +9,13 @@ interface RecipeCardProps {
   image: string;
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ _id, title, description, source, image }) => {
+const RecipeCard: React.FC<RecipeCardProps> = ({
+  _id,
+  title,
+  description,
+  source,
+  image,
+}) => {
   return (
     <div className="recipe-card">
       {/* Construction du chemin d'image relatif */}

@@ -1,18 +1,23 @@
-import express from 'express';
-import authMiddleware from '../middlewares/authMiddleware.js';
-import { isAdmin, isAdminOrSelf } from '../middlewares/roleMiddleware.js';
+import express from "express";
+import authMiddleware from "../middlewares/authMiddleware.js";
+import { isAdmin, isAdminOrSelf } from "../middlewares/roleMiddleware.js";
 
-import { 
-  getRecipes, 
-  getRecipeById, 
-  getRecipesByCategory, 
-  addRecipe, 
-  updateRecipe, 
-  deleteRecipe, 
+import {
+  getRecipes,
+  getRecipeById,
+  getRecipesByCategory,
+  addRecipe,
+  updateRecipe,
+  deleteRecipe,
   searchRecipes,
   addComment,
-  addOrUpdateScore
-} from '../controllers/recipeController.js';
+  addOrUpdateScore,
+  deleteComment,
+  deleteScore,
+  updateComment,
+  getCommentsByRecipe,
+  getScoresByRecipe,
+} from "../controllers/recipeController.js";
 
 const router = express.Router();
 
@@ -42,7 +47,7 @@ const router = express.Router();
  *                     description: "La description de la recette"
  *                     example: "Une recette délicieuse inspirée d'un film."
  */
-router.get('/', getRecipes);
+router.get("/", getRecipes);
 
 /**
  * @swagger
@@ -75,11 +80,11 @@ router.get('/', getRecipes);
  *       404:
  *         description: "Recette non trouvée"
  */
-router.get('/:id', getRecipeById);
+router.get("/:id", getRecipeById);
 
 /**
  * @swagger
- * /recipes/category/{categoryId}:
+ * /recipes/{id}/categories/{id}:
  *   get:
  *     summary: "Obtenir les recettes d'une catégorie (admin ou utilisateur lui-même)"
  *     description: "Retourne une liste de recettes d'une catégorie spécifique."
@@ -107,7 +112,12 @@ router.get('/:id', getRecipeById);
  *       404:
  *         description: "Aucune recette trouvée pour cette catégorie"
  */
-router.get('/:categoryId', authMiddleware, isAdminOrSelf, getRecipesByCategory);
+router.get(
+  "/:id/categories/:id",
+  authMiddleware,
+  isAdminOrSelf,
+  getRecipesByCategory
+);
 
 /**
  * @swagger
@@ -141,7 +151,7 @@ router.get('/:categoryId', authMiddleware, isAdminOrSelf, getRecipesByCategory);
  *       400:
  *         description: "Données invalides"
  */
-router.post('/addRecipe', authMiddleware, isAdminOrSelf, addRecipe);
+router.post("/addRecipe", authMiddleware, isAdminOrSelf, addRecipe);
 
 /**
  * @swagger
@@ -181,7 +191,7 @@ router.post('/addRecipe', authMiddleware, isAdminOrSelf, addRecipe);
  *       404:
  *         description: "Recette non trouvée"
  */
-router.put('/:id', authMiddleware, isAdmin, updateRecipe);
+router.put("/:id", authMiddleware, isAdmin, updateRecipe);
 
 /**
  * @swagger
@@ -203,7 +213,7 @@ router.put('/:id', authMiddleware, isAdmin, updateRecipe);
  *       404:
  *         description: "Recette non trouvée"
  */
-router.delete('/:id', authMiddleware, isAdmin, deleteRecipe);
+router.delete("/:id", authMiddleware, isAdmin, deleteRecipe);
 
 /**
  * @swagger
@@ -246,13 +256,13 @@ router.delete('/:id', authMiddleware, isAdmin, deleteRecipe);
  *       400:
  *         description: "Requête invalide"
  */
-router.post('/research', searchRecipes);
+router.post("/research", searchRecipes);
 
 /**
  * @swagger
- * /comments:
+ * /recipes/{id}/addComment:
  *   post:
- *     summary: "Ajouter un commentaire (admin ou utilisateur lui-même)"
+ *     summary: "Ajouter un commentaire"
  *     description: "Permet à un utilisateur d'ajouter un commentaire sur une recette."
  *     tags: [Commentaires]
  *     security:
@@ -279,11 +289,135 @@ router.post('/research', searchRecipes);
  *       500:
  *       description: "Erreur serveur"
  */
-router.post('/:id/comments', authMiddleware, isAdminOrSelf, addComment); 
+router.post("/:id", addComment);
 
 /**
  * @swagger
- * /scores:
+ * /recipes/{id}/comments:
+ *   get:
+ *     summary: "Récupérer les commentaires d'une recette "
+ *     description: "Permet de récupérer tous les commentaires d'une recette spécifique."
+ *     tags: [Commentaires]
+ *     parameters:
+ *       - name: recipeId
+ *         in: path
+ *         description: "ID de la recette"
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: "Liste des commentaires"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   userId:
+ *                     type: string
+ *                   content:
+ *                     type: string
+ *       404:
+ *         description: "Recette non trouvée"
+ *       500:
+ *         description: "Erreur serveur"
+ */
+router.get("/:id/comments", getCommentsByRecipe);
+
+/**
+ * @swagger
+ * /recipes/{id}/comments/{id}:
+ *   put:
+ *     summary: "Mettre à jour un commentaire (admin seulement)"
+ *     description: "Permet de mettre à jour un commentaire existant."
+ *     tags: [Commentaires]
+ *     parameters:
+ *       - name: commentId
+ *         in: path
+ *         description: "ID du commentaire"
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               content:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: "Commentaire mis à jour avec succès"
+ *       400:
+ *         description: "Données invalides"
+ *       404:
+ *         description: "Commentaire non trouvé"
+ *       401:
+ *         description: "Non autorisé"
+ *       500:
+ *         description: "Erreur serveur"
+ */
+router.put("/:id/comments/:id", authMiddleware, isAdmin, updateComment);
+
+/**
+ * @swagger
+ * /recipes/{id}/deleteComment/{id}:
+ *   delete:
+ *     summary: "Supprimer un commentaire (admin seulement)"
+ *     description: "Permet de supprimer un commentaire existant."
+ *     tags: [Commentaires]
+ *     security:
+ *       - Bearer: []
+ *     parameters:
+ *       - name: commentId
+ *         in: path
+ *         description: "ID du commentaire"
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: "Commentaire supprimé avec succès"
+ *       404:
+ *         description: "Commentaire non trouvé"
+ *       401:
+ *         description: "Non autorisé"
+ *       500:
+ *         description: "Erreur serveur"
+ */
+router.delete("/:id/comments/:id", authMiddleware, isAdmin, deleteComment);
+
+/**
+ * @swagger
+ * /recipes/{id}/scores:
+ *   get:
+ *     summary: "Récupérer les scores d'une recette (admin seulement)"
+ *     tags:
+ *       - Scores
+ *     parameters:
+ *       - name: recipeId
+ *         in: path
+ *         description: L'ID de la recette pour laquelle récupérer les scores
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste des scores pour la recette avec la note moyenne.
+ *       404:
+ *         description: Aucune note trouvée pour cette recette.
+ *       500:
+ *         description: Erreur serveur.
+ */
+router.get("/:id/scores", getScoresByRecipe);
+
+/**
+ * @swagger
+ * /recipes/{id}/addOrUpdateScore:
  *   post:
  *     summary: "Ajouter ou mettre à jour un score pour une recette (admin ou utilisateur lui-même)"
  *     tags:
@@ -316,6 +450,30 @@ router.post('/:id/comments', authMiddleware, isAdminOrSelf, addComment);
  *       500:
  *         description: Erreur serveur.
  */
-router.post('/id/scores', authMiddleware, isAdminOrSelf, addOrUpdateScore);
+router.post("/:id", addOrUpdateScore);
+
+/**
+ * @swagger
+ * /scores/{scoreId}:
+ *   delete:
+ *     summary: "Supprimer un score (admin seulement)"
+ *     tags:
+ *       - Scores
+ *     parameters:
+ *       - name: scoreId
+ *         in: path
+ *         description: L'ID du score à supprimer
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Score supprimé avec succès.
+ *       404:
+ *         description: Score non trouvé.
+ *       500:
+ *         description: Erreur serveur.
+ */
+router.delete("/:id/scores/:id", authMiddleware, isAdmin, deleteScore);
 
 export default router;

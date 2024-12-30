@@ -47,9 +47,9 @@ app.use("/api/recipes", recipeRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/roles", roleRoutes);
 app.use("/api/categories", categoryRoutes);
-app.use("/api/comments/", commentRoutes);
+app.use("/api/comments", commentRoutes);
 app.use("/api/scores", scoreRoutes);
-app.use("/api/status", statusRoutes);
+app.use("/api/users/:id/status", statusRoutes);
 
 // Route de test
 app.get("/api", (req, res) => {

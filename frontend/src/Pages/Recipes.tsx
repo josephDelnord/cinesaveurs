@@ -135,12 +135,12 @@ const Recipes: React.FC = () => {
         <div className="container-popular-recipe">
           <div className="popular-recipe-title">
             <h4>{popularRecipe.title}</h4>
-            <img src="/img/arrow.png" alt="arrow" />
+            <img src="/img/arrow.webp" alt="arrow" />
           </div>
 
           <img
             className="title-popular-recipe"
-            src="/img/mostpopular.png"
+            src="/img/mostpopular.webp"
             alt="Most popular"
           />
           <div className="popular-recipe">
