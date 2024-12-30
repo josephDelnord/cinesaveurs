@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { useContext, type FC } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 interface RequireAdminProps {
   children: React.ReactElement;
 }
 
-const RequireAdmin: React.FC<RequireAdminProps> = ({ children }) => {
+const RequireAdmin: FC<RequireAdminProps> = ({ children }) => {
   const { isAdmin, isLoading } = useContext(AuthContext);
 
   if (isLoading) {

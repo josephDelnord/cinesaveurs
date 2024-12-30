@@ -136,22 +136,24 @@ h2 {
   /* Lien de la recette (voir la recette) */
   a {
     font-family: $font-family-primary;
-    font-size: 1.2rem;
-    color: $primary-color;
+    font-size: 2.5rem;
+    background-color: $primary-color;
+    color: $text-color-quaternary;    
     text-decoration: none;
-    padding: 0.5rem 1rem;
-    background-color: $accent-color;
-    border-radius: 1.5rem;
+    padding: 1rem 2rem;
+    border-radius: 50%;
     transition: background-color 0.3s;
     position: absolute;
-    top: -1rem;
-    left: -1rem;
+    top: 0.5rem;
+    left: 0.5rem;
     z-index: -1;
     transform: translate(10%, 10%);
 
     &:hover {
-      background-color: $primary-color;
-      color: $text-color-quaternary;
+
+    background-color: $accent-color;
+    color: $primary-color;
+
     }
   }
 }
@@ -159,10 +161,10 @@ h2 {
 /* Image de la carte de recette */
 .recipe-card img {
   width: 100%;
-  height: 25vh; /* Augmente la hauteur de l'image pour mieux s'adapter aux cartes élargies */
+  height: 35vh; /* Augmente la hauteur de l'image pour mieux s'adapter aux cartes élargies */
   object-fit: cover;
   object-position: center;
-  border-radius: 50% 50% 0 0;
+  border-radius: 50%;
   box-shadow: -5px 12px 9px 5px rgba(0, 0, 0, 0.25);
   margin-bottom: 1rem;
   max-width: 100%; /* S'assure que l'image respecte les limites de la carte */
@@ -197,7 +199,39 @@ h2 {
   flex-direction: column;
   align-items: center;
   margin: 2rem 0;
+  position: relative;  // Important pour que les éléments positionnés à l'intérieur utilisent ce conteneur comme référence
+
+  .popular-recipe-title {
+    position: absolute;   // Positionnement absolu par rapport au conteneur parent
+    top: -3rem;            // Distance du haut du conteneur
+    right: 3rem;          // Distance du côté droit du conteneur
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 10;          // Assurez-vous que la flèche et le titre sont au-dessus des autres éléments
+    padding: 0.5rem;
+
+    h4 {
+      font-family: $font-family-primary;
+      font-size: 1.5rem;
+      color: $primary-color;
+      font-weight: 700;
+      margin: 0;
+      text-align: right;
+    }
+
+    img {
+      width: 150px;   // Ajuster la taille de l'image flèche
+      height: auto;   // Maintenir l'aspect ratio
+      object-fit: cover; // Si vous voulez que l'image remplisse son espace sans déformation
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
 }
+
+
+
 /* Style pour la recette populaire */
 .popular-recipe {
   position: relative;
@@ -242,16 +276,17 @@ h2 {
     align-items: center;
     padding: 1rem;
 
-    /* Titre de la recette populaire */
-    h4 {
-      font-family: $font-family-primary;
-      font-size: 2rem;
-      color: $text-color-quaternary;
-      font-weight: 700;
-      margin: 1rem;
-      margin-right: 22rem; 
 
-    }
+    // /* Titre de la recette populaire */
+    // h4 {
+    //   font-family: $font-family-primary;
+    //   font-size: 2rem;
+    //   color: $text-color-quaternary;
+    //   font-weight: 700;
+    //   margin: 1rem;
+    //   margin-right: 22rem; 
+
+    // }
 
       /* Description de la recette populaire */
       p {
@@ -278,6 +313,9 @@ h2 {
       }
 
   }
+
+  
+  
   
   .popular-score {
     margin: 1rem 0;

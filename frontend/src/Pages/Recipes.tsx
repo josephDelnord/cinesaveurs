@@ -1,7 +1,7 @@
 import type React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import myAxiosInstance from "../axios/axios";
 import RecipeCard from "../components/RecipeCard";
 import type { IRecipe } from "../@types/Recipe";
 
@@ -54,8 +54,8 @@ const Recipes: React.FC = () => {
 
   useEffect(() => {
     // Charger les recettes depuis l'API
-    axios
-      .get("http://localhost:5000/api/recipes")
+    myAxiosInstance
+      .get("/api/recipes")
       .then((response) => {
         const recipesData = response.data;
         setRecipes(recipesData); // Mettre à jour les recettes
@@ -86,9 +86,8 @@ const Recipes: React.FC = () => {
 
   return (
     <div className="recipes-page">
-
-    {/* Barre de recherche */}
-    <div className="search-container">
+      {/* Barre de recherche */}
+      <div className="search-container">
         <input
           type="text"
           placeholder="Rechercher une recette"
@@ -100,7 +99,7 @@ const Recipes: React.FC = () => {
           Rechercher
         </button>
       </div>
-      
+
       <h2>Bienvenue dans l'univers de Ciné Délices</h2>
 
       {/* Affichage des erreurs s'il y en a une */}
@@ -134,6 +133,11 @@ const Recipes: React.FC = () => {
       {/* Affichage de la recette populaire */}
       {popularRecipe && (
         <div className="container-popular-recipe">
+          <div className="popular-recipe-title">
+            <h4>{popularRecipe.title}</h4>
+            <img src="/img/arrow.png" alt="arrow" />
+          </div>
+
           <img
             className="title-popular-recipe"
             src="/img/mostpopular.png"
@@ -147,7 +151,6 @@ const Recipes: React.FC = () => {
               />
             </div>
             <div className="popular-recipe-info">
-              <h4>{popularRecipe.title}</h4>
               <p>{popularRecipe.description}</p>
               <aside>{popularRecipe.source}</aside>
               <div className="popular-score">

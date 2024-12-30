@@ -23,7 +23,10 @@ const UserManagement: React.FC = () => {
           const response = await myAxiosInstance.get<IUser[]>("/api/users");
           setUsers(response.data);
         } catch (error) {
-          console.error("Erreur lors de la récupération des utilisateurs :", error);
+          console.error(
+            "Erreur lors de la récupération des utilisateurs :",
+            error
+          );
         }
       } else {
         setIsAdmin(false);
@@ -42,7 +45,11 @@ const UserManagement: React.FC = () => {
   }
 
   if (!isAdmin) {
-    return <div className="error-message">Vous n'avez pas l'autorisation d'accéder à cette page.</div>;
+    return (
+      <div className="error-message">
+        Vous n'avez pas l'autorisation d'accéder à cette page.
+      </div>
+    );
   }
 
   return (
@@ -58,7 +65,11 @@ const UserManagement: React.FC = () => {
         )}
       </div>
       <div className="show-more-button-container">
-        <button className="show-more-button" onClick={toggleShowAllUsers}>
+        <button
+          type="button"
+          className="show-more-button"
+          onClick={toggleShowAllUsers}
+        >
           {showAllUsers ? "Voir moins" : "Voir plus"}
         </button>
       </div>

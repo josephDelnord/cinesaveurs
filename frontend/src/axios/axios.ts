@@ -13,7 +13,7 @@ myAxiosInstance.interceptors.request.use(
       console.log("Token extrait depuis localStorage :", token);
       
       if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
+        config.headers.Authorization = `Bearer ${token}`;
       } else {
         console.error('Aucun token trouvé dans localStorage');
       }
