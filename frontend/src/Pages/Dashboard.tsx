@@ -12,42 +12,77 @@ const Dashboard: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]); // État pour les utilisateurs
   const [loading, setLoading] = useState<boolean>(true); // Ajout de l'état de chargement
 
-  useEffect(() => {
-    // Exemple d'appel API pour récupérer des commentaires
-    myAxiosInstance
-      .get<IComment[]>("/api/comments")
-      .then((response) => {
-        setComments(response.data); // On affecte les commentaires à l'état
-      })
-      .catch((error) => {
-        console.error("Erreur de récupération des commentaires", error);
-      });
+  const loadData = () => {
+    setLoading(true); // Démarre le chargement
 
-    // Exemple d'appel API pour récupérer des scores
-    myAxiosInstance
-      .get<IScore[]>("/api/scores")
-      .then((response) => {
-        setScores(response.data); // On affecte les scores à l'état
-      })
-      .catch((error) => {
-        console.error("Erreur de récupération des scores", error);
-      });
+    // Charger les commentaires
+    const loadComments = () => {
+      const cachedComments = localStorage.getItem("comments");
+      if (cachedComments) {
+        setComments(JSON.parse(cachedComments)); // Charger depuis le cache
+      } else {
+        myAxiosInstance
+          .get<IComment[]>("/api/comments")
+          .then((response) => {
+            setComments(response.data);
+            localStorage.setItem("comments", JSON.stringify(response.data)); // Sauvegarder dans le cache
+          })
+          .catch((error) => {
+            console.error("Erreur de récupération des commentaires", error);
+          });
+      }
+    };
 
-    // Exemple d'appel API pour récupérer le statut
-    myAxiosInstance
-      .get<IUser[]>("/api/users") // Assurez-vous que votre API retourne une liste d'utilisateurs
-      .then((response) => {
-        // Filtrer les utilisateurs ayant le statut "actif"
-        const activeUsers = response.data.filter(
-          (user) => user.status.status_name === "active"
-        );
-        setUsers(activeUsers); // Mettre à jour l'état avec les utilisateurs actifs
+    // Charger les scores
+    const loadScores = () => {
+      const cachedScores = localStorage.getItem("scores");
+      if (cachedScores) {
+        setScores(JSON.parse(cachedScores)); // Charger depuis le cache
+      } else {
+        myAxiosInstance
+          .get<IScore[]>("/api/scores")
+          .then((response) => {
+            setScores(response.data);
+            localStorage.setItem("scores", JSON.stringify(response.data)); // Sauvegarder dans le cache
+          })
+          .catch((error) => {
+            console.error("Erreur de récupération des scores", error);
+          });
+      }
+    };
+
+    // Charger les utilisateurs
+    const loadUsers = () => {
+      const cachedUsers = localStorage.getItem("users");
+      if (cachedUsers) {
+        setUsers(JSON.parse(cachedUsers)); // Charger depuis le cache
         setLoading(false); // Fin du chargement
-      })
-      .catch((error) => {
-        console.error("Erreur de récupération des utilisateurs:", error);
-        setLoading(false); // Fin du chargement en cas d'erreur
-      });
+      } else {
+        myAxiosInstance
+          .get<IUser[]>("/api/users")
+          .then((response) => {
+            const activeUsers = response.data.filter(
+              (user) => user.status.status_name === "active"
+            );
+            setUsers(activeUsers);
+            localStorage.setItem("users", JSON.stringify(activeUsers)); // Sauvegarder dans le cache
+            setLoading(false); // Fin du chargement
+          })
+          .catch((error) => {
+            console.error("Erreur de récupération des utilisateurs:", error);
+            setLoading(false); // Fin du chargement en cas d'erreur
+          });
+      }
+    };
+
+    loadComments();
+    loadScores();
+    loadUsers();
+  };
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    loadData(); // Charger les données au montage du composant
   }, []); // Effet exécuté au montage du composant
 
   const links = [
@@ -59,6 +94,7 @@ const Dashboard: React.FC = () => {
     { id: "scores", to: "/admin/dashboard/scores", text: "Scores" },
     { id: "settings", to: "/admin/dashboard/settings", text: "Settings" },
   ];
+
   return (
     <div className="dashboard-container">
       <div className="nav-container">
@@ -90,7 +126,9 @@ const Dashboard: React.FC = () => {
               {users.map((user) => (
                 <li key={user._id} className="user-item">
                   <p>Nom d'utilisateur: {user.username}</p>
-                  <small>Statut: {user.status.status_name}</small>
+                  <small>
+                    Statut: {user.status?.status_name || "Non défini"}
+                  </small>
                 </li>
               ))}
             </ul>
@@ -107,7 +145,11 @@ const Dashboard: React.FC = () => {
                 <li key={comment._id} className="comment-item">
                   <p>{comment.content}</p>
                   <small className="comment-user">
-                    Posté par: {comment.user.username}
+                    Posté par: {comment.user.username || "Utilisateur inconnu"}{" "}
+                  </small>
+                  <small className="comment-recipe">
+                    Sur la recette: {comment.recipe.title || "Non trouvée"}{" "}
+                    {/* Titre de la recette */}
                   </small>
                 </li>
               ))}
@@ -125,7 +167,13 @@ const Dashboard: React.FC = () => {
                 <li key={score._id} className="score-item">
                   <p>Score: {score.score}</p>
                   <small className="score-user">
-                    Note donnée par: {score.user.username}
+                    Note donnée par:{" "}
+                    {score.user.username || "Utilisateur inconnu"}{" "}
+                  </small>
+                  <small className="score-recipe">
+                    Note donnée à la recette:{" "}
+                    {score.recipe.title || "Non trouvée"}{" "}
+                    {/* Titre de la recette */}
                   </small>
                 </li>
               ))}

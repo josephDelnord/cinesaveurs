@@ -1,6 +1,6 @@
 import type React from "react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Importer useNavigate
 import myAxiosInstance from "../axios/axios";
 import RecipeCard from "../components/RecipeCard";
 import type { IRecipe } from "../@types/Recipe";
@@ -13,28 +13,25 @@ const Recipes: React.FC = () => {
   const [showAll, setShowAll] = useState<boolean>(false); // Afficher toutes les recettes
   const [searchQuery, setSearchQuery] = useState(""); // Texte de recherche
 
+  const navigate = useNavigate(); // Hook pour la navigation
+
   // Fonction pour gérer la recherche
   const handleSearch = () => {
-    console.log("Requête de recherche:", searchQuery); // Debug : afficher la requête de recherche
+    console.log("Requête de recherche:", searchQuery);
 
     if (searchQuery.trim() === "") {
-      // Si la recherche est vide, réinitialiser les recettes filtrées à toutes les recettes
       setFilteredRecipes(recipes);
-      console.log("Recettes réinitialisées:", recipes); // Debug : afficher les recettes initiales
+      console.log("Recettes réinitialisées:", recipes);
     } else {
-      // Filtrer les recettes par title, category.name ou source
       const filteredResults = recipes.filter((recipe) => {
-        // Vérification de l'existence de title, category.name et source avant de faire la comparaison
-        const title = recipe.title ? recipe.title.toLowerCase() : ""; // Vérifier title
-        const category = recipe.category?.name?.toLowerCase() || ""; // Vérifier category.name
-        const source = recipe.source ? recipe.source.toLowerCase() : ""; // Vérifier source
+        const title = recipe.title ? recipe.title.toLowerCase() : "";
+        const category = recipe.category?.name?.toLowerCase() || "";
+        const source = recipe.source ? recipe.source.toLowerCase() : "";
 
-        // Comparer avec la requête de recherche
         const isTitleMatch = title.includes(searchQuery.toLowerCase());
         const isCategoryMatch = category.includes(searchQuery.toLowerCase());
         const isSourceMatch = source.includes(searchQuery.toLowerCase());
 
-        // Debug : afficher si une recette correspond
         console.log(
           "Matching recipe:",
           recipe.title,
@@ -46,7 +43,7 @@ const Recipes: React.FC = () => {
         return isTitleMatch || isCategoryMatch || isSourceMatch;
       });
 
-      console.log("Résultats filtrés:", filteredResults); // Debug : afficher les recettes filtrées
+      console.log("Résultats filtrés:", filteredResults);
 
       setFilteredRecipes(filteredResults); // Mettre à jour les recettes filtrées
     }
@@ -172,6 +169,17 @@ const Recipes: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Bouton pour ajouter une nouvelle recette */}
+      <div className="add-recipe-button-container">
+        <button
+          type="button"
+          className="add-recipe-button"
+          onClick={() => navigate("/add-recipe")} // Redirection vers la page d'ajout
+        >
+          Ajouter une recette
+        </button>
+      </div>
     </div>
   );
 };

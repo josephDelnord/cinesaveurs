@@ -8,7 +8,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       sass: {
-        additionalData: `@import './src/styles/global.scss';`, // Exemples de données additionnelles à inclure
+        additionalData: `@import './src/styles/style.scss';`, // Exemples de données additionnelles à inclure
         silenceDeprecations: ['legacy-js-api'], // Désactiver les avertissements de dépréciation
       },
     },

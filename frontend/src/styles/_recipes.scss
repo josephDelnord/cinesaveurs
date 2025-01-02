@@ -277,17 +277,6 @@ h2 {
     padding: 1rem;
 
 
-    // /* Titre de la recette populaire */
-    // h4 {
-    //   font-family: $font-family-primary;
-    //   font-size: 2rem;
-    //   color: $text-color-quaternary;
-    //   font-weight: 700;
-    //   margin: 1rem;
-    //   margin-right: 22rem; 
-
-    // }
-
       /* Description de la recette populaire */
       p {
         font-family: $font-family-secondary;
@@ -366,4 +355,20 @@ h2 {
   font-family: $font-family-secondary;
   font-size: 1.2em;
   margin-top: 2vh;
+}
+
+.add-recipe-button-container {
+  margin-top: 30px;
+  text-align: center;
+
+  .add-recipe-button {
+    background-color: $primary-color;
+    color: $text-color-button;
+    border: none;
+    padding: 15px 30px;
+    font-size: $font-size-secondary-title;
+    border-radius: $border-radius-button;
+    cursor: pointer;
+    transition: all 0.3
+  }
 }

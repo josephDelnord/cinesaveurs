@@ -5,7 +5,7 @@ export interface IScore {
   _id: string;            // Identifiant unique généré par Mongoose
   score: number;            // Le score donné, un nombre entre 1 et 5
   user: { username: string; _id: string; };       // Référence à l'utilisateur qui a attribué le score (ObjectId)
-  recipe: string | undefined;  // Référence à la recette à laquelle ce score est attribué (ObjectId)
+  recipe: { title: string; _id: string; };   // Référence à la recette à laquelle ce score est attribué (ObjectId)
   createdAt: string;          // Date de création du score
   updatedAt: string;          // Date de la dernière mise à jour du score
 }

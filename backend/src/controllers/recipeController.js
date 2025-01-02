@@ -14,151 +14,222 @@ import validateCommentSchema from "../validation/schemas/commentValidation.js";
 import Score from "../models/Score.js";
 import User from "../models/User.js";
 import scoreValidationSchema from "../validation/schemas/scoreValidation.js";
-// import { cacheData, getData, invalidateCache } from "../cache/memcached.js"; // Importer les fonctions de cache
+import { memcached } from "../cache/memcached.js"; // Importer les fonctions de cache
+import {
+  cacheMiddleware,
+  cacheResponse,
+  invalidateCache,
+} from "../cache/memcached.js"; // Importer les middlewares
 
 // Récupérer toutes les recettes avec les ingrédients et instructions peuplés
+export const getRecipes = (req, res) => {
+  const cacheKey = "GET:/api/recipes"; // Clé de cache pour récupérer toutes les recettes
 
-export const getRecipes = async (req, res) => {
-  try {
-    const recipes = await Recipe.find();
-    // Si aucune recette n'est trouvée, renvoyer un tableau vide
-    if (!recipes.length) {
-      return res.status(200).json([]);
-    }
-    res.status(200).json(recipes);
-  } catch (error) {
-    console.error("Erreur lors de la récupération des recettes:", error);
-    res.status(500).json({ message: "Error retrieving recipes" });
-  }
+  // Vérification du cache
+  cacheMiddleware(req, res, () => {
+    // Si les données sont dans le cache, elles ont été déjà envoyées par le middleware cacheMiddleware
+    // Sinon, continue ici pour récupérer depuis la base de données
+    Recipe.find()
+      .then((recipes) => {
+        if (!recipes.length) {
+          return res.status(200).json([]); // Si aucune recette n'est trouvée, renvoyer une liste vide
+        }
+
+        // Si des recettes sont récupérées, les mettre en cache
+        memcached.set(cacheKey, JSON.stringify(recipes), 3600, (err) => {
+          if (err) {
+            console.error("Erreur lors de la mise en cache:", err);
+          } else {
+            console.log("Recettes mises en cache pour GET:/api/recipes");
+          }
+        });
+
+        // Mise en cache des recettes
+        cacheResponse(req, res, () => {
+          // Renvoie les recettes depuis la base de données
+          res.status(200).json(recipes);
+        });
+      })
+      .catch((error) => {
+        console.error(
+          "Erreur lors de la récupération des recettes depuis la base de données:",
+          error
+        );
+        res.status(500).json({
+          message: "Erreur serveur lors de la récupération des recettes",
+        });
+      });
+  });
 };
-
-// export const getRecipes = async (req, res) => {
-//   try {
-//     const cacheKey = "all_recipes"; // Utiliser une clé de cache pour les recettes
-
-//     // Vérifier si les recettes sont présentes dans le cache Memcached
-//     getData(cacheKey, async (err, cachedRecipes) => {
-//       if (err) {
-//         console.error("Erreur de récupération depuis Memcached:", err);
-//       }
-
-//       // Si les recettes sont dans le cache, les retourner
-//       if (cachedRecipes) {
-//         console.log("Recettes récupérées depuis le cache");
-//         return res.status(200).json(JSON.parse(cachedRecipes)); // Parser la valeur JSON du cache
-//       }
-//       // Si les recettes ne sont pas dans le cache, récupérer depuis la base de données
-//       const recipes = await Recipe.find(); // Vous pouvez ajouter des `.populate()` ici si nécessaire
-
-//       // Si aucune recette n'est trouvée, renvoyer un tableau vide
-//       if (!recipes.length) {
-//         return res.status(200).json([]);
-//       }
-
-//       // Mettre les recettes dans le cache pour la durée définie (1 heure = 3600 secondes)
-//       cacheData(cacheKey, JSON.stringify(recipes)); // Stocker les recettes sous forme de chaîne JSON
-
-//       // Retourner les recettes récupérées de la base de données
-//       return res.status(200).json(recipes);
-//     });
-//   } catch (error) {
-//     console.error("Erreur lors de la récupération des recettes:", error);
-//     res.status(500).json({ message: "Error retrieving recipes" });
-//   }
-// };
-
-// Récupérer une seule recette par son ID
-export const getRecipeById = async (req, res) => {
+// Récupérer une recette par son ID
+export const getRecipeById = (req, res) => {
   const { id } = req.params;
-  try {
-    const recipe = await Recipe.findById(id)
-      // Peupler la catégorie avec le champ 'name'
+  const cacheKey = `GET:/api/recipes/${id}`;
+
+  // Vérification dans le cache
+  cacheMiddleware(req, res, () => {
+    // Si la recette est dans le cache, elle sera déjà envoyée
+    // Sinon, la suite du code est exécutée pour récupérer la recette de la base de données
+
+    Recipe.findById(id)
       .populate("category", "name")
-      // Peupler les ingrédients avec les champs spécifiés
       .populate("ingredients", "name quantity quantity_description unit")
-      // Peupler les instructions avec les champs spécifiés
-      .populate("instructions", "step_number instruction");
+      .populate("instructions", "step_number instruction")
+      .then((recipe) => {
+        if (!recipe) {
+          return res.status(404).json({ message: "Recette non trouvée" });
+        }
 
-    // Si la recette n'est pas trouvée, renvoyer une erreur 404
-    if (!recipe) {
-      return res.status(404).json({ message: "Recette non trouvée" });
-    }
+        // Mise en cache de la recette pendant 1 heure (3600 secondes)
+        memcached.set(cacheKey, JSON.stringify(recipe), 3600, (err) => {
+          if (err) {
+            // Log de l'erreur sans interrompre l'exécution
+            console.error(
+              "Erreur lors de la mise en cache de la recette:",
+              err
+            );
+          } else {
+            console.log(`Recette mise en cache pour ${cacheKey}`);
+          }
+        });
 
-    res.status(200).json(recipe);
-  } catch (error) {
-    console.error("Erreur lors de la récupération de la recette:", error);
-    res.status(500).json({ message: "Erreur serveur" });
-  }
+        // Répondre à la requête avec la recette, après l'avoir mise en cache
+        res.status(200).json(recipe);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération de la recette:", error);
+        res.status(500).json({ message: "Erreur serveur" });
+      });
+  });
 };
-
-// // Récupérer une seule recette par son ID
-// export const getRecipeById = async (req, res) => {
-//   const { id } = req.params;
-//   const cacheKey = `recipe_${id}`; // Utiliser l'ID comme clé de cache
-
-//   try {
-//     // Vérifier si la recette est déjà dans le cache
-//     getData(cacheKey, async (err, cachedRecipe) => {
-//       if (err) {
-//         console.error("Erreur lors de la récupération depuis Memcached:", err);
-//       }
-
-//       // Si la recette est présente dans le cache, la renvoyer
-//       if (cachedRecipe) {
-//         console.log("Recette récupérée depuis le cache");
-//         return res.status(200).json(JSON.parse(cachedRecipe)); // Retourner la recette du cache
-//       }
-
-//       // Si la recette n'est pas dans le cache, la récupérer depuis la base de données
-//       const recipe = await Recipe.findById(id)
-//         .lean() // Récupérer un objet JavaScript pur pour éviter les problèmes de sérialisation
-//         .populate("category", "name")
-//         .populate("ingredients", "name quantity quantity_description unit")
-//         .populate("instructions", "step_number instruction");
-
-//       // Si la recette n'est pas trouvée, renvoyer une erreur 404
-//       if (!recipe) {
-//         return res.status(404).json({ message: "Recette non trouvée" });
-//       }
-
-//       // Mettre la recette dans le cache pour 1 heure (3600 secondes)
-//       cacheData(cacheKey, JSON.stringify(recipe)); // Stocker la recette dans le cache
-
-//       // Retourner la recette récupérée depuis la base de données
-//       return res.status(200).json(recipe);
-//     });
-//   } catch (error) {
-//     console.error("Erreur lors de la récupération de la recette:", error);
-//     res.status(500).json({ message: "Erreur serveur" });
-//   }
-// };
 
 // Récupérer les recettes par catégorie
-export const getRecipesByCategory = async (req, res) => {
-  const { categoryId } = req.params;
-  try {
-    const recipes = await Recipe.find({ category: categoryId })
-      // Peupler la catégorie avec le champ 'name'
+export const getRecipesByCategory = (req, res) => {
+  const { id } = req.params;
+  const cacheKey = `GET:/api/recipes/category/${id}`; // Clé de cache spécifique à la catégorie
+
+  // Vérification dans le cache
+  cacheMiddleware(req, res, () => {
+    // Si les recettes sont en cache, elles seront déjà renvoyées.
+    // Sinon, la suite du code est exécutée pour récupérer les recettes de la base de données
+
+    // Récupérer les recettes depuis la base de données
+    Recipe.find({ category: id })
       .populate("category", "name")
-      // Peupler les ingrédients avec les champs spécifiés
       .populate("ingredients", "name quantity quantity_description unit")
-      // Peupler les instructions avec les champs spécifiés
-      .populate("instructions", "step_number instruction");
-    // Vérifier si des recettes ont été trouvées
-    if (recipes.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "Aucune recette trouvée pour cette catégorie" });
-    }
-    return res.status(200).json(recipes);
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Erreur serveur lors de la récupération des recettes" });
-  }
+      .populate("instructions", "step_number instruction")
+      .then((recipes) => {
+        if (recipes.length === 0) {
+          return res
+            .status(404)
+            .json({ message: "Aucune recette trouvée pour cette catégorie" });
+        }
+
+        // Mise en cache des recettes pendant 1 heure (3600 secondes)
+        memcached.set(cacheKey, JSON.stringify(recipes), 3600, (err) => {
+          if (err) {
+            console.error("Erreur lors de la mise en cache des recettes:", err);
+          } else {
+            console.log(`Recettes mises en cache pour ${cacheKey}`);
+          }
+        });
+
+        // Mise en cache des recettes
+        cacheResponse(req, res, () => {
+          // Renvoie les recettes depuis la base de données
+          res.status(200).json(recipes);
+        });
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des recettes:", error);
+        res.status(500).json({
+          message: "Erreur serveur lors de la récupération des recettes",
+        });
+      });
+  });
 };
 
+// Récupérer les commentaires d'une recette
+export const getCommentsByRecipe = (req, res) => {
+  const { id } = req.params;
+
+  // Vérification dans le cache avant de procéder
+  cacheMiddleware(req, res, () => {
+    // Si les commentaires sont en cache, ils seront renvoyés.
+    // Sinon, on va les récupérer depuis la base de données
+
+    // Récupérer les commentaires depuis la base de données
+    Comment.find({ recipe: id })
+      .populate("user", "name")
+      .populate("recipe", "title")
+      .then((comments) => {
+        if (comments.length === 0) {
+          return res
+            .status(404)
+            .json({ message: "Aucun commentaire trouvé pour cette recette" });
+        }
+
+        // Mise en cache des commentaires pendant 1 heure (3600 secondes)
+        // Utilisation de cacheResponse pour mettre en cache après envoi de la réponse
+        cacheResponse(req, res, () => {
+          // Renvoie les commentaires depuis la base de données
+          res.status(200).json(comments);
+        });
+      })
+      .catch((error) => {
+        console.error(
+          "Erreur lors de la récupération des commentaires:",
+          error
+        );
+        res.status(500).json({
+          message: "Erreur serveur lors de la récupération des commentaires",
+        });
+      });
+  });
+};
+
+// Récupérer les scores d'une recette
+export const getScoresByRecipe = (req, res) => {
+  const { id } = req.params;
+
+  // Vérification dans le cache avant de procéder
+  cacheMiddleware(req, res, () => {
+    // Si les scores sont en cache, ils seront renvoyés.
+    // Sinon, on va les récupérer depuis la base de données
+
+    // Récupérer les scores depuis la base de données
+    Score.find({ recipe: id })
+      .populate("user")
+      .then((scores) => {
+        if (scores.length === 0) {
+          return res
+            .status(404)
+            .json({ message: "Aucune note trouvée pour cette recette" });
+        }
+
+        const averageScore =
+          scores.reduce((sum, score) => sum + score.score, 0) / scores.length;
+
+        // Mise en cache des scores pendant 1 heure (3600 secondes)
+        // Utilisation de cacheResponse pour mettre en cache après envoi de la réponse
+        cacheResponse(req, res, () => {
+          // Renvoie les scores depuis la base de données, y compris la note moyenne
+          res.status(200).json({
+            scores,
+            averageScore: Number.parseFloat(averageScore).toFixed(2),
+          });
+        });
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des scores:", error);
+        return res.status(500).json({
+          message: "Erreur serveur lors de la récupération des scores",
+        });
+      });
+  });
+};
+
+// Ajouter une nouvelle recette
 export const addRecipe = async (req, res) => {
   // Récupérer les données de la requête
   const {
@@ -258,8 +329,18 @@ export const addRecipe = async (req, res) => {
     // Sauvegarder la recette
     await newRecipe.save();
 
-    // Invalider le cache des recettes après l'ajout
-    // invalidateCache("all_recipes"); // Invalide le cache des recettes
+    // Invalider les cache de recettes générales et spécifiques (par exemple, par ID, par catégorie)
+    invalidateCache({ method: "GET", originalUrl: "/api/recipes" }); // Invalidation du cache global des recettes
+    invalidateCache({
+      method: "GET",
+      originalUrl: `/api/recipes/${newRecipe._id}`,
+    }); // Invalidation du cache de cette recette
+
+    // Si vous avez un cache spécifique pour les catégories, invalidez également
+    invalidateCache({
+      method: "GET",
+      originalUrl: `/api/recipes/category/${validatedCategory}`,
+    });
 
     res.status(201).json({
       message: "Recette ajoutée avec succès",
@@ -376,7 +457,12 @@ export const updateRecipe = async (req, res) => {
     await recipe.save();
 
     // Invalider le cache des recettes après la mise à jour
-    // invalidateCache("all_recipes"); // Invalide le cache des recettes
+    invalidateCache({ method: "GET", originalUrl: `/api/recipes/${id}` }); // Invalider le cache de la recette mise à jour
+    invalidateCache({ method: "GET", originalUrl: "/api/recipes" }); // Invalider le cache global des recettes
+    invalidateCache({
+      method: "GET",
+      originalUrl: `/api/recipes/category/${recipe.category}`,
+    }); // Invalider le cache de la catégorie de cette recette
 
     res.status(200).json({
       message: "Recette mise à jour avec succès",
@@ -388,7 +474,7 @@ export const updateRecipe = async (req, res) => {
   }
 };
 
-// supprimer une recette (les ingrédients et instructions ne sont pas supprimés ici)
+// Supprimer une recette (les ingrédients et instructions ne sont pas supprimés ici)
 export const deleteRecipe = async (req, res) => {
   const { id } = req.params;
 
@@ -399,7 +485,12 @@ export const deleteRecipe = async (req, res) => {
     }
 
     // Invalider le cache des recettes après la suppression
-    // invalidateCache("all_recipes"); // Invalide le cache des recettes
+    invalidateCache({ method: "GET", originalUrl: `/api/recipes/${id}` }); // Invalider le cache de la recette supprimée
+    invalidateCache({ method: "GET", originalUrl: "/api/recipes" }); // Invalider le cache global des recettes
+    invalidateCache({
+      method: "GET",
+      originalUrl: `/api/recipes/category/${deletedRecipe.category}`,
+    }); // Invalider le cache de la catégorie de cette recette
 
     res.status(200).json({ message: "Recette supprimée avec succès" });
   } catch (error) {
@@ -447,33 +538,13 @@ export const searchRecipes = async (req, res) => {
       return res.status(404).json({ message: "Aucune recette trouvée" });
     }
 
+    // Invalider le cache des recettes pour cette recherche
+    invalidateCache({ method: "POST", originalUrl: "/api/recipes/search" }); // Invalider le cache des résultats de recherche
+
     return res.status(200).json(recipes);
   } catch (error) {
     console.error("Erreur lors de la recherche des recettes:", error);
     return res.status(500).json({ message: "Erreur serveur" });
-  }
-};
-
-// Récupérer les commentaires d'une recette
-export const getCommentsByRecipe = async (req, res) => {
-  const { recipeId } = req.params;
-  try {
-    // Chercher tous les commentaires associés à la recette
-    const comments = await Comment.find({ recipe: recipeId })
-      .populate("user", "name")
-      .populate("recipe", "title");
-    // Vérifier si des commentaires ont été trouvés
-    if (comments.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "Aucun commentaire trouvé pour cette recette" });
-    }
-    return res.status(200).json(comments);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      message: "Erreur serveur lors de la récupération des commentaires",
-    });
   }
 };
 
@@ -509,6 +580,12 @@ export const addComment = async (req, res) => {
 
     // Sauvegarder le commentaire
     await newComment.save();
+
+    // Invalider le cache des commentaires pour cette recette après l'ajout du commentaire
+    invalidateCache({
+      method: "GET",
+      originalUrl: `/api/recipes/${recipeId}/comments`,
+    });
 
     return res
       .status(201)
@@ -559,6 +636,12 @@ export const updateComment = async (req, res) => {
     comment.content = content;
     await comment.save();
 
+    // Invalider le cache des commentaires de la recette après la mise à jour du commentaire
+    invalidateCache({
+      method: "GET",
+      originalUrl: `/api/recipes/${comment.recipe}/comments`,
+    });
+
     return res
       .status(200)
       .json({ message: "Commentaire mis à jour avec succès", comment });
@@ -592,6 +675,12 @@ export const deleteComment = async (req, res) => {
     // Supprimer le commentaire
     await comment.remove();
 
+    // Invalider le cache des commentaires de la recette après la suppression
+    invalidateCache({
+      method: "GET",
+      originalUrl: `/api/recipes/${comment.recipe}/comments`,
+    });
+
     return res
       .status(200)
       .json({ message: "Commentaire supprimé avec succès" });
@@ -600,39 +689,6 @@ export const deleteComment = async (req, res) => {
     return res.status(500).json({
       message: "Erreur serveur lors de la suppression du commentaire",
     });
-  }
-};
-
-// Récupérer les scores d'une recette
-export const getScoresByRecipe = async (req, res) => {
-  const { recipeId } = req.params;
-  console.log("Recipe ID:", recipeId);
-
-  try {
-    const recipe = await Recipe.findById(recipeId);
-    if (!recipe) {
-      return res.status(404).json({ message: "Recette non trouvée" });
-    }
-
-    const scores = await Score.find({ recipe: recipeId }).populate("user");
-    if (scores.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "Aucune note trouvée pour cette recette" });
-    }
-
-    const averageScore =
-      scores.reduce((sum, score) => sum + score.score, 0) / scores.length;
-
-    return res.status(200).json({
-      scores,
-      averageScore: Number.parseFloat(averageScore).toFixed(2),
-    });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Erreur serveur lors de la récupération des scores" });
   }
 };
 
@@ -659,6 +715,12 @@ export const addOrUpdateScore = async (req, res) => {
 
     // Utiliser la méthode statique updateOrCreate pour gérer l'ajout ou la mise à jour du score
     const updatedScore = await Score.updateOrCreate(userId, recipeId, score);
+
+    // Invalider le cache des scores pour cette recette après la mise à jour ou l'ajout
+    invalidateCache({
+      method: "GET",
+      originalUrl: `/api/recipes/${recipeId}/scores`,
+    });
 
     return res.status(updatedScore.isNew ? 201 : 200).json({
       message: updatedScore.isNew
@@ -708,10 +770,16 @@ export const deleteScore = async (req, res) => {
     // Supprimer le score
     await score.remove();
 
+    // Invalider le cache des scores pour la recette concernée après la suppression
+    invalidateCache({
+      method: "GET",
+      originalUrl: `/api/recipes/${score.recipe}/scores`,
+    });
+
     return res.status(200).json({ message: "Score supprimé avec succès" });
   } catch (error) {
     console.error(error);
-    res
+    return res
       .status(500)
       .json({ message: "Erreur serveur lors de la suppression du score" });
   }

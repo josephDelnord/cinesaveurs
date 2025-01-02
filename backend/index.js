@@ -10,7 +10,12 @@ import commentRoutes from "./src/routes/commentRoutes.js";
 import scoreRoutes from "./src/routes/scoreRoutes.js";
 import statusRoutes from "./src/routes/statusRoutes.js";
 import setupSwagger from "./swagger.js";
-import { connectDB } from "./src/config/db.js"; // Connexion à MongoDB à partir de db.js
+import { connectDB } from "./src/config/db.js";
+import {
+  cacheMiddleware,
+  cacheResponse,
+  invalidateCache,
+} from "./src/cache/memcached.js";
 
 dotenv.config();
 
@@ -26,7 +31,7 @@ setupSwagger(app);
 // Middleware CORS
 app.use(
   cors({
-    origin: "http://localhost:3000", // URL de votre frontend
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
     credentials: true, // Autoriser les credentials
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [
@@ -41,7 +46,10 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Utilisation des routes avec le préfixe correspondant
+// Middleware global pour vérifier le cache
+app.use(cacheMiddleware); // Vérifie si les données sont dans le cache avant d'aller à la route
+
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/users", userRoutes);
@@ -56,7 +64,20 @@ app.get("/api", (req, res) => {
   res.send("Hello, you are in the world of recipes!");
 });
 
-// Ne pas démarrer le serveur ici (important pour les tests)
+// Middleware pour mettre en cache la réponse (après que la route a traité la requête)
+app.use(cacheResponse);
+
+// Exemple de suppression de recette qui invalide le cache
+app.delete("/api/recipes/:id", (req, res) => {
+  const recipeId = req.params.id;
+  console.log(`Suppression de la recette avec ID: ${recipeId}`);
+
+  invalidateCache(req); // Invalider le cache de cette recette
+
+  res.json({ message: "Recette supprimée avec succès!" });
+});
+
+// Démarrage du serveur
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

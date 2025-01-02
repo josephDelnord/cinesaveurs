@@ -1,36 +1,61 @@
 import { useEffect, useState } from "react";
 import myAxiosInstance from "../axios/axios";
-import { getTokenAndPseudoFromLocalStorage } from "../localstorage/localstorage";
+import {
+  getTokenAndPseudoFromLocalStorage,
+  isTokenValid,
+} from "../localstorage/localstorage";
 import UserCard from "../components/UserCard";
 import type { IUser } from "../@types/User";
 
 const UserManagement: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-  const [showAllUsers, setShowAllUsers] = useState<boolean>(false); // Nouvel état pour gérer le bouton
+  const [showAllUsers, setShowAllUsers] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
       const user = getTokenAndPseudoFromLocalStorage();
-      if (!user) {
+
+      // Si l'utilisateur n'est pas authentifié ou si le token est invalide, on redirige
+      if (!user || !isTokenValid(user.token)) {
         setIsAdmin(false);
+        setErrorMessage(
+          "Le token est invalide ou expiré. Veuillez vous reconnecter."
+        );
+        setLoading(false);
         return;
       }
 
+      // Vérification du rôle
       if (user.role === "admin") {
         setIsAdmin(true);
         try {
-          const response = await myAxiosInstance.get<IUser[]>("/api/users");
+          // Tentative de récupération des utilisateurs
+          const response = await myAxiosInstance.get<IUser[]>("/api/users", {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          });
           setUsers(response.data);
         } catch (error) {
           console.error(
-            "Erreur lors de la récupération des utilisateurs :",
+            "Erreur lors de la récupération des utilisateurs:",
             error
+          );
+          setErrorMessage(
+            "Une erreur est survenue lors de la récupération des utilisateurs."
           );
         }
       } else {
         setIsAdmin(false);
+        setErrorMessage(
+          "Vous n'avez pas l'autorisation d'accéder à cette page."
+        );
       }
+
+      setLoading(false);
     };
 
     checkAuth();
@@ -40,14 +65,17 @@ const UserManagement: React.FC = () => {
     setShowAllUsers((prev) => !prev);
   };
 
-  if (isAdmin === null) {
+  // Affichage pendant le chargement
+  if (loading) {
     return <div className="loading">Vérification des autorisations...</div>;
   }
 
+  // Affichage en cas d'erreur ou d'absence d'accès
   if (!isAdmin) {
     return (
       <div className="error-message">
-        Vous n'avez pas l'autorisation d'accéder à cette page.
+        {errorMessage ||
+          "Vous n'avez pas l'autorisation d'accéder à cette page."}
       </div>
     );
   }

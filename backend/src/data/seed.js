@@ -1312,6 +1312,21 @@ async function seedDatabase() {
         user: users[7]._id,
         recipe: recipes[4]._id,
       },
+      {
+        content: "Elle est délicieuse, j’ai adoré !",
+        user: users[7]._id,
+        recipe: recipes[5]._id,
+      },
+      {
+        content: "Elle est délicieuse, j’ai adoré !",
+        user: users[5]._id,
+        recipe: recipes[8]._id,
+      },
+      {
+        content: "Elle est délicieuse, j’ai adoré !",
+        user: users[1]._id,
+        recipe: recipes[9]._id,
+      },
     ]);
 
     // Créer des scores
@@ -1350,6 +1365,16 @@ async function seedDatabase() {
         score: 5,
         user: users[7]._id,
         recipe: recipes[4]._id,
+      },
+      {
+        score: 3,
+        user: users[7]._id,
+        recipe: recipes[8]._id,
+      },
+      {
+        score: 3,
+        user: users[1]._id,
+        recipe: recipes[9]._id,
       },
     ]);
 

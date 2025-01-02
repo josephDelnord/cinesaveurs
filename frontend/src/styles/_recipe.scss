@@ -148,20 +148,31 @@
       resize: vertical;
     }
 
-    .rating {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
+.rating {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  
+  span {
+    font-size: 2rem;  // Augmentez la taille des étoiles (ou des icônes)
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
 
-      span {
-        font-size: 1.5rem;
-        cursor: pointer;
-
-        &.filled {
-          color: $accent-color;
-        }
-      }
+    // Effet d'agrandissement au survol pour donner un retour visuel
+    &:hover {
+      transform: scale(1.2);
     }
+
+    &.filled {
+      color: #f39c12;  // Une couleur dorée, vous pouvez aussi utiliser une variable SCSS comme $accent-color
+    }
+
+    &.empty {
+      color: #ccc;  // Une couleur grise pour les étoiles vides
+    }
+  }
+}
 
     button {
       background-color: $background-color-button;
@@ -183,22 +194,14 @@
     }
   }
 
-  // Message pour redirection
-  .redirect-message {
-    font-family: $font-family-primary;
-    font-weight: $font-weight-regular;
-    font-size: $font-size-text-description;
-    color: $text-color-secondary;
-    margin-top: 30px;
+  button {
+    background: none;
+    color: $primary-color;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 10px;
     
-    button {
-      background: none;
-      color: $primary-color;
-      border: none;
-      text-decoration: underline;
-      cursor: pointer;
-      margin-top: 10px;
-    }
   }
 
 }

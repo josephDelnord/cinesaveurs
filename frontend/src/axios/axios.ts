@@ -9,19 +9,25 @@ const myAxiosInstance = axios.create({
 // Intercepteur de requête
 myAxiosInstance.interceptors.request.use(
     (config) => {
-      const { token } = getTokenAndPseudoFromLocalStorage();
-      console.log("Token extrait depuis localStorage :", token);
-      
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+
+      const result = getTokenAndPseudoFromLocalStorage();
+      if (result) {
+        const { token } = result;
+        console.log("Token extrait depuis localStorage :", token);
+        
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        } else {
+          console.error('Aucun token trouvé dans localStorage');
+        }
+    
+        console.log("En-têtes avant envoi :", config.headers);
       } else {
-        console.error('Aucun token trouvé dans localStorage');
+        console.error('Aucun résultat retourné par getTokenAndPseudoFromLocalStorage');
       }
-  
-      console.log("En-têtes avant envoi :", config.headers);
+
       return config;
-    },
-    (error) => {
+    },    (error) => {
       console.error("Erreur dans l'intercepteur Axios :", error);
       return Promise.reject(error);
     }
