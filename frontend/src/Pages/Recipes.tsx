@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom"; // Importer useNavigate
 import myAxiosInstance from "../axios/axios";
 import RecipeCard from "../components/RecipeCard";
 import type { IRecipe } from "../@types/Recipe";
+import Loading from "../components/Loading";
 
 const Recipes: React.FC = () => {
   const [recipes, setRecipes] = useState<IRecipe[]>([]); // Liste des recettes
@@ -12,6 +13,7 @@ const Recipes: React.FC = () => {
   const [popularRecipe, setPopularRecipe] = useState<IRecipe | null>(null); // Recette populaire
   const [showAll, setShowAll] = useState<boolean>(false); // Afficher toutes les recettes
   const [searchQuery, setSearchQuery] = useState(""); // Texte de recherche
+  const [loading, setLoading] = useState<boolean>(true); // Ajouter l'état de chargement
 
   const navigate = useNavigate(); // Hook pour la navigation
 
@@ -69,6 +71,9 @@ const Recipes: React.FC = () => {
       .catch((error) => {
         console.error("Erreur de récupération des recettes:", error);
         setError("Impossible de récupérer les recettes.");
+      })
+      .finally(() => {
+        setLoading(false); // Une fois que les données sont chargées ou qu'il y a une erreur, on arrête le chargement
       });
   }, []); // Ce useEffect se déclenche une seule fois lors du montage du composant
 
@@ -81,20 +86,42 @@ const Recipes: React.FC = () => {
     ? filteredRecipes
     : filteredRecipes.slice(0, 3);
 
+  // Si les recettes sont en cours de chargement, afficher le loader
+  if (loading) return <Loading />;
+
+  // Si une erreur s'est produite, afficher un message d'erreur
+  if (error) return <div>{error}</div>;
+
   return (
     <div className="recipes-page">
-      {/* Barre de recherche */}
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Rechercher une recette"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="search-input"
-        />
-        <button type="button" onClick={handleSearch} className="search-button">
-          Rechercher
-        </button>
+      <div className="recipes-header">
+        {/* Bouton pour ajouter une nouvelle recette */}
+        <div className="add-recipe-button-container">
+          <button
+            type="button"
+            className="add-recipe-button"
+            onClick={() => navigate("/add-recipe")} // Redirection vers la page d'ajout
+          >
+            Ajouter une recette
+          </button>
+        </div>
+        {/* Barre de recherche */}
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Rechercher une recette"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          <button
+            type="button"
+            onClick={handleSearch}
+            className="search-button"
+          >
+            Rechercher
+          </button>
+        </div>
       </div>
 
       <h2>Bienvenue dans l'univers de Ciné Délices</h2>
@@ -169,17 +196,6 @@ const Recipes: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* Bouton pour ajouter une nouvelle recette */}
-      <div className="add-recipe-button-container">
-        <button
-          type="button"
-          className="add-recipe-button"
-          onClick={() => navigate("/add-recipe")} // Redirection vers la page d'ajout
-        >
-          Ajouter une recette
-        </button>
-      </div>
     </div>
   );
 };

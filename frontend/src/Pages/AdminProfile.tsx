@@ -1,30 +1,31 @@
-import type React from 'react';
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import myAxiosInstance from '../axios/axios';
-import type { IUser } from '../@types/User';
+import type React from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import myAxiosInstance from "../axios/axios";
+import type { IUser } from "../@types/User";
+import Loading from "../components/Loading";
 
 const AdminProfile: React.FC = () => {
   // Récupérer l'ID utilisateur depuis les paramètres de l'URL
-  const { userId } = useParams<{ userId: string }>(); 
-  console.log('User ID from params:', userId); // Vérifiez que l'ID utilisateur est récupéré
+  const { userId } = useParams<{ userId: string }>();
+  console.log("User ID from params:", userId); // Vérifiez que l'ID utilisateur est récupéré
 
   const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
-  const token = localStorage.getItem('token');
-  const role = localStorage.getItem('role');
-  
   // Vérification de l'authentification et du rôle
   useEffect(() => {
-    if (!token || role !== 'admin') {
-      window.location.href = '/login'; // Redirection si non authentifié ou non admin
+    if (!token || role !== "admin") {
+      window.location.href = "/login"; // Redirection si non authentifié ou non admin
     }
   }, [token, role]);
 
   // Appel API pour récupérer les données de l'utilisateur
   useEffect(() => {
+    setLoading(true);
     if (userId && token) {
       const fetchUserData = async () => {
         try {
@@ -33,12 +34,14 @@ const AdminProfile: React.FC = () => {
               Authorization: `Bearer ${token}`,
             },
           });
-          console.log('User data:', response.data); // Log de la réponse pour vérifier les données
+          console.log("User data:", response.data); // Log de la réponse pour vérifier les données
           setUser(response.data);
           setLoading(false);
         } catch (err) {
-          console.error('Erreur lors de la récupération des données:', err);
-          setError('Erreur lors de la récupération des données de l\'utilisateur.');
+          console.error("Erreur lors de la récupération des données:", err);
+          setError(
+            "Erreur lors de la récupération des données de l'utilisateur."
+          );
           setLoading(false);
         }
       };
@@ -46,7 +49,7 @@ const AdminProfile: React.FC = () => {
     }
   }, [userId, token]);
 
-  if (loading) return <div>Chargement...</div>;
+  if (loading) return <Loading />;
   if (error) return <div>{error}</div>;
   if (!user) return <div>Utilisateur introuvable.</div>;
 
@@ -54,12 +57,24 @@ const AdminProfile: React.FC = () => {
     <div className="admin-profile">
       <h1>Profil de l'utilisateur</h1>
       <div>
-        <p><strong>Nom:</strong> {user.username}</p>
-        <p><strong>Email:</strong> {user.email}</p>
-        <p><strong>Rôle:</strong> {user.role.role_name}</p>
-        <p><strong>Statut:</strong> {user.status.status_name}</p>
-        <p><strong>Créé le:</strong> {user.createdAt}</p>
-        <p><strong>Dernière mise à jour:</strong> {user.updatedAt}</p>
+        <p>
+          <strong>Nom:</strong> {user.username}
+        </p>
+        <p>
+          <strong>Email:</strong> {user.email}
+        </p>
+        <p>
+          <strong>Rôle:</strong> {user.role.role_name}
+        </p>
+        <p>
+          <strong>Statut:</strong> {user.status.status_name}
+        </p>
+        <p>
+          <strong>Créé le:</strong> {user.createdAt}
+        </p>
+        <p>
+          <strong>Dernière mise à jour:</strong> {user.updatedAt}
+        </p>
       </div>
     </div>
   );

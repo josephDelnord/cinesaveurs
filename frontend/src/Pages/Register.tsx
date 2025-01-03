@@ -1,69 +1,80 @@
-import type React from 'react';
-import { useState } from 'react';
-import myAxiosInstance from '../axios/axios';
-import { saveTokenAndPseudoInLocalStorage, decodeToken } from '../localstorage/localstorage';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import type React from "react";
+import { useState } from "react";
+import myAxiosInstance from "../axios/axios";
+import {
+  saveTokenAndPseudoInLocalStorage,
+  decodeToken,
+} from "../localstorage/localstorage";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Loading from "../components/Loading";
 
 const Register = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [role, setRole] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate(); // Initialiser useNavigate
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     // Vérification des mots de passe
     if (password !== confirmPassword) {
       setError("Les mots de passe ne correspondent pas");
       return;
     }
-  
+
     // Validation de l'email
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(email)) {
       setError("L'email n'est pas valide");
       return;
     }
-  
+
     setLoading(true);
-  
+
     try {
       // Appel à l'API pour inscrire l'utilisateur
-      const response = await myAxiosInstance.post('/api/auth/register', {
+      const response = await myAxiosInstance.post("/api/auth/register", {
         username,
         email,
         password,
         confirmPassword,
         role,
       });
-  
+
       // Sauvegarder le token et le pseudo dans le localStorage
       const { token } = response.data;
       const decodedToken = decodeToken(token);
 
       if (!decodedToken || !decodedToken.userId || !decodedToken.role) {
-        throw new Error('Le token ne contient pas un userId ou un role valide');
+        throw new Error("Le token ne contient pas un userId ou un role valide");
       }
 
-      saveTokenAndPseudoInLocalStorage(username, token, decodedToken.role, decodedToken.userId);
-  
+      saveTokenAndPseudoInLocalStorage(
+        username,
+        token,
+        decodedToken.role,
+        decodedToken.userId
+      );
+
       // Attendre un court instant avant la redirection
       setTimeout(() => {
         // Rediriger l'utilisateur vers la page d'accueil après l'inscription réussie
-        navigate('/');
+        navigate("/");
       }, 500); // Vous pouvez ajuster le délai si nécessaire (en ms)
-  
     } catch (err) {
       setLoading(false);
-  
+
       if (axios.isAxiosError(err) && err.response) {
-        setError(err.response?.data?.message || "Une erreur s'est produite lors de l'inscription.");
+        setError(
+          err.response?.data?.message ||
+            "Une erreur s'est produite lors de l'inscription."
+        );
       } else {
         setError("Une erreur s'est produite lors de l'inscription.");
       }
@@ -71,12 +82,16 @@ const Register = () => {
       setLoading(false); // Réinitialiser l'état de chargement après la requête
     }
   };
-  
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="register-page">
       <h2>Créer un compte</h2>
       <form onSubmit={handleRegister}>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
         <input
           type="text"
@@ -113,12 +128,11 @@ const Register = () => {
           {loading ? "Chargement..." : "S'inscrire"}
         </button>
         <div className="login-link">
-        <p>
-          Vous avez déjà un compte ? <a href="/login">Se connecter</a>
-        </p>
-      </div>
+          <p>
+            Vous avez déjà un compte ? <a href="/login">Se connecter</a>
+          </p>
+        </div>
       </form>
-
     </div>
   );
 };

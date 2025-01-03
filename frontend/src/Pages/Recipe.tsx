@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import type { IRecipe } from "../@types/Recipe";
 import type { IComment } from "../@types/Comment";
 import type { IScore } from "../@types/Score";
+import Loading from "../components/loading";
 
 const Recipe: React.FC = () => {
   const { id } = useParams();
@@ -45,7 +46,7 @@ const Recipe: React.FC = () => {
         const scoresData = JSON.parse(cachedScores);
         setScores(scoresData);
         const totalScore = scoresData.reduce(
-          (sum, score) => sum + score.score,
+          (sum: number, score: IScore) => sum + score.score,
           0
         );
         setAverageRating(totalScore / scoresData.length || 0);
@@ -92,7 +93,10 @@ const Recipe: React.FC = () => {
           });
       }
 
-      setLoading(false); // Fin de la récupération des données
+      setTimeout(() => {
+        setLoading(false); // Terminer le chargement après 1 seconde
+      }, 1000);
+      // setLoading(false); // Fin de la récupération des données
     }
   }, [id]);
 
@@ -132,7 +136,10 @@ const Recipe: React.FC = () => {
       });
   };
 
-  if (loading) return <div>Chargement...</div>;
+  if (loading) {
+    return <Loading />; // Affiche le loader pendant le chargement
+  }
+  // if (loading) return <div>Chargement...</div>;
   if (error) return <div>{error}</div>;
   if (!recipe) return <div>Recette non trouvée</div>;
 

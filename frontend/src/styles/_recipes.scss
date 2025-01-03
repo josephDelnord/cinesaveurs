@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 /* _Recipes.scss */
 
@@ -8,63 +8,24 @@
   background-color: $background-color;
   font-family: $font-family-primary;
   color: $text-color-secondary;
-  min-height: 100vh; /* Assure que la page occupe toute la hauteur */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-y: auto; /* Permet le défilement vertical si nécessaire */
+  overflow-y: auto;
 
-  /* Titre principal */
   h2 {
     font-size: 2rem;
     color: $primary-color;
-    font-family: $font-family-primary;
     text-align: center;
-    margin : 5rem;
+    margin: 5rem;
   }
 }
 
-/* Conteneur principal de la barre de recherche */
-.search-container {
-  position: sticky; /* Permet à la barre de recherche de rester visible pendant le défilement */
-  top: 1rem; /* Ajustez cette valeur pour positionner la barre sous le header */
-  right: 2rem; /* Positionne la barre de recherche à droite, avec un espacement de 2rem */
-  display: flex;
-  align-items: center;
-  z-index: 1000; /* Assurez-vous que la barre est au-dessus des autres éléments */
-  width: auto; /* Assurez-vous que la barre occupe seulement l'espace nécessaire */
-  margin-left: 70rem;
-
-  /* L'input de recherche */
-  .search-input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    width: 250px;
-    margin-right: 10px;
-
-  }
-
-  /* Le bouton de recherche */
-  .search-button {
-    padding: 10px 15px;
-    background-color: $primary-color;
-    color: $text-color-quaternary;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-
-    &:hover {
-      background-color: $hover-background-color-button;
-    }
-  }
-}
 /* Conteneur des cartes de recettes */
 .recipe-cards-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* Centre les cartes dans la page */
+  justify-content: center;
   gap: 2rem;
   margin-top: 2vh;
   padding-bottom: 2rem;
@@ -72,13 +33,12 @@
 
 /* Card de recette */
 .recipe-card {
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 30%; /* Augmente la largeur des cartes pour les rendre plus larges */
-  min-height: 50vh; /* Augmente la hauteur minimale des cartes */
+  width: 30%;
+  min-height: 50vh;
   border-width: 0px 3px 3px 0px;
   border-style: solid;
   border-color: $primary-color;
@@ -88,13 +48,12 @@
   transition: transform 0.1s ease-in-out;
   background-color: $background-color;
   border-radius: 10px;
-  overflow: hidden; /* Empêche l'image et autres éléments de dépasser la carte */
-  
+  overflow: hidden;
+
   &:hover {
-    transform: scale(1.05); /* Effet de survol */
+    transform: scale(1.05);
   }
 
-  /* Titre de la carte */
   h3 {
     color: $primary-color;
     font-family: $font-family-primary;
@@ -103,42 +62,37 @@
     text-transform: uppercase;
     text-align: center;
     margin: 0.5rem 0;
+  }
+
+  p {
+    font-family: $font-family-secondary;
+    text-align: justify;
+    padding: 2rem;
+    font-size: 1rem;
+    margin: 0.5rem 0 2rem 0;
     width: 100%;
   }
 
-/* Description de la recette */
-p {
-  font-family: $font-family-secondary;
-  text-align: justify;
-  padding: 2rem; /* Ajoute un espacement à gauche, droite, haut et bas */
-  font-size: 1rem;
-  margin: 0.5rem 0 2rem 0; /* Ajoute un espace en bas de la description */
-  width: 100%; /* S'assure que le texte ne dépasse pas */
-  box-sizing: border-box; /* Assure que le padding ne dépasse pas la largeur de l'élément */
-}
+  h2 {
+    color: $primary-color;
+    font-family: $font-family-primary;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    text-align: right;
+    margin: 1rem 0 0 0;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    padding: 1rem;
+  }
 
-/* Titre secondaire (par exemple, pour le nom de la recette) */
-h2 {
-  color: $primary-color;
-  font-family: $font-family-primary;
-  font-weight: 700;
-  font-size: 1rem;
-  text-transform: uppercase;
-  text-align: right;
-  margin: 1rem 0 0 0; /* Ajoute un espace au-dessus du titre secondaire */
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  padding: 1rem;
-}
-
-  /* Lien de la recette (voir la recette) */
   a {
     font-family: $font-family-primary;
     font-size: 2.5rem;
     background-color: $primary-color;
-    color: $text-color-quaternary;    
+    color: $text-color-quaternary;
     text-decoration: none;
     padding: 1rem 2rem;
     border-radius: 50%;
@@ -150,24 +104,21 @@ h2 {
     transform: translate(10%, 10%);
 
     &:hover {
-
-    background-color: $accent-color;
-    color: $primary-color;
-
+      background-color: $accent-color;
+      color: $primary-color;
     }
   }
-}
 
-/* Image de la carte de recette */
-.recipe-card img {
-  width: 100%;
-  height: 35vh; /* Augmente la hauteur de l'image pour mieux s'adapter aux cartes élargies */
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
-  box-shadow: -5px 12px 9px 5px rgba(0, 0, 0, 0.25);
-  margin-bottom: 1rem;
-  max-width: 100%; /* S'assure que l'image respecte les limites de la carte */
+  img {
+    width: 100%;
+    height: 35vh;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    box-shadow: -5px 12px 9px 5px rgba(0, 0, 0, 0.25);
+    margin-bottom: 1rem;
+    max-width: 100%;
+  }
 }
 
 /* Bouton "Voir toutes les recettes" */
@@ -199,16 +150,16 @@ h2 {
   flex-direction: column;
   align-items: center;
   margin: 2rem 0;
-  position: relative;  // Important pour que les éléments positionnés à l'intérieur utilisent ce conteneur comme référence
+  position: relative;
 
   .popular-recipe-title {
-    position: absolute;   // Positionnement absolu par rapport au conteneur parent
-    top: -3rem;            // Distance du haut du conteneur
-    right: 3rem;          // Distance du côté droit du conteneur
+    position: absolute;
+    top: -3rem;
+    right: 3rem;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    z-index: 10;          // Assurez-vous que la flèche et le titre sont au-dessus des autres éléments
+    z-index: 10;
     padding: 0.5rem;
 
     h4 {
@@ -221,16 +172,14 @@ h2 {
     }
 
     img {
-      width: 150px;   // Ajuster la taille de l'image flèche
-      height: auto;   // Maintenir l'aspect ratio
-      object-fit: cover; // Si vous voulez que l'image remplisse son espace sans déformation
+      width: 150px;
+      height: auto;
+      object-fit: cover;
       max-width: 100%;
       max-height: 100%;
     }
   }
 }
-
-
 
 /* Style pour la recette populaire */
 .popular-recipe {
@@ -242,9 +191,9 @@ h2 {
   min-height: 20vh;
   width: 100%;
   display: flex;
-  flex-direction: row; /* Utilisation de flexbox pour aligner l'image et la description */
+  flex-direction: row;
   justify-content: space-between;
-  align-items: center; /* Centrer verticalement les éléments */
+  align-items: center;
   top: -1rem;
 
   .popular-recipe-image {
@@ -254,19 +203,16 @@ h2 {
     align-items: center;
     max-width: 25%;
 
-      /* Image de la recette populaire */
-      img {
-        height: auto; /* Conserver le ratio d'aspect de l'image */
-        object-fit: cover; /* L'image remplira son espace sans déformation */
-        border-radius: 65% 34% 25% 3% / 62% 0% 0% 38%; /* Garder la bordure arrondie de l'image */
-        position: absolute;
-        bottom: 0;
-        right: 0; /* Placer l'image sur le coin inférieur droit du conteneur */
-        max-width: 100%;
-        max-height: 100%;
-        
-      }
-
+    img {
+      height: auto;
+      object-fit: cover;
+      border-radius: 65% 34% 25% 3% / 62% 0% 0% 38%;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      max-width: 100%;
+      max-height: 100%;
+    }
   }
 
   .popular-recipe-info {
@@ -276,42 +222,34 @@ h2 {
     align-items: center;
     padding: 1rem;
 
+    p {
+      font-family: $font-family-secondary;
+      font-size: 1.5rem;
+      color: $text-color-quaternary;
+      text-align: justify;
+      line-height: 1.6;
+      margin-top: 0.5rem;
+      margin-right: 22rem;
+    }
 
-      /* Description de la recette populaire */
-      p {
-        font-family: $font-family-secondary;
-        font-size: 1.5rem;
-        color: $text-color-quaternary;
-        text-align: justify;
-        line-height: 1.6;
-        margin-top: 0.5rem;
-        margin-right: 22rem; 
-
-      }
-      // source de la recette populaire
-      aside {
-        color: $text-color-quaternary;
-        font-family: $font-family-primary;
-        font-size: 1.5rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        text-align: center;
-        margin-top: 2rem;
-        margin-right: 45rem; 
-
-      }
-
+    aside {
+      color: $text-color-quaternary;
+      font-family: $font-family-primary;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-align: center;
+      margin-top: 2rem;
+      margin-right: 45rem;
+    }
   }
 
-  
-  
-  
   .popular-score {
     margin: 1rem 0;
     padding-bottom: 1rem;
     position: relative;
-    top : -3rem;
-    border : solid 1px blue;
+    top: -3rem;
+    border: solid 1px blue;
     padding-left: 2rem;
 
     .popular-stars {
@@ -320,11 +258,10 @@ h2 {
       color: $text-color-quaternary;
       text-align: justify;
       text-decoration: underline;
-      border : solid 1px blue;
+      border: solid 1px blue;
     }
   }
 
-  /* Bouton "Voir la recette" */
   a {
     font-family: $font-family-primary;
     font-size: 1rem;
@@ -334,7 +271,6 @@ h2 {
     background-color: $secondary-color;
     border-radius: $border-radius-button;
     transition: background-color 0.3s;
-
     position: absolute;
     left: 45%;
     bottom: 1rem;
@@ -357,18 +293,226 @@ h2 {
   margin-top: 2vh;
 }
 
-.add-recipe-button-container {
-  margin-top: 30px;
-  text-align: center;
+/* Conteneur de l'en-tête des recettes */
+.recipes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem 2rem;
+}
 
-  .add-recipe-button {
-    background-color: $primary-color;
-    color: $text-color-button;
-    border: none;
-    padding: 15px 30px;
-    font-size: $font-size-secondary-title;
-    border-radius: $border-radius-button;
-    cursor: pointer;
-    transition: all 0.3
+/* Conteneur du bouton "Ajouter une recette" */
+.add-recipe-button-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0;
+}
+
+/* Conteneur de la barre de recherche */
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: auto;
+}
+
+/* Style pour l'input de recherche */
+.search-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 250px;
+  margin-right: 10px;
+}
+
+/* Style pour le bouton de recherche */
+.search-button {
+  padding: 10px 15px;
+  background-color: $primary-color;
+  color: $text-color-quaternary;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: $hover-background-color-button;
+  }
+}
+
+/* Style pour le bouton "Ajouter une recette" */
+.add-recipe-button {
+  padding: 0.8rem 1.5rem;
+  font-size: 1.2rem;
+  background-color: $primary-color;
+  color: $text-color-quaternary;
+  border: none;
+  border-radius: $border-radius-button;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: $hover-background-color-button;
+    color: $hover-text-color-button;
+  }
+}
+
+/* Media Queries */
+
+/* Petit écran (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  .recipes-page h2 {
+    font-size: 1.6rem;
+    margin: 3rem 1rem;
+  }
+
+  .recipe-cards-container {
+    gap: 1rem;
+  }
+
+  .recipe-card {
+    width: 45%;
+    min-height: 40vh;
+  }
+
+  .show-more-button-container {
+    .show-more-button {
+      font-size: 1rem;
+      padding: 0.6rem 1.2rem;
+    }
+  }
+
+  .container-popular-recipe .popular-recipe-title {
+    top: -2rem;
+    right: 2rem;
+    h4 {
+      font-size: 1.2rem;
+    }
+    img {
+      width: 120px;
+    }
+  }
+
+  .popular-recipe {
+    flex-direction: column;
+    padding: 1rem;
+    .popular-recipe-info {
+      margin-right: 0;
+      padding: 0;
+    }
+    .popular-recipe-image {
+      max-width: 40%;
+    }
+  }
+
+  .search-input {
+    width: 200px;
+  }
+}
+
+/* Très petit écran (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  .recipes-page h2 {
+    font-size: 1.2rem;
+    margin: 2rem 1rem;
+  }
+
+  .recipe-cards-container {
+    gap: 0.5rem;
+  }
+
+  .recipe-card {
+    width: 90%;
+    min-height: 30vh;
+    h2 {
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+    a {
+      font-size: 2rem;
+      padding: 0.5rem 1rem;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .show-more-button-container {
+    .show-more-button {
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+      margin-bottom: 6rem;
+    }
+  }
+
+  .container-popular-recipe {
+    margin-top: 1rem;
+
+    .title-popular-recipe {
+      width: 50%;
+      margin-bottom: 0.7rem;
+    }
+  }
+
+  .popular-recipe-title {
+    margin-bottom: 4rem;
+    h4 {
+      font-size: 1rem;
+    }
+    img {
+      display: none;
+    }
+  }
+  .popular-recipe
+  .popular-recipe-info p {
+    font-size: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 0.7rem;
+
+  }
+
+  .popular-recipe .popular-recipe-info aside {
+    font-size: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .popular-recipe .popular-recipe-info a {
+    font-size: 1rem;
+    margin-right: 8rem;
+    margin-bottom: 2rem;
+  }
+
+
+  .popular-recipe-image {
+    // largeur fixe de l'image, le quart du conteneur
+    width: 100%; /* Fixe la largeur de l'image à 25% du conteneur */
+    max-width: 100%; /* Assure que l'image ne dépasse pas 25% */
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      opacity: 0.2; /* Réduire l'opacité de l'image pour la rendre semi-transparente */
+      border-radius: 10px;
+    }
+    }
+
+  .popular-score {
+    .popular-stars {
+      font-size: 0.8rem;
+      margin-top: 2rem;
+    }
+  }
+
+  .search-input {
+    width: 180px;
+  }
+
+  .recipes-header {
+    padding: 0.5rem 1rem;
+    flex-direction: column;
+    .add-recipe-button {
+      margin-bottom: 1rem;
+    }
   }
 }

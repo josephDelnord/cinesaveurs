@@ -1,9 +1,10 @@
-import type React from 'react';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import myAxiosInstance from '../axios/axios';
-import axios from 'axios';
-import type { IUser } from '../@types/User';
+import type React from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import myAxiosInstance from "../axios/axios";
+import axios from "axios";
+import type { IUser } from "../@types/User";
+import Loading from "../components/Loading";
 
 const UserProfile: React.FC = () => {
   const [user, setUser] = useState<IUser | null>(null);
@@ -11,12 +12,12 @@ const UserProfile: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
-  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     if (!token) {
-      navigate('/login');
+      navigate("/login");
     }
   }, [token, navigate]);
 
@@ -26,8 +27,8 @@ const UserProfile: React.FC = () => {
         try {
           const response = await myAxiosInstance.get(`/api/users/${userId}`, {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           });
           setUser(response.data);
           setLoading(false);
@@ -35,7 +36,7 @@ const UserProfile: React.FC = () => {
           if (axios.isAxiosError(err) && err.response) {
             setError(`Erreur API: ${err.response.data.message}`);
           } else {
-            setError('Erreur inconnue');
+            setError("Erreur inconnue");
           }
           setLoading(false);
         }
@@ -43,13 +44,13 @@ const UserProfile: React.FC = () => {
 
       fetchUserData();
     } else {
-      setError('Identifiant de l\'utilisateur manquant.');
+      setError("Identifiant de l'utilisateur manquant.");
       setLoading(false);
     }
   }, [userId, token]);
 
   if (loading) {
-    return <div>Chargement...</div>;
+    return <Loading />;
   }
 
   if (error) {

@@ -11,6 +11,8 @@ export const getAllScores = (req, res) => {
     // Si les données sont dans le cache, elles ont été déjà envoyées par le middleware cacheMiddleware
     // Sinon, on continue ici pour récupérer depuis la base de données
     Score.find()
+      .populate("user", "username") // Peupler uniquement le nom d'utilisateur
+      .populate("recipe", "title") // Peupler uniquement le titre de la recette
       .then((scores) => {
         if (!scores.length) {
           return res.status(200).json([]); // Si aucune note n'est trouvée, renvoyer une liste vide

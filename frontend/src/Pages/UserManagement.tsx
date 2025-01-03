@@ -6,7 +6,7 @@ import {
 } from "../localstorage/localstorage";
 import UserCard from "../components/UserCard";
 import type { IUser } from "../@types/User";
-
+import Loading from "../components/Loading";
 const UserManagement: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
@@ -67,7 +67,7 @@ const UserManagement: React.FC = () => {
 
   // Affichage pendant le chargement
   if (loading) {
-    return <div className="loading">Vérification des autorisations...</div>;
+    return <Loading />;
   }
 
   // Affichage en cas d'erreur ou d'absence d'accès

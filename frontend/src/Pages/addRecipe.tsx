@@ -1,5 +1,6 @@
 import type React from "react";
 import { useState } from "react";
+import Loading from "../components/Loading";
 
 const AddRecipe: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -11,6 +12,7 @@ const AddRecipe: React.FC = () => {
   const [ingredients, setIngredients] = useState("");
   const [instructions, setInstructions] = useState("");
   const [date, setDate] = useState("");
+  const [loading, setLoading] = useState(false); // Nouvel état pour gérer le loader
 
   // Fonction pour gérer le téléchargement de l'image
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,6 +24,7 @@ const AddRecipe: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true); // Affiche le loader
     // Logique pour envoyer la recette à l'API ou la sauvegarder
     console.log({
       title,
@@ -34,7 +37,12 @@ const AddRecipe: React.FC = () => {
       instructions,
       date,
     });
+    setLoading(false); // Masque le loader après la requête
   };
+
+  if (loading) {
+    return <Loading />; // Affiche le loader pendant le chargement
+  }
 
   return (
     <div className="add-recipe-page">

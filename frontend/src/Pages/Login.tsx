@@ -6,6 +6,7 @@ import {
   saveTokenAndPseudoInLocalStorage,
   getTokenAndPseudoFromLocalStorage,
 } from "../localstorage/localstorage";
+import Loading from "../components/Loading";
 
 // Fonction pour gérer la connexion
 const authenticateUser = async (
@@ -109,6 +110,8 @@ function Login() {
       navigate
     );
   };
+
+  if (loading) return <Loading />;
 
   return (
     <div className="login-page">

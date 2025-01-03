@@ -11,6 +11,8 @@ export const getComments = (req, res) => {
     // Si les données sont dans le cache, elles ont été déjà envoyées par le middleware cacheMiddleware
     // Sinon, on continue ici pour récupérer depuis la base de données
     Comment.find()
+      .populate("user", "username") // Peupler uniquement le champ 'username' de l'utilisateur
+      .populate("recipe", "title") // Peupler uniquement le champ 'title' de la recette
       .then((comments) => {
         if (!comments.length) {
           return res.status(200).json([]); // Si aucun commentaire n'est trouvé, renvoyer une liste vide

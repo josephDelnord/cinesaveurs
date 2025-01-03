@@ -4,14 +4,14 @@ const About: React.FC = () => {
   return (
     <div className="about-container">
       <h1 className="about-title">À propos de Cine Délices</h1>
-      
+
       <section className="about-introduction">
         <h2 className="section-title">Bienvenue dans l'univers de Cine Délices</h2>
         <p className="section-text">
-          Bienvenue sur <strong>Cine Délices</strong>, l'application qui allie votre passion pour le cinéma et votre amour de la cuisine ! Nous sommes une équipe de créateurs, de cinéphiles et de gourmets qui souhaitons offrir à nos utilisateurs une expérience immersive où les films et les recettes ne font qu'un. 
+          Bienvenue sur <strong>Cine Délices</strong>, l'application qui allie votre passion pour le cinéma et votre amour de la cuisine ! Nous sommes une équipe de créateurs, de cinéphiles et de gourmets qui souhaitons offrir à nos utilisateurs une expérience immersive où les films et les recettes ne font qu'un.
         </p>
         <p className="section-text">
-          Nous croyons que chaque film a une histoire, mais aussi une saveur, et c'est pourquoi nous avons créé Cine Délices : une plateforme unique où les recettes inspirées par vos films et séries préférés vous attendent. Vous pouvez explorer, partager et même créer vos propres recettes basées sur vos scènes cinématographiques favorites. 
+          Nous croyons que chaque film a une histoire, mais aussi une saveur, et c'est pourquoi nous avons créé Cine Délices : une plateforme unique où les recettes inspirées par vos films et séries préférés vous attendent. Vous pouvez explorer, partager et même créer vos propres recettes basées sur vos scènes cinématographiques favorites.
         </p>
       </section>
 
@@ -28,7 +28,7 @@ const About: React.FC = () => {
       <section className="about-explore">
         <h2 className="section-title">Explorez, Créez et Partagez</h2>
         <p className="section-text">
-          Sur Cine Délices, nous vous invitons à explorer des centaines de recettes inspirées par vos films et séries préférés. Grâce à une interface simple et intuitive, vous pouvez facilement naviguer entre les catégories : classiques, comédies, thrillers, films d'animation, et bien d’autres encore. 
+          Sur Cine Délices, nous vous invitons à explorer des centaines de recettes inspirées par vos films et séries préférés. Grâce à une interface simple et intuitive, vous pouvez facilement naviguer entre les catégories : classiques, comédies, thrillers, films d'animation, et bien d’autres encore.
         </p>
         <p className="section-text">
           Mais ce n'est pas tout ! Vous avez également la possibilité de créer vos propres recettes. Laissez libre cours à votre créativité en associant vos plats favoris à vos films et personnages adorés. Une fois votre recette créée, vous pouvez la partager avec notre communauté de passionnés, échanger des astuces, et découvrir les recettes des autres utilisateurs.

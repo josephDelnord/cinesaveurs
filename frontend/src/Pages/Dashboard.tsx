@@ -5,6 +5,7 @@ import type { IComment } from "../@types/Comment";
 import type { IScore } from "../@types/Score";
 import type { IUser } from "../@types/User";
 import { NavLink } from "react-router-dom";
+import Loading from "../components/Loading";
 
 const Dashboard: React.FC = () => {
   const [comments, setComments] = useState<IComment[]>([]); // Définition de l'état pour les commentaires
@@ -20,15 +21,18 @@ const Dashboard: React.FC = () => {
       const cachedComments = localStorage.getItem("comments");
       if (cachedComments) {
         setComments(JSON.parse(cachedComments)); // Charger depuis le cache
+        setLoading(false); // Fin du chargement
       } else {
         myAxiosInstance
           .get<IComment[]>("/api/comments")
           .then((response) => {
             setComments(response.data);
             localStorage.setItem("comments", JSON.stringify(response.data)); // Sauvegarder dans le cache
+            setLoading(false); // Fin du chargement
           })
           .catch((error) => {
             console.error("Erreur de récupération des commentaires", error);
+            setLoading(false); // Fin du chargement
           });
       }
     };
@@ -38,15 +42,18 @@ const Dashboard: React.FC = () => {
       const cachedScores = localStorage.getItem("scores");
       if (cachedScores) {
         setScores(JSON.parse(cachedScores)); // Charger depuis le cache
+        setLoading(false); // Fin du chargement
       } else {
         myAxiosInstance
           .get<IScore[]>("/api/scores")
           .then((response) => {
-            setScores(response.data);
+            setScores(response.data); // Mettre à jour l'état des scores avec les données de la réponse
             localStorage.setItem("scores", JSON.stringify(response.data)); // Sauvegarder dans le cache
+            setLoading(false); // Fin du chargement
           })
           .catch((error) => {
             console.error("Erreur de récupération des scores", error);
+            setLoading(false); // Fin du chargement
           });
       }
     };
@@ -95,6 +102,10 @@ const Dashboard: React.FC = () => {
     { id: "settings", to: "/admin/dashboard/settings", text: "Settings" },
   ];
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="dashboard-container">
       <div className="nav-container">
@@ -118,7 +129,7 @@ const Dashboard: React.FC = () => {
       </div>
       <div className="dashboard-content">
         <div className="users-section">
-          <h3 className="dashboard-subtitle">Utilisateurs Actifs</h3>
+          <h3 className="dashboard-subtitle">Utilisateurs actifs</h3>
           {loading ? (
             <p>Chargement des utilisateurs...</p>
           ) : users.length > 0 ? (
@@ -145,11 +156,10 @@ const Dashboard: React.FC = () => {
                 <li key={comment._id} className="comment-item">
                   <p>{comment.content}</p>
                   <small className="comment-user">
-                    Posté par: {comment.user.username || "Utilisateur inconnu"}{" "}
+                    Posté par: {comment.user.username || "Utilisateur inconnu"}
                   </small>
                   <small className="comment-recipe">
-                    Sur la recette: {comment.recipe.title || "Non trouvée"}{" "}
-                    {/* Titre de la recette */}
+                    Sur la recette: {comment.recipe.title || "Non trouvée"}
                   </small>
                 </li>
               ))}
@@ -168,12 +178,11 @@ const Dashboard: React.FC = () => {
                   <p>Score: {score.score}</p>
                   <small className="score-user">
                     Note donnée par:{" "}
-                    {score.user.username || "Utilisateur inconnu"}{" "}
+                    {score.user.username || "Utilisateur inconnu"}
                   </small>
                   <small className="score-recipe">
                     Note donnée à la recette:{" "}
-                    {score.recipe.title || "Non trouvée"}{" "}
-                    {/* Titre de la recette */}
+                    {score.recipe.title || "Non trouvée"}
                   </small>
                 </li>
               ))}
