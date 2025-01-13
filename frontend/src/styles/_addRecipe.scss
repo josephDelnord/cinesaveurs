@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 .add-recipe-page {
   background-color: $background-color-light;
@@ -24,7 +24,7 @@
 
     .input-group {
       margin-bottom: 20px;
-      
+
       label {
         display: block;
         font-size: $font-size-text-description;
@@ -33,6 +33,7 @@
       }
 
       input,
+      select,
       textarea {
         width: 100%;
         padding: 10px;
@@ -44,13 +45,44 @@
         margin-top: 5px;
       }
 
-      input[type="text"] {
+      input[type="text"],
+      input[type="number"] {
         height: 40px;
       }
 
       textarea {
         height: 150px;
         resize: vertical;
+      }
+
+      select {
+        height: 40px;
+      }
+    }
+
+    .ingredient-item,
+    .instruction-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+
+      input,
+      textarea {
+        margin-bottom: 10px;
+      }
+
+      input[type="text"] {
+        margin-bottom: 5px;
+      }
+    }
+
+    .ingredient-item {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 10px;
+
+      input {
+        width: 100%;
       }
     }
 
@@ -69,6 +101,22 @@
       &:hover {
         background-color: $hover-background-color-button;
         color: $hover-text-color-button;
+        transform: scale(1.05);
+      }
+    }
+
+    .add-ingredient-button,
+    .add-instruction-button {
+      background-color: $background-color-light;
+      color: $primary-color;
+      border: 1px solid $text-color-primary;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+
+      &:hover {
+        background-color: $background-color-light;
         transform: scale(1.05);
       }
     }

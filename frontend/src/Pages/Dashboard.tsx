@@ -68,9 +68,11 @@ const Dashboard: React.FC = () => {
         myAxiosInstance
           .get<IUser[]>("/api/users")
           .then((response) => {
-            const activeUsers = response.data.filter(
-              (user) => user.status.status_name === "active"
-            );
+            const activeUsers = response.data.filter((user) => {
+              // Vérifier que user.status existe avant d'accéder à status_name
+              return user.status && user.status.status_name === "active";
+            });
+            console.log(response.data); // Vérifie ce que tu reçois
             setUsers(activeUsers);
             localStorage.setItem("users", JSON.stringify(activeUsers)); // Sauvegarder dans le cache
             setLoading(false); // Fin du chargement

@@ -1,13 +1,21 @@
-import { useState } from "react";
+// src/components/Header.tsx
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, setAuthenticated } from "../slices/authSlice";
+import type { RootState } from "../store"; // Assure-toi d'importer le bon type RootState
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isAuthenticated = localStorage.getItem("token");
-  const userPseudo = localStorage.getItem("pseudo");
-  const userRole = localStorage.getItem("role");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Utilisation du store Redux pour récupérer l'état d'authentification
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const userPseudo = localStorage.getItem("pseudo");
+  const userRole = localStorage.getItem("role");
+
+  // Ouvre/ferme le menu burger
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -16,15 +24,26 @@ function Header() {
     setIsMenuOpen(false);
   };
 
+  // Action de déconnexion
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    dispatch(logout()); // Déconnexion via Redux
     localStorage.removeItem("pseudo");
     localStorage.removeItem("role");
     localStorage.removeItem("userId");
-    navigate("/");
+    navigate("/"); // Redirection vers la page d'accueil
   };
 
   const profileLink = userRole === "admin" ? "/admin/profile" : "/profile";
+
+  // Vérifier si l'utilisateur est authentifié au chargement
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      dispatch(setAuthenticated(true)); // Si le token est présent, l'utilisateur est authentifié
+    } else {
+      dispatch(setAuthenticated(false)); // Si le token est absent, l'utilisateur n'est pas authentifié
+    }
+  }, [dispatch]);
 
   return (
     <div id="header">
@@ -99,5 +118,4 @@ function Header() {
     </div>
   );
 }
-
 export default Header;

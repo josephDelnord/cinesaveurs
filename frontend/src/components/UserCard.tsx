@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import type {IUser} from '../@types/User';
 
 
-const UserCard: React.FC<IUser> = ({ _id, username, email, status, role }) => { 
+const UserCard: React.FC<IUser> = ({ _id, username, email, status, role }) => {
   return (
     <div className="user-card">
       <Link to={`/user/${_id}`}> + </Link>

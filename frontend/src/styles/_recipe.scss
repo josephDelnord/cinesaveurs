@@ -20,6 +20,12 @@
     text-align: center;
   }
 
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+
+  }
+
   // Image de la recette
   img {
     width: 100%;
@@ -37,7 +43,7 @@
     color: $text-color-secondary;
     margin-bottom: 20px;
     text-align: justify;
-    
+
     strong {
       font-weight: $font-weight-bold;
       color: $primary-color;
@@ -45,72 +51,76 @@
   }
 
 // Ingrédients et instructions
+
 .content-wrapper {
-  margin-top: $spacing-recipe;
+  margin-top: 30px;
+  padding: 20px;
+  background-color: $content-wrapper-bg;
 
+h2 {
+  font-family: $font-family-primary;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-tertiary-title;
+  color: $primary-color;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
 
-  h2 {
-    font-family: $font-family-primary;
-    font-weight: $font-weight-bold;
-    font-size: $font-size-secondary-title;
-    color: $primary-color;
-    margin-top: 30px;
-    margin-bottom: 15px;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+
+  th,
+  td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid $border-color;
+    font-size: 1rem;
   }
 
-  ul.ingredients, ol.instructions {
-    font-family: $font-family-primary;
-    font-weight: $font-weight-regular;
-    font-size: $font-size-text-description;
-    color: $text-color-tertiary;
-    padding-left: 20px;
-    list-style-type: none;  // Retirer les puces par défaut
-    text-align: justify;   // Justification du texte
+  th {
+    background-color: $table-header-bg;
+    color: $text-color-quaternary;
+    font-weight: bold;
   }
 
-  ul.ingredients li,
-  ol.instructions li {
-    margin-bottom: 15px;
-    position: relative;
-    padding-left: 35px; // Ajuster l'espace pour la numérotation
-
+  tr {
+    background-color: $odd-row-bg;  // Applique la même couleur de fond à toutes les lignes
   }
 
-  ul.ingredients li::before {
-    content: "•";
-    font-size: 1.5rem;
-    color: $primary-color;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+  tr:hover {
+    background-color: $hover-color; // Survol avec une légère couleur de fond
   }
 
-  // Numérotation des instructions
-  ol.instructions {
-    counter-reset: instruction-counter; // Initialise le compteur à zéro
-
-    li {
-      counter-increment: instruction-counter; // Incrémente le compteur pour chaque étape
-      margin-bottom: 15px;
-      position: relative;
-
-
-      // Numéro de l'étape
-      &::before {
-        content: counter(instruction-counter) ". "; // Affiche le numéro de l'étape
-        color: $primary-color; // Appliquer la couleur orange
-        font-weight: $font-weight-bold; // Mettre en gras
-        font-size: 1.2rem; // Taille de la numérotation
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-    }
+  td {
+    font-size: 1rem;
   }
 }
 
+.ingredients-table,
+.instructions-table {
+  th {
+    text-align: center;
+  }
+
+  td {
+    text-align: center;
+  }
+}
+
+.ingredients-table {
+  th {
+    background-color: $table-header-bg; // Bleu très clair
+  }
+}
+
+.instructions-table {
+  th {
+    background-color: $table-header-bg; // Vert très clair
+  }
+}
+}
   // Note moyenne
   .average-rating {
     font-family: $font-family-primary;
@@ -125,6 +135,27 @@
     }
   }
 
+
+ .note-section {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-tertiary-title;
+    color: $primary-color;
+
+    margin-top: 30px;
+    margin-bottom: 15px;
+
+    // Ajout d'un fond pour le h2
+    background-color: #f4f4f4; // Couleur de fond clair (ou vous pouvez ajuster selon vos besoins)
+    padding: 15px; // Ajoute de l'espace autour du texte
+    border-radius: 8px; // Arrondir les coins du fond
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // Légère ombre pour donner un effet de profondeur
+
+    // Effet de survol (hover) pour un fond légèrement plus foncé
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
   // Section des commentaires
   .comment-section {
     margin-top: 40px;
@@ -148,31 +179,42 @@
       resize: vertical;
     }
 
-.rating {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 20px;
-  
-  span {
-    font-size: 2rem;  // Augmentez la taille des étoiles (ou des icônes)
-    cursor: pointer;
-    transition: color 0.3s ease, transform 0.2s ease;
+    .rating {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
 
-    // Effet d'agrandissement au survol pour donner un retour visuel
-    &:hover {
-      transform: scale(1.2);
-    }
+      span {
+        font-size: 18px;
+        color: #333;
+        margin-right: 10px;
+      }
 
-    &.filled {
-      color: #f39c12;  // Une couleur dorée, vous pouvez aussi utiliser une variable SCSS comme $accent-color
-    }
+      button {
+        background: none;
+        border: none;
+        font-size: 32px;
+        color: #ccc; /* Couleur des étoiles non remplies */
+        cursor: pointer;
+        transition: color 0.2s ease-in-out;
 
-    &.empty {
-      color: #ccc;  // Une couleur grise pour les étoiles vides
+        &.filled {
+          color: #ffcc00; /* Couleur des étoiles remplies */
+        }
+
+        &:hover {
+          color: #ffcc00; /* Couleur des étoiles lors du survol */
+        }
+
+        &:focus {
+          outline: none;
+        }
+
+        & + button {
+          margin-left: 5px; /* Espacement entre les étoiles */
+        }
+      }
     }
-  }
-}
 
     button {
       background-color: $background-color-button;
@@ -194,6 +236,74 @@
     }
   }
 
+  .comments-list {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    h3 {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    p {
+      color: #555;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 10px 0;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    li {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      & > div:first-child {
+        font-weight: bold;
+        color: #333;
+        font-size: 1.1rem;
+      }
+
+      & > div:last-child {
+        font-size: 0.9rem;
+        color: #888;
+        margin-top: 10px;
+      }
+
+      .rating {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #ff9900;
+        margin-top: 10px;
+      }
+    }
+
+    .no-comments {
+      text-align: center;
+      font-style: italic;
+      color: #aaa;
+      font-size: 1.1rem;
+    }
+  }
+
   button {
     background: none;
     color: $primary-color;
@@ -201,7 +311,7 @@
     text-decoration: none;
     cursor: pointer;
     margin-top: 10px;
-    
+
   }
 
 }

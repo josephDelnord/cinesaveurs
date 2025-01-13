@@ -28,7 +28,7 @@
     margin-top: 4rem;
 
     h1 {
-      position: absolute; 
+      position: absolute;
       top: 10rem; // Ajuste la position du titre
       width: 100%;
       text-align: center;
@@ -46,7 +46,7 @@
 
     .input-group {
       width: 100%;
-      margin-bottom: $spacing-recipe; 
+      margin-bottom: $spacing-recipe;
 
       label {
         font-family: $font-family-primary;
@@ -121,6 +121,22 @@
       margin-bottom: 3rem;
       text-align: center;
       position: relative;
+    }
+    p {
+      font-family: $font-family-primary;
+      font-size: $font-size-text-description;
+      color: $text-color-secondary;
+      margin: 0.5rem 0;
+      font-weight: 400;
+
+      // Style conditionnel pour le statut "actif" ou "inactif"
+      &.active {
+        color: $success-color; // Assure-toi que $success-color est défini dans tes variables
+      }
+
+      &.inactive {
+        color: $error-color; // Assure-toi que $error-color est défini dans tes variables
+      }
     }
 
     button {

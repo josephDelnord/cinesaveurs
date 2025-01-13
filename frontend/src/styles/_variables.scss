@@ -11,7 +11,9 @@ $text-color-primary: #E65126; // orange
 $text-color-secondary: #202020; // gris très foncé
 $text-color-tertiary: #333333; // gris foncé
 $text-color-quaternary: #ffffff; // blanc
-
+$success-color: #28a745; // vert
+$warning-color: #ffc107; // jaune
+$error-color: #dc3545; // rouge
 // 2. Typographie
 $font-family-primary: 'Inter', sans-serif; // police principale
 $font-family-secondary: 'Anonymous Pro', sans-serif; // police secondaire
@@ -54,3 +56,11 @@ $footer-padding: 1rem 2rem; // Espacement du footer
 $footer-font-size: 1rem; // Taille du texte dans le footer
 $footer-font-family: 'Arial', sans-serif; // Police du footer
 $footer-border-top: 1px solid #444; // Bordure en haut du footer
+
+
+// 7. ingrédients et instructions
+$content-wrapper-bg: #f8f8f8; // Fond clair pour la section
+$border-color: #ddd; // Couleur de bordure subtile
+$hover-color: #FAC5B6; // Couleur de survol des lignes de table
+$table-header-bg: #E65126; // Fond orange pour les en-têtes de table
+$odd-row-bg: #f9f9f9; // Fond de lignes avec un gris clair

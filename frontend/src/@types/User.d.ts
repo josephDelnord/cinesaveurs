@@ -2,6 +2,7 @@
 
 // Interface pour un Utilisateur
 export interface IUser {
+  name: ReactNode;
   _id: string;              // Identifiant unique généré par Mongoose
   username: string;           // Nom d'utilisateur
   email: string;              // Email de l'utilisateur (doit être unique)

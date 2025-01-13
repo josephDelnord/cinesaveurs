@@ -108,6 +108,25 @@
       color: $primary-color;
     }
   }
+  // Nouveau bouton ajouté en haut à droite
+  .favorite-button {
+    position: absolute;
+    bottom: 1rem;
+    left: 0.5rem;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+    background-color: $accent-color;
+    color: $text-color-quaternary;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: $primary-color;
+      color: #fff;
+    }
+  }
 
   img {
     width: 100%;
@@ -463,12 +482,10 @@
       display: none;
     }
   }
-  .popular-recipe
-  .popular-recipe-info p {
+  .popular-recipe .popular-recipe-info p {
     font-size: 1rem;
     margin-right: 1rem;
     margin-bottom: 0.7rem;
-
   }
 
   .popular-recipe .popular-recipe-info aside {
@@ -483,7 +500,6 @@
     margin-bottom: 2rem;
   }
 
-
   .popular-recipe-image {
     // largeur fixe de l'image, le quart du conteneur
     width: 100%; /* Fixe la largeur de l'image à 25% du conteneur */
@@ -495,7 +511,7 @@
       opacity: 0.2; /* Réduire l'opacité de l'image pour la rendre semi-transparente */
       border-radius: 10px;
     }
-    }
+  }
 
   .popular-score {
     .popular-stars {

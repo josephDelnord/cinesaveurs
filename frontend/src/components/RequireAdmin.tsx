@@ -1,6 +1,7 @@
 import { useContext, type FC } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import Loading from "../components/Loading";
 
 interface RequireAdminProps {
   children: React.ReactElement;
@@ -10,8 +11,7 @@ const RequireAdmin: FC<RequireAdminProps> = ({ children }) => {
   const { isAdmin, isLoading } = useContext(AuthContext);
 
   if (isLoading) {
-    // État de chargement si l'authentification est en cours
-    return <p>Chargement...</p>;
+   return <Loading />;
   }
 
   if (!isAdmin) {

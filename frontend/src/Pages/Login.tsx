@@ -43,13 +43,14 @@ const authenticateUser = async (
     saveTokenAndPseudoInLocalStorage(username, token, role, userId);
     localStorage.setItem("userId", userId);
     localStorage.setItem("role", role);
+    localStorage.setItem("authToken", token); // Sauvegarde du token dans localStorage
 
     setToken(token);
     setUsername(username);
 
     // Redirection après une seconde
     setTimeout(() => {
-      navigate("/"); // Redirection après connexion
+      navigate("/profile"); // Redirection après connexion
     }, 1000);
   } catch (err) {
     setLoading(false);

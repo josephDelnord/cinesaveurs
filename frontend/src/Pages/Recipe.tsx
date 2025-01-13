@@ -1,70 +1,72 @@
-import { useState, useEffect, useCallback } from "react";
-import myAxiosInstance from "../axios/axios";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchRecipeRequest,
+  fetchRecipeSuccess,
+  fetchRecipeFailure,
+  fetchScoresSuccess,
+  fetchCommentsSuccess,
+  setLoading,
+} from "../slices/recipeSlice";
+import myAxiosInstance from "../axios/axios";
+import Loading from "../components/Loading";
 import type { IRecipe } from "../@types/Recipe";
 import type { IComment } from "../@types/Comment";
 import type { IScore } from "../@types/Score";
-import Loading from "../components/loading";
 
 const Recipe: React.FC = () => {
   const { id } = useParams();
-  const [recipe, setRecipe] = useState<IRecipe | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const { recipe, scores, comments, loading, error } = useSelector(
+    (state: {
+      recipe: {
+        recipe: IRecipe;
+        scores: IScore[];
+        loading: boolean;
+        error: string | null;
+        comments: IComment[];
+      };
+    }) => state.recipe
+  );
+
   const [comment, setComment] = useState<string>(""); // Commentaire de l'utilisateur
   const [rating, setRating] = useState<number>(0); // Note de l'utilisateur
-  const [averageRating, setAverageRating] = useState<number>(0); // Note moyenne
-  const [scores, setScores] = useState<IScore[]>([]); // Tableau des scores
-  const [comments, setComments] = useState<IComment[]>([]); // Commentaires
-  const user = localStorage.getItem("userId") || "null"; // ID utilisateur local
 
-  // Fonction pour récupérer les données de la recette, scores et commentaires
   const fetchData = useCallback(() => {
     if (id) {
-      setLoading(true); // Début de la récupération des données
+      dispatch(setLoading(true)); // Début de la récupération des données
 
       // Récupérer la recette
       const cachedRecipe = localStorage.getItem(`recipe-${id}`);
       if (cachedRecipe) {
-        setRecipe(JSON.parse(cachedRecipe)); // Charger depuis le cache
+        dispatch(fetchRecipeSuccess(JSON.parse(cachedRecipe))); // Charger depuis le cache
       } else {
+        dispatch(fetchRecipeRequest());
         myAxiosInstance
           .get<IRecipe>(`/api/recipes/${id}`)
           .then((response) => {
-            setRecipe(response.data);
+            dispatch(fetchRecipeSuccess(response.data));
             localStorage.setItem(`recipe-${id}`, JSON.stringify(response.data)); // Sauvegarder dans le cache
           })
           .catch((err) => {
             console.error("Erreur lors de la récupération de la recette", err);
-            setError("Erreur lors de la récupération de la recette");
+            dispatch(
+              fetchRecipeFailure("Erreur lors de la récupération de la recette")
+            );
           });
       }
 
       // Récupérer les scores de la recette
       const cachedScores = localStorage.getItem(`scores-${id}`);
       if (cachedScores) {
-        const scoresData = JSON.parse(cachedScores);
-        setScores(scoresData);
-        const totalScore = scoresData.reduce(
-          (sum: number, score: IScore) => sum + score.score,
-          0
-        );
-        setAverageRating(totalScore / scoresData.length || 0);
+        dispatch(fetchScoresSuccess(JSON.parse(cachedScores))); // Charger depuis le cache
       } else {
         myAxiosInstance
           .get<IScore[]>(`/api/recipes/${id}/scores`)
           .then((response) => {
-            const scoresData = response.data;
-            setScores(scoresData);
-
-            // Calcul de la note moyenne des scores
-            const totalScore = scoresData.reduce(
-              (sum, score) => sum + score.score,
-              0
-            );
-            setAverageRating(totalScore / scoresData.length || 0);
-
-            localStorage.setItem(`scores-${id}`, JSON.stringify(scoresData)); // Sauvegarder dans le cache
+            dispatch(fetchScoresSuccess(response.data));
+            localStorage.setItem(`scores-${id}`, JSON.stringify(response.data)); // Sauvegarder dans le cache
           })
           .catch((err) => {
             console.error("Erreur lors de la récupération des scores", err);
@@ -74,12 +76,12 @@ const Recipe: React.FC = () => {
       // Récupérer les commentaires de la recette
       const cachedComments = localStorage.getItem(`comments-${id}`);
       if (cachedComments) {
-        setComments(JSON.parse(cachedComments)); // Charger depuis le cache
+        dispatch(fetchCommentsSuccess(JSON.parse(cachedComments))); // Charger depuis le cache
       } else {
         myAxiosInstance
           .get<IComment[]>(`/api/recipes/${id}/comments`)
           .then((response) => {
-            setComments(response.data);
+            dispatch(fetchCommentsSuccess(response.data));
             localStorage.setItem(
               `comments-${id}`,
               JSON.stringify(response.data)
@@ -93,12 +95,9 @@ const Recipe: React.FC = () => {
           });
       }
 
-      setTimeout(() => {
-        setLoading(false); // Terminer le chargement après 1 seconde
-      }, 1000);
-      // setLoading(false); // Fin de la récupération des données
+      dispatch(setLoading(false)); // Fin de la récupération des données
     }
-  }, [id]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     fetchData();
@@ -118,12 +117,14 @@ const Recipe: React.FC = () => {
       return;
     }
 
+    const userId = localStorage.getItem("userId") || "defaultUserId"; // Utilisateur actuel
+
     // Ajouter un commentaire via l'API
     myAxiosInstance
       .post<IRecipe>(`/api/recipes/${id}/comments`, {
         content: comment,
         score: rating,
-        userId: user,
+        userId,
       })
       .then(() => {
         setComment(""); // Réinitialiser le commentaire
@@ -132,15 +133,13 @@ const Recipe: React.FC = () => {
       })
       .catch((err) => {
         console.error("Erreur lors de l'ajout du commentaire", err);
-        setError("Erreur lors de l'ajout du commentaire");
       });
   };
 
-  if (loading) {
-    return <Loading />; // Affiche le loader pendant le chargement
-  }
-  // if (loading) return <div>Chargement...</div>;
+  if (loading) return <Loading />;
+
   if (error) return <div>{error}</div>;
+
   if (!recipe) return <div>Recette non trouvée</div>;
 
   return (
@@ -168,67 +167,60 @@ const Recipe: React.FC = () => {
 
       <div className="content-wrapper">
         <h2>Ingrédients</h2>
-        <ul className="ingredients">
-          {recipe.ingredients.map((ingredient) => (
-            <li key={ingredient.id}>
-              {ingredient.name} : {ingredient.quantity}{" "}
-              {ingredient.quantity_description} {ingredient.unit}
-            </li>
-          ))}
-        </ul>
+        <table className="ingredients-table">
+          <thead>
+            <tr>
+              <th>Nom de l'ingrédient</th>
+              <th>Quantité</th>
+              <th>Unité</th>
+            </tr>
+          </thead>
+          <tbody>
+            {recipe.ingredients.map((ingredient) => (
+              <tr key={ingredient.id}>
+                <td>{ingredient.name}</td>
+                <td>{ingredient.quantity}</td>
+                <td>{ingredient.unit}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
         <h2>Instructions</h2>
-        <ol className="instructions">
-          {recipe.instructions
-            .sort((a, b) => a.step_number - b.step_number)
-            .map((instruction) => (
-              <li key={instruction.step_number}>
-                <span>{instruction.instruction}</span>
-              </li>
+        <table className="instructions-table">
+          <thead>
+            <tr>
+              <th>Étape</th>
+              <th>Instruction</th>
+            </tr>
+          </thead>
+          <tbody>
+            {recipe.instructions.map((instruction) => (
+              <tr key={instruction.step_number}>
+                <td>{instruction.step_number}</td>
+                <td>{instruction.instruction}</td>
+              </tr>
             ))}
-        </ol>
+          </tbody>
+        </table>
       </div>
 
-      <div className="average-rating">
-        <h3>Note moyenne : {averageRating.toFixed(1)} / 5</h3>
+      <div className="note-section">
+        Note moyenne :{" "}
+        {scores.length > 0
+          ? (
+              scores.reduce((total, score) => total + score.score, 0) /
+              scores.length
+            ).toFixed(1)
+          : 0}{" "}
+        / 5
       </div>
-
-      <div className="scores">
-        <h3>Scores des utilisateurs :</h3>
-        {scores.length > 0 ? (
-          scores.map((score) => (
-            <div key={score._id} className="score">
-              <p>
-                {score.user.username} : {score.score} / 5
-              </p>
-            </div>
-          ))
-        ) : (
-          <p>Aucun score pour cette recette.</p>
-        )}
-      </div>
-
-      <div className="comment-section">
-        <h3>Commentaires :</h3>
-        {comments.length > 0 ? (
-          comments.map((comment) => (
-            <div key={comment._id} className="comment">
-              <p>{comment.content}</p>
-              <p>Par {comment.user.username}</p>
-            </div>
-          ))
-        ) : (
-          <p>Aucun commentaire pour cette recette.</p>
-        )}
-      </div>
-
       <div className="comment-section">
         <h3>Ajouter un commentaire</h3>
         <textarea
           value={comment}
           onChange={handleCommentChange}
           placeholder="Votre commentaire..."
-          required
         />
         <div className="rating">
           <span>Note: </span>
@@ -236,8 +228,8 @@ const Recipe: React.FC = () => {
             <button
               key={star}
               type="button"
-              className={`${rating >= star ? "filled" : ""}`}
               onClick={() => handleRatingChange(star)}
+              className={rating >= star ? "filled" : ""}
             >
               ★
             </button>
@@ -246,6 +238,26 @@ const Recipe: React.FC = () => {
         <button type="button" onClick={handleSubmitComment}>
           Soumettre
         </button>
+      </div>
+
+      <div className="comments-list">
+        <h3>Commentaires</h3>
+        {comments.length > 0 ? (
+          <ul>
+            {comments.map((comment) => (
+              <li key={comment.createdAt}>
+                <div>
+                  <strong>{comment.user.username}</strong> -{" "}
+                  {new Date(comment.createdAt).toLocaleDateString()}
+                </div>
+                <p>{comment.content}</p>
+                <div>Note: {comment.rating} / 5</div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Aucun commentaire pour cette recette.</p>
+        )}
       </div>
     </div>
   );
