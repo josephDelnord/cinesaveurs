@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Status from './Status.js';  // Assurez-vous d'importer le modèle Status
 
 // Modèle de données pour les utilisateurs
 const userSchema = new mongoose.Schema(
@@ -24,6 +25,11 @@ const userSchema = new mongoose.Schema(
     status: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Status",
+      default: async () => {
+        // Récupérer le statut "active" dans la collection Status
+        const activeStatus = await Status.findOne({ status_name: 'active' });
+        return activeStatus ? activeStatus._id : null;
+      },
     },
     role: {
       type: mongoose.Schema.Types.ObjectId,

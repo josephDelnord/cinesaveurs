@@ -121,9 +121,9 @@ router.get(
 
 /**
  * @swagger
- * /recipes/addRecipe:
+ * /recipes/:
  *   post:
- *     summary: "Ajouter une nouvelle recette (admin ou utilisateur lui-même)"
+ *     summary: "Ajouter une nouvelle recette"
  *     description: "Permet d'ajouter une nouvelle recette à la base de données."
  *     tags: [Recettes]
  *     requestBody:
@@ -151,7 +151,7 @@ router.get(
  *       400:
  *         description: "Données invalides"
  */
-router.post("/addRecipe", authMiddleware, isAdminOrSelf, addRecipe);
+router.post("/", addRecipe);
 
 /**
  * @swagger

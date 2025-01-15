@@ -84,20 +84,20 @@ async function seedDatabase() {
     // Créer des utilisateurs avec des données fictives
     const users = await User.create([
       {
-        username: "Admin User",
-        email: "admin@example.com",
+        username: "Joseph Delnord",
+        email: "joseph@example.com",
         password: "Password@12345",
         confirmPassword: "Password@12345",
         status: status[0]._id,
         role: roles.find((r) => r.role_name === "admin")._id,
       },
       {
-        username: "Guest User",
-        email: "guest@example.com",
+        username: "Julie Loones",
+        email: "julie@example.com",
         password: "Password@12345",
         confirmPassword: "Password@12345",
         status: status[1]._id,
-        role: roles.find((r) => r.role_name === "guest")._id,
+        role: roles.find((r) => r.role_name === "admin")._id,
       },
       {
         username: "Chef Gordon Ramsay",
@@ -108,8 +108,8 @@ async function seedDatabase() {
         role: roles.find((r) => r.role_name === "user")._id,
       },
       {
-        username: "Regular User",
-        email: "user@example.com",
+        username: "Biba Mouzarine",
+        email: "biba@example.com",
         password: "Password@12345",
         confirmPassword: "Password@12345",
         status: status[0]._id,

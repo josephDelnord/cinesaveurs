@@ -243,6 +243,8 @@ export const addRecipe = async (req, res) => {
     image,
   } = req.body;
 
+  console.log(req.body);
+
   // Valider les données de la recette avec Joi
   const { error: recipeError } = addRecipeSchema.validate({
     title,
@@ -255,6 +257,7 @@ export const addRecipe = async (req, res) => {
 
   // Si la validation échoue, renvoyer une erreur
   if (recipeError) {
+    console.error("Erreur de validation:", recipeError.details); // Affiche les erreurs détaillées
     return res.status(400).json({ message: recipeError.details[0].message });
   }
 
@@ -336,7 +339,7 @@ export const addRecipe = async (req, res) => {
       originalUrl: `/api/recipes/${newRecipe._id}`,
     }); // Invalidation du cache de cette recette
 
-    // Si vous avez un cache spécifique pour les catégories, invalidez également
+    // Si on a un cache spécifique pour les catégories, invalidez également
     invalidateCache({
       method: "GET",
       originalUrl: `/api/recipes/category/${validatedCategory}`,

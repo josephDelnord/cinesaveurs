@@ -404,7 +404,7 @@ export const getRoleById = async (req, res) => {
           if (err) {
             console.error("Erreur lors de la mise en cache:", err);
           } else {
-            console.log("Rôle mis en cache pour GET:/api/roles/" + id);
+            console.log(`Rôle mis en cache pour GET:/api/roles/${id}`);
           }
         });
 

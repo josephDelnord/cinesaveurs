@@ -41,8 +41,8 @@ const addRecipeSchema = Joi.object({
         'string.base': '"image" doit être une chaîne de caractères',
         'string.uri': '"image" doit être une URL valide',
     }),
-    });
-    
+});
+
 // Schéma pour la mise à jour d'une recette
 const updateRecipeSchema = Joi.object({
     title: Joi.string().min(3).required().messages({
@@ -85,5 +85,6 @@ const updateRecipeSchema = Joi.object({
         'string.uri': '"image" doit être une URL valide',
     }),
 });
+
 
 export { addRecipeSchema, updateRecipeSchema };

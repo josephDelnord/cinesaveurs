@@ -1,51 +1,43 @@
 @startuml
 left to right direction
 
-actor "Guest" as G #lightgray
-actor "User" as U #lightblue
-actor "Admin" as A #lightgreen
+actor "Guest" as G #lightcyan
+actor "User" as U #lightgreen
+actor "Admin" as A #lightpink
 
 rectangle "System" {
-  
-  usecase "View Recipes by Category" as UC1 #lightcyan
-  usecase "Search Recipe by Title or Movie/TV Show" as UC2 #lightyellow
-  usecase "View Recipe Details" as UC3 #lightyellow 
-  usecase "Create Account and Authenticate" as UC4 #lightgray
-  usecase "Modify User Profile" as UC5 #lightyellow
-  usecase "Add a Recipe" as UC6 #lightyellow
-  usecase "Leave a Comment on a Recipe" as UC7 #lightyellow
-  usecase "Rate a Recipe" as UC8 #lightyellow
-  usecase "View Recipes Sorted by score or Date Added" as UC10 #lightyellow
-  usecase "View Recipes by Specific Ingredients" as UC11 #lightyellow
-  usecase "Manage Users (Moderate Accounts, Delete Accounts)" as UC12 #lightpink
-  usecase "Validate or Delete User-Submitted Recipes" as UC13 #lightpink
-  usecase "Organize Recipes into Categories" as UC14 #lightpink
-  usecase "Moderate User Comments" as UC15 #lightpink
-  usecase "Delete Recipe" as UC16 #lightpink
-  usecase "View Recipe Score and Comments" as UC17 #lightyellow
+
+  usecase "View all Recipes" as UC1 #lightcyan
+  usecase "Search Recipe by Title or Movie/TV Show" as UC2 #lightcyan
+  usecase "View Recipe Details" as UC3 #lightcyan
+  usecase "Create Account and Authenticate" as UC4 #lightcyan
+  usecase "Modify User Profile" as UC5 #lightgreen
+  usecase "Add a Recipe" as UC6 #lightcyan
+  usecase "Leave a Comment on a Recipe" as UC7 #lightgreen
+  usecase "Rate a Recipe" as UC8 #lightgreen
+  usecase "Manage Users (Moderate Accounts, Delete Accounts)" as UC9 #lightpink
+  usecase "Validate or Delete User-Submitted Recipes" as UC10 #lightpink
+  usecase "Moderate User Comments" as UC11 #lightpink
+  usecase "Delete Recipe" as UC12 #lightpink
+  usecase "View Recipe Score and Comments" as UC13 #lightcyan
 }
 
 ' Guest Access (light gray)
 G -down-> UC1
+G -down-> UC2
+G -down-> UC3
 G -down-> UC4
-G -down-> UC17
+G -down-> UC6
+G -down-> UC13
 
 ' User Access (light blue)
-U -down-> UC1
-U -down-> UC2
-U -down-> UC3
 U -down-> UC5
-U -down-> UC6
 U -down-> UC7
 U -down-> UC8
-U -down-> UC10
-U -down-> UC11
-U -down-> UC17
 
 ' Admin Access (light green)
+A -down-> UC9
+A -down-> UC10
+A -down-> UC11
 A -down-> UC12
-A -down-> UC13
-A -down-> UC14
-A -down-> UC15
-A -down-> UC16
 @enduml

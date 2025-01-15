@@ -6,7 +6,6 @@ const recipeSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      unique: true,
     },
     description: {
       type: String,
@@ -14,6 +13,7 @@ const recipeSchema = new mongoose.Schema(
     },
     anecdote: {
       type: String,
+      default: "Aucune anecdote"
     },
     ingredients: [
       {
@@ -31,6 +31,7 @@ const recipeSchema = new mongoose.Schema(
     ],
     source: {
       type: String,
+      required: true,
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
@@ -39,6 +40,7 @@ const recipeSchema = new mongoose.Schema(
     },
     image: {
       type: String,
+      default: "Aucune image"
     },
   },
   { timestamps: true }

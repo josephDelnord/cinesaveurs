@@ -16,11 +16,19 @@ import {
   cacheResponse,
   invalidateCache,
 } from "./src/cache/memcached.js";
+import https from "node:https";
+import fs from "node:fs";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Charger le certificat SSL et la clé privée
+const sslOptions = {
+  key: fs.readFileSync("ssl/private.key"), // Chemin vers la clé privée
+  cert: fs.readFileSync("ssl/certificate.crt"), // Chemin vers le certificat
+};
 
 // Connexion à MongoDB
 connectDB();
@@ -31,7 +39,7 @@ setupSwagger(app);
 // Middleware CORS
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+    origin: ["https://localhost:3000", "https://127.0.0.1:3000"],
     credentials: true, // Autoriser les credentials
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [
@@ -79,8 +87,9 @@ app.delete("/api/recipes/:id", (req, res) => {
 
 // Démarrage du serveur
 if (process.env.NODE_ENV !== "test") {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  // Démarrage du serveur HTTPS avec les options SSL
+  https.createServer(sslOptions, app).listen(PORT, () => {
+    console.log(`Server running on https://localhost:${PORT}`);
   });
 }
 

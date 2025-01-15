@@ -80,14 +80,14 @@ Le projet **Ciné Délices** propose une plateforme permettant aux utilisateurs 
 
 1. **Catalogue de recettes**
    - **Description** : Affichage d'une liste de recettes organisées par catégories (entrée, plat, dessert) et possibilité de filtrer selon les films/séries, popularité, ou date d'ajout.
-   - **Besoins** : 
+   - **Besoins** :
      - Filtrer les recettes par catégorie.
      - Recherche par titre, film/série ou ingrédient.
      - Affichage des recettes populaires et récentes.
-   
+
 2. **Page de détails d'une recette**
    - **Description** : Affichage des détails d'une recette, y compris les ingrédients, les instructions et l'association avec un film ou une série.
-   - **Besoins** : 
+   - **Besoins** :
      - Afficher les ingrédients et les instructions.
      - Lier une recette à un film ou une série.
      - Présenter des anecdotes ou des informations supplémentaires sur la recette et son contexte cinématographique.
@@ -101,7 +101,7 @@ Le projet **Ciné Délices** propose une plateforme permettant aux utilisateurs 
 
 4. **Ajout de recettes**
    - **Description** : Les utilisateurs connectés peuvent soumettre de nouvelles recettes via un formulaire avec des champs pour le titre, les ingrédients, les instructions, le film/série associé, et la catégorie.
-   - **Besoins** : 
+   - **Besoins** :
      - Formulaire d'ajout de recette accessible après connexion.
      - Validation de la recette par les administrateurs avant publication.
 
@@ -152,18 +152,18 @@ Le **MVP (Minimum Viable Product)** est la version du produit qui inclut uniquem
 Les **évolutions potentielles** concernent les fonctionnalités supplémentaires qui seront développées après la mise en production du MVP, en fonction des retours des utilisateurs et des besoins identifiés lors des premières itérations du projet.
 
 #### Evolutions envisagées :
-1. **Système de recommandations avancées** : 
+1. **Système de recommandations avancées** :
    - Utilisation d'algorithmes pour recommander des recettes basées sur les films/séries préférés de l'utilisateur ou les ingrédients qu'il possède.
-   
+
 2. **Interface sociale complète** :
    - Permettre aux utilisateurs de suivre d'autres utilisateurs, d'aimer des recettes et de les partager sur les réseaux sociaux.
-   
+
 3. **Amélioration du système de recherche et des filtres** :
    - Ajouter des filtres avancés pour rechercher par ingrédient, difficulté, temps de préparation, etc.
-   
+
 4. **Application mobile** :
    - Développer une version mobile de la plateforme pour permettre aux utilisateurs de consulter et d’ajouter des recettes en déplacement.
-   
+
 5. **Suggestions de films et recettes** :
    - Proposer des films et séries qui sont en lien avec les recettes populaires ou nouvellement ajoutées.
 
@@ -179,27 +179,27 @@ Ces évolutions seront priorisées et développées en fonction des retours des 
 ### 1. **Frontend (Interface Utilisateur)**
 
 #### a. **ReactJS**
-- **Justification** : 
+- **Justification** :
   - **React** est un des frameworks JavaScript les plus populaires et les plus performants pour construire des interfaces utilisateur interactives. Il permet de créer des interfaces dynamiques et réactives qui répondent aux actions des utilisateurs en temps réel, tout en garantissant une gestion efficace de l’état (state) de l’application.
   - Son **écosystème riche** (bibliothèques complémentaires comme React Router, Redux, etc.) et sa **vitesse de rendu** en font le choix idéal pour construire une plateforme moderne et rapide.
   - **Composantisation** : Avec React, l’interface utilisateur peut être décomposée en composants réutilisables et modulaires, ce qui améliore la maintenabilité du code et l’organisation du projet.
-  
+
 #### b. **TypeScript**
 - **Justification** :
   - **TypeScript** est un sur-ensemble de JavaScript qui ajoute une couche de typage statique. Cela permet d’identifier des erreurs potentiellement coûteuses lors de la phase de développement plutôt qu’en production.
   - TypeScript offre de **meilleures pratiques de codage**, une **maintenabilité accrue** et une **compatibilité parfaite avec React**. Cela permet de réduire les bugs et d’améliorer la qualité du code, tout en facilitant la collaboration entre les développeurs.
-  
+
 #### c. **React Router**
 - **Justification** :
   - **React Router** est essentiel pour la gestion de la navigation dans une application React. Il permet de créer des **routes dynamiques**, permettant ainsi de naviguer entre les différentes pages du site (par exemple, pages de recettes, d’ajout de recettes, d’inscription, etc.) sans recharger la page entière.
   - Grâce à React Router, l'application devient plus **réactive** et **rapide**, améliorant l’expérience utilisateur.
-  
+
 #### d. **SCSS**
 - **Justification** :
   - **SCSS** est un **préprocesseur CSS** qui permet d'écrire des feuilles de style plus structurées et maintenables grâce à des fonctionnalités avancées comme les variables, les mixins, les fonctions, et les imbrications.
   - Il offre une **flexibilité accrue** pour personnaliser les styles de manière plus précise tout en rendant le code plus lisible et réutilisable. SCSS permet de mieux organiser les règles CSS en divisant le code en modules et en favorisant une approche modulaire.
   - **Réduction de la duplication de code** et **optimisation des styles** pour garantir une interface à la fois esthétique, fluide et facilement évolutive sur toutes les plateformes (desktop et mobile).
-  - 
+  -
 #### E. **Cypress**
 - **Justification** :
   - **Cypress** est un framework de test de bout en bout (end-to-end) pour les applications web. Il permet de tester l'application dans un environnement réel de navigateur, ce qui aide à tester l'ensemble du flux de l'utilisateur.
@@ -207,7 +207,7 @@ Ces évolutions seront priorisées et développées en fonction des retours des 
   - **Tests d'interface utilisateur (UI)** : Cypress permet de tester les composants d'interface utilisateur (UI) en simulant des interactions comme des clics, des soumissions de formulaires, et des déplacements dans l'application, ce qui permet de valider que l'interface fonctionne correctement avec l'API et que l'expérience utilisateur est fluide.
   - Il offre des fonctionnalités comme la capture d'écran et la vidéo des tests, ce qui est utile pour le débogage et l'amélioration continue de l'application.
 
-  
+
 
 ### 2. **Backend (Serveur et API)**
 
@@ -295,13 +295,13 @@ Ces évolutions seront priorisées et développées en fonction des retours des 
 - **Justification** :
   - **Jest** est un framework de test JavaScript pour tester les composants React ainsi que le backend (API Express). Il permet d'écrire des tests unitaires et d'intégration de manière efficace et simple, avec une bonne prise en charge des tests asynchrones.
   - Grâce à Jest, nous pouvons garantir que les différentes fonctionnalités du projet fonctionnent correctement avant chaque déploiement.
-  
+
 #### b. **Supertest**
 - **Justification** :
   - **Supertest** est une bibliothèque de test HTTP qui permet de tester facilement les API Express. Elle offre une interface fluide et simple pour envoyer des requêtes HTTP à votre serveur et vérifier les réponses (status code, headers, corps de la réponse, etc.).
   - Elle est idéale pour effectuer des tests d'intégration des routes de l'API. Supertest permet de tester le comportement de l'application dans des scénarios réels, ce qui aide à garantir la stabilité de l'API tout en facilitant la détection des erreurs dans les endpoints avant la mise en production.
   - **Tests d'API** : Supertest permet de tester des routes RESTful, des contrôleurs, des middlewares, et d'autres parties de l'API de manière rapide et fiable.
-  
+
 
 ### 6. **Hébergement et Déploiement**
 
@@ -309,7 +309,7 @@ Ces évolutions seront priorisées et développées en fonction des retours des 
 - **Justification** :
   - **Hostinger** est une plateforme d’hébergement web fiable et performante qui permet d’héberger à la fois le backend Node.js et le frontend React. Elle propose des solutions adaptées aux applications modernes et permet une gestion facile des ressources.
   - **MongoDB Atlas** ou une solution similaire peut être utilisé pour héberger la base de données **MongoDB** en cloud.
-  
+
 #### b. **SSL/TLS (Sécurisation HTTPS)**
 - **Justification** :
   - L'application sera sécurisée en utilisant **HTTPS** avec un certificat **SSL/TLS** afin de garantir la confidentialité et l'intégrité des données échangées entre le serveur et les utilisateurs.
@@ -364,7 +364,7 @@ L'application étant conçue pour être **responsive** et **mobile-first**, l'in
 
 ### 6. **Navigateurs Non Compatibles**
 
-Les navigateurs trop anciens ou moins utilisés, comme **Internet Explorer** (versions inférieures à IE 11), ou des navigateurs très spécialisés ou non standards, ne seront pas pris en charge en raison de leur incapacité à exécuter les fonctionnalités modernes nécessaires au bon fonctionnement de l'application. 
+Les navigateurs trop anciens ou moins utilisés, comme **Internet Explorer** (versions inférieures à IE 11), ou des navigateurs très spécialisés ou non standards, ne seront pas pris en charge en raison de leur incapacité à exécuter les fonctionnalités modernes nécessaires au bon fonctionnement de l'application.
 
 Les utilisateurs de ces navigateurs seront invités à mettre à jour leur version de navigateur pour bénéficier de l'expérience complète.
 
@@ -489,10 +489,10 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
 ### 1. **Authentification **
 - **POST /api/auth/register**
   - **Description** : Créer un nouveau compte utilisateur.
-  
+
 - **POST /api/auth/login**
   - **Description** : Connexion d'un utilisateur avec email et mot de passe.
-  
+
 ### 2. **Utilisateurs**
 
 - **GET /api/user/:userId**
@@ -500,25 +500,25 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
 
 - **PUT /api/user/:userId**
   - **Description** : Mettre à jour les informations d'un utilisateur (admin ou utilisateur lui-même).
-  
+
 - **DELETE /api/user/:userId**
   - **Description** : Supprimer un utilisateur (admin seulement).
-  
+
 - **GET /api/users**
   - **Description** : Récupérer la liste de tous les utilisateurs.
-  
+
 - **GET /api/users/:userId/status**
   - **Description** : Récupérer le statut d'un utilisateur.
-  
+
 - **PUT /api/users/:userId/status**
   - **Description** : suspension ou désactivation d'un utilisateur (admin seulement).
-  
+
 - **PUT /api/users/:userId/status**
   - **Description** : Activer un utilisateur (admin seulement).
-  
+
 - **PUT /api/users/:userId/status**
   - **Description** : Bannir un utilisateur (admin seulement).
-  
+
   ### 3. **Rôles**
 - **POST /api/roles/**
   - **Description** : Récupérer tous les rôles (admin ou utilisateur lui-même)
@@ -528,7 +528,7 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
 
 - **GET /api/roles/**
   - **Description** : Créer un nouveau rôle (admin seulement).
-  
+
 - **GET /api/status/**
   - **Description** : Supprimer un rôle (admin seulement)
 
@@ -580,7 +580,7 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
 
 - **PUT /api/comments/:commentId**
   - **Description** : Mettre à jour un commentaire (réservée aux administrateurs ou à l'utilisateur ayant posté le commentaire).
-  - 
+  -
 - **DELETE /api/comments/:commentId**
   - **Description** : Supprimer un commentaire (réservée aux administrateurs ou à l'utilisateur ayant posté le commentaire).
 
@@ -657,22 +657,18 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
 
 | **ID** | **En tant que**          | **Je souhaite**                                                                 | **Afin de**                                                                                         |
 |--------|--------------------------|--------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-| US01   | Utilisateur              | Voir une liste de recettes classées par catégorie (entrée, plat, dessert)      | Trouver facilement des recettes qui correspondent à mes préférences culinaires.                    |
+| US01   | Utilisateur              | Voir une liste de recettes accessible dès la page d'accueil    | Trouver facilement des recettes qui correspondent à mes préférences culinaires.                    |
 | US02   | Utilisateur              | Rechercher une recette par titre ou par film/série associé                      | Trouver rapidement une recette en fonction de mes goûts cinématographiques ou de mes films/séries favoris. |
 | US03   | Utilisateur              | Voir les détails d'une recette (ingrédients, instructions, anecdotes)          | Pouvoir réaliser la recette chez moi et découvrir des anecdotes intéressantes liées au film ou à la série. |
-| US04   | Utilisateur              | Créer un compte et m'authentifier                                               | Accéder à des fonctionnalités réservées aux utilisateurs inscrits (ajouter des recettes, gérer mon profil). |
-| US05   | Utilisateur              | Modifier mon profil utilisateur (nom, email, mot de passe)                      | Mettre à jour mes informations personnelles si nécessaire.                                         |
-| US06   | Utilisateur connecté     | Ajouter une recette à la base de données                                         | Partager mes propres recettes avec la communauté et les associer à un film ou à une série.           |
-| US07   | Utilisateur connecté     | Accéder à la page "Ajouter une recette"                                         | Ajouter une nouvelle recette uniquement après m'être connecté.                                     |
-| US08   | Utilisateur              | Laisser un commentaire sur une recette                                           | Partager mon avis sur une recette et interagir avec d'autres utilisateurs.                         |
-| US09   | Utilisateur              | Noter une recette avec un système d'étoiles (1 à 5)                             | Donner mon avis sur la qualité de la recette et aider les autres à choisir.                         |
-| US10   | Utilisateur              | Avoir accès à des recettes recommandées en fonction de mes goûts               | Découvrir des recettes suggérées par le site selon mes préférences de cinéma et de cuisine.        |
-| US11   | Utilisateur              | Voir les recettes triées par popularité ou par date d'ajout                     | Trouver des recettes tendance ou récentes pour être à jour avec les nouvelles découvertes.          |
-| US12   | Utilisateur              | Voir les recettes par ingrédients spécifiques                                   | Trouver des recettes en fonction des ingrédients que j'ai à ma disposition.                        |
-| US13   | Administrateur           | Gérer les utilisateurs (modérer les comptes, supprimer)                        | Gérer les utilisateurs du site et contrôler l'accès aux fonctionnalités.                          |
-| US14   | Administrateur           | Valider ou supprimer des recettes soumises par les utilisateurs                 | Maintenir un catalogue de recettes de qualité et supprimer celles qui ne respectent pas les critères. |
-| US15   | Administrateur           | Organiser les recettes en catégories (entrée, plat, dessert, etc.)              | Faciliter la navigation et la recherche pour les utilisateurs.                                     |
-| US16   | Administrateur           | Modérer les commentaires des utilisateurs                                       | Vérifier les commentaires laissés par les utilisateurs et les supprimer si nécessaire (modération). |
+| US04   | Utilisateur              | Créer un compte et m'authentifier                                               | Accéder à des fonctionnalités réservées aux utilisateurs inscrits (ajouter des commentaires et des notes, gérer mon profil). |
+| US05   | Utilisateur     | Ajouter une recette à la base de données                                         | Partager mes propres recettes avec la communauté et les associer à un film ou à une série.           |
+| US06   | Utilisateur connecté              | Modifier mon profil utilisateur (nom, email, mot de passe)                      | Mettre à jour mes informations personnelles si nécessaire.                                         |
+| US07   | Utilisateur connecté              | Laisser un commentaire sur une recette                                           | Partager mon avis sur une recette et interagir avec d'autres utilisateurs.                         |
+| US08   | Utilisateur connecté              | Noter une recette avec un système d'étoiles (1 à 5)                             | Donner mon avis sur la qualité de la recette et aider les autres à choisir.                         |
+| US09   | Administrateur           | Gérer les utilisateurs (modérer les comptes, supprimer)                        | Gérer les utilisateurs du site et contrôler l'accès aux fonctionnalités.                          |
+| US10   | Administrateur           | Valider ou supprimer des recettes soumises par les utilisateurs                 | Maintenir un catalogue de recettes de qualité et supprimer celles qui ne respectent pas les critères. |
+| US11   | Administrateur           | Modérer les commentaires des utilisateurs                                       | Vérifier les commentaires laissés par les utilisateurs et les supprimer si nécessaire (modération). |
+
 
 ---
 
