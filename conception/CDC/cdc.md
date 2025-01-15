@@ -495,28 +495,28 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
 
 ### 2. **Utilisateurs**
 
-- **GET /api/user/:userId**
+- **GET /api/user/:id**
   - **Description** : Récupérer les informations du profil de l'utilisateur connecté.
 
-- **PUT /api/user/:userId**
+- **PUT /api/user/:id**
   - **Description** : Mettre à jour les informations d'un utilisateur (admin ou utilisateur lui-même).
 
-- **DELETE /api/user/:userId**
+- **DELETE /api/user/:id**
   - **Description** : Supprimer un utilisateur (admin seulement).
 
 - **GET /api/users**
   - **Description** : Récupérer la liste de tous les utilisateurs.
 
-- **GET /api/users/:userId/status**
+- **GET /api/users/:id/status**
   - **Description** : Récupérer le statut d'un utilisateur.
 
-- **PUT /api/users/:userId/status**
+- **PUT /api/users/:id/status**
   - **Description** : suspension ou désactivation d'un utilisateur (admin seulement).
 
-- **PUT /api/users/:userId/status**
+- **PUT /api/users/:id/status**
   - **Description** : Activer un utilisateur (admin seulement).
 
-- **PUT /api/users/:userId/status**
+- **PUT /api/users/:id/status**
   - **Description** : Bannir un utilisateur (admin seulement).
 
   ### 3. **Rôles**
@@ -615,40 +615,39 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
 |-----------------------|----------------|----------------------------------------------|-----------------------------------------------------------------------|
 | **Authentification**   | **POST**       | /api/auth/register                           | Créer un nouveau compte utilisateur.                                   |
 |                       | **POST**       | /api/auth/login                              | Connexion d'un utilisateur avec email et mot de passe.                |
-| **Utilisateurs**       | **GET**        | /api/user/:userId                            | Récupérer les informations du profil de l'utilisateur connecté.       |
-|                       | **PUT**        | /api/user/:userId                            | Mettre à jour les informations d'un utilisateur (admin ou utilisateur lui-même). |
-|                       | **DELETE**     | /api/user/:userId                            | Supprimer un utilisateur (admin seulement).                           |
-|                       | **GET**        | /api/users                                    | Récupérer la liste de tous les utilisateurs.                          |
-|                       | **GET**        | /api/users/:userId/status                    | Récupérer le statut d'un utilisateur.                                 |
-|                       | **PUT**        | /api/users/:userId/status                    | Suspension ou désactivation d'un utilisateur (admin seulement).       |
-|                       | **PUT**        | /api/users/:userId/status                    | Activer un utilisateur (admin seulement).                             |
-|                       | **PUT**        | /api/users/:userId/status                    | Bannir un utilisateur (admin seulement).                              |
-| **Rôles**              | **POST**       | /api/roles/                                  | Récupérer tous les rôles (admin ou utilisateur lui-même).             |
+| **Utilisateurs**       | **GET**        | /api/users/:id                            | Récupérer les informations du profil de l'utilisateur  connecté (admin ou utilisateur lui-même).      |
+|                       | **PUT**        | /api/users/:id                            | Mettre à jour les informations d'un utilisateur (admin ou utilisateur lui-même). |
+|                       | **DELETE**     | /api/users/:id                            | Supprimer un utilisateur (admin seulement).                           |
+|                       | **GET**        | /api/users                                    | Récupérer la liste de tous les utilisateurs (admin seulement).                          |
+|                       | **GET**        | /api/users/:id/status                    | Récupérer le statut d'un utilisateur (admin seulement).                                 |
+|                       | **PUT**        | /api/users/:id/status                    | Suspension ou désactivation d'un utilisateur (admin seulement).       |
+|                       | **PUT**        | /api/users/:id/status                    | Activer un utilisateur (admin seulement).                             |
+|                       | **PUT**        | /api/users/:id/status                    | Bannir un utilisateur (admin seulement).                              |
+| **Rôles**              | **POST**       | /api/roles/                                  | Récupérer tous les rôles (admin seulement).             |
 |                       | **GET**        | /api/roles/:id                               | Récupérer un rôle par ID (admin seulement).                           |
 |                       | **GET**        | /api/roles/                                  | Créer un nouveau rôle (admin seulement).                              |
-|                       | **GET**        | /api/status/                                 | Supprimer un rôle (admin seulement).                                  |
+|                       | **GET**        | /api/roles/:id                                 | Supprimer un rôle (admin seulement).                                  |
 | **Recettes**           | **GET**        | /api/recipes                                 | Récupérer toutes les recettes, avec options de filtrage par catégorie, popularité, etc. |
 |                       | **GET**        | /api/recipes/:id                             | Récupérer les détails d'une recette spécifique.                       |
-|                       | **POST**       | /api/recipes/addRecipe                       | Ajouter une nouvelle recette (réservée aux utilisateurs connectés).  |
+|                       | **POST**       | /api/recipes                                 | Ajouter une nouvelle recette  |
 |                       | **PUT**        | /api/recipes/:id                             | Mettre à jour une recette existante (réservée aux utilisateurs ayant créé la recette ou aux administrateurs). |
-|                       | **DELETE**     | /api/recipes/:id                             | Supprimer une recette (réservée aux utilisateurs ayant créé la recette ou aux administrateurs). |
-|                       | **GET**        | /api/recipes/:categoryId                     | Récupérer les recettes d'une catégorie spécifique.                    |
-|                       | **GET**        | /api/recipes/research                        | Rechercher des recettes par titre, catégorie ou source.               |
+|                       | **DELETE**     | /api/recipes/:id                             | Supprimer une recette (admin seulement). |
+|                       | **GET**        | /api/recipes/research                        | Rechercher des recettes par titre ou source.               |
+|                      | **POST**       | /api/recipes/:id/comments                      | Ajouter un commentaire à une recette.                                 |
+|                       | **GET**        | /api/recipes/:id/comments                      | Récupérer les commentaires d'une recette spécifique.                  |
+|                       | **PUT**        | /api/recipes/:id/comments/id                     | Mettre à jour un commentaire (admin seulement). |
+|                       | **DELETE**     | /api/recipes/:id/comments/id                    | Supprimer un commentaire (admin seulement). |
+|                       | **POST**       | /api/recipes/:id/scores                        | Ajouter ou mettre à jour une note à une recette (1 à 5 étoiles).      |
+|                       | **GET**        | /api/recipes/:id/scores                       | Récupérer la note moyenne d'une recette.                              |
+|                       | **GET**        | /api/recipes/:id/scores                       | Récupérer le score d'un utilisateur pour une recette spécifique.     |
+|                       | **DELETE**     | /api/recipes/:id/scores/:id                        | Supprimer un score (admin seulement).                                 |
 | **Catégories**         | **GET**        | /api/categories                              | Récupérer toutes les catégories de recettes disponibles.              |
-|                       | **GET**        | /api/categories/:id                          | Récupérer les détails d'une catégorie spécifique.                     |
-|                       | **POST**       | /api/categories/addCategory                  | Ajouter une nouvelle catégorie (réservée aux administrateurs).       |
-|                       | **PUT**        | /api/categories/:id                          | Mettre à jour une catégorie existante (réservée aux administrateurs). |
-|                       | **DELETE**     | /api/categories/:id                          | Supprimer une catégorie (réservée aux administrateurs).               |
-| **Commentaires**       | **POST**       | /api/comments/:recipeId                      | Ajouter un commentaire à une recette.                                 |
-|                       | **GET**        | /api/comments/:recipeId                      | Récupérer les commentaires d'une recette spécifique.                  |
-|                       | **PUT**        | /api/comments/:commentId                     | Mettre à jour un commentaire (réservée aux administrateurs ou à l'utilisateur ayant posté le commentaire). |
-|                       | **DELETE**     | /api/comments/:commentId                     | Supprimer un commentaire (réservée aux administrateurs ou à l'utilisateur ayant posté le commentaire). |
-| **Notes**              | **POST**       | /api/scores/:recipeId                        | Ajouter ou mettre à jour une note à une recette (1 à 5 étoiles).      |
-|                       | **GET**        | /api/scores/:recipeId                        | Récupérer la note moyenne d'une recette.                              |
-|                       | **GET**        | /api/scores/:recipeId                        | Récupérer le score d'un utilisateur pour une recette spécifique.     |
-|                       | **DELETE**     | /api/scores/:recipeId                        | Supprimer un score (admin seulement).                                 |
-| **Status**             | **POST**       | /api/status/                                  | Récupérer les statuts des utilisateurs (admin seulement).            |
-|                       | **GET**        | /api/status/:id                               | Récupérer un statut par ID (admin seulement).                         |
+|                       | **POST**       | /api/categories                             | Ajouter une nouvelle catégorie (admin seulement).       |
+|                       | **PUT**        | /api/categories/:id                          | Mettre à jour une catégorie existante (admin seulement). |
+|                       | **DELETE**     | /api/categories/:id                          | Supprimer une catégorie (admin seulement).               |
+| **Commentaires**     | **GET**        | /api/comments                                | Récupérer tous les commentaires des recettes spécifique.                  |
+| **Notes**             | **GET**        | /api/scores                                 | Récupérer tous les scores des recettes                              |
+| **Status**             | **POST**       | /api/status                                  | Récupérer les statuts des utilisateurs (admin seulement).            |
 |                       | **POST**       | /api/status/                                  | Créer un statut (admin seulement).                                    |
 
 ---
