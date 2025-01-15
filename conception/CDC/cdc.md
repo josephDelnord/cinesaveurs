@@ -609,7 +609,6 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
      - Implémenter des tests fonctionnels et des tests de performance pour vérifier la robustesse et la scalabilité de l'application.
      - Mettre en place une pipeline CI/CD pour exécuter les tests automatiquement lors de chaque mise à jour du code.
 
-
 L’analyse des risques met en évidence plusieurs défis techniques, de sécurité, de gestion et de performance qui pourraient survenir au cours du développement du projet **Ciné Délices**. Cependant, avec les mesures préventives et les pratiques recommandées ci-dessus, ces risques peuvent être efficacement gérés et minimisés, garantissant ainsi une expérience utilisateur fluide et un produit final de qualité. Il est essentiel de rester vigilant tout au long du développement pour ajuster les stratégies en fonction des évolutions du projet et des retours des utilisateurs.
 
 ---
