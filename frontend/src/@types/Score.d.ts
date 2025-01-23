@@ -13,6 +13,6 @@ export interface IScore {
 // Optionnel : Interface pour la création d'un score (sans l'_id, createdAt, updatedAt)
 export interface ICreateScore {
   score: number;            // Le score attribué à la recette (nombre entre 1 et 5)
-  user: { username: string; };       
+  user: { username: string; _id: string; };       // L'utilisateur qui attribue le score
   recipe: {_id: string }         // L'ID de la recette pour laquelle le score est attribué
 }

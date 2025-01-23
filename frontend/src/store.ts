@@ -7,7 +7,7 @@ import recipesReducer from './slices/recipesSlice';
 import recipeReducer from './slices/recipeSlice';
 import authReducer from './slices/authSlice';
 
-// Configuration du store avec le reducer du counter
+// Configuration du store avec le reducer global
 export const store = configureStore({
   reducer: {
     error: errorReducer,
@@ -24,3 +24,4 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 // Typage du dispatch
 export type AppDispatch = typeof store.dispatch;
+

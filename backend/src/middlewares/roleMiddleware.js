@@ -29,9 +29,8 @@ const isAdminOrSelf = (req, res, next) => {
   // Vérifier si l'utilisateur est admin ou si c'est lui-même (l'ID dans l'URL correspond à son ID)
   if (loggedInUserRole === 'admin' || userIdFromParam === loggedInUserId) {
     return next(); // Autoriser l'accès si admin ou si l'utilisateur accède à ses propres informations
-  } else {
-    return res.status(403).json({ message: 'Accès interdit. Vous devez être un administrateur ou l\'utilisateur concerné.' });
   }
+  return res.status(403).json({ message: 'Accès interdit. Vous devez être un administrateur ou l\'utilisateur concerné.' });
 };
 
 export { isAdmin, isUser, isAdminOrSelf };

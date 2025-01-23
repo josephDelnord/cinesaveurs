@@ -1,76 +1,109 @@
-# version: '3.8' de Docker Compose
-version: '3.8'
-
 services:
-
-  # Service MongoDB
-  db:
-    image: mongo:latest  # Utilise l'image officielle MongoDB
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}  # Nom d'utilisateur root de MongoDB
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}  # Mot de passe root de MongoDB
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}  # Base de données par défaut
-    volumes:
-      - db_data:/data/db  # Persistance des données de MongoDB
-    ports:
-      - "27017:27017"  # Le port par défaut de MongoDB
-    networks:
-      - app-network  # Connexion au réseau privé
-
-  # Service Backend (Node.js API)
   backend:
+    # Nom du conteneur pour le backend
+    container_name: backend
     build:
-      context: .
-      dockerfile: ./backend/Dockerfile  # Construire à partir du Dockerfile du backend
+      # Dossier dans lequel Docker cherchera le Dockerfile et le code pour construire l'image du backend
+      context: ./backend
+      # Le fichier Dockerfile spécifique pour le backend (API)
+      dockerfile: Dockerfile.api
     ports:
-      - "5000:5000"  # Le backend écoute sur le port 5000
+      # Mappe le port 5000 de l'hôte vers le port 5000 du conteneur, pour accéder à l'API backend
+      - "5000:5000"
     environment:
-      - MONGO_URI=${MONGO_URI}  # URI de connexion à MongoDB
-      - PORT=${PORT}
-      - SEED_DB=${SEED_DB}
-      - JWT_SECRET=${JWT_SECRET}
-      - FRONTEND_URL=${FRONTEND_URL}
-      - SECRET=${SECRET}
+      # Définit les variables d'environnement pour le conteneur backend
+      - NODE_ENV=production
+      - MONGODB_URI=${MONGODB_URI_FOR_PROD:-mongodb://cinedelicesuser:cinedelicespassword@172.25.85.83:27017/cinedelicesdb}
+      - JWT_SECRET=${JWT_SECRET:-secretkey}
+      - SECRET=${SECRET:-secretkey}
+      - FRONTEND_URL=http://frontend
+      - SEED_DB=${SEED_DB:-true}
+    env_file:
+      # Charge le fichier .env du backend contenant des variables d'environnement
+      - ./backend/.env
+    depends_on:
+      # Le backend dépend de MongoDB, il attendra que MongoDB soit prêt avant de démarrer
+      - mongodb
+    networks:
+      # Le backend se connecte au réseau `app-network` pour communiquer avec d'autres services
+      - app-network
     volumes:
-      - ./backend:/app  # Monte le code source du backend dans le conteneur
-      - /app/node_modules  # Empêche le répertoire node_modules de se mélanger entre le conteneur et la machine locale
-    depends_on:
-      - db  # Le backend dépend de MongoDB, il démarre après MongoDB
-    command: ["bash", "-c", "./wait-for-it.sh db:27017 -- npm run dev"] # Attendre que MongoDB soit prêt avant de démarrer le backend
-    restart: unless-stopped  # Redémarre le backend en cas d'erreur
-    networks:
-      - app-network  # Connexion au réseau privé
+      # Monte le dossier local ./backend dans le conteneur sous /app (pour développement local, permet d'accéder au code source)
+      - ./backend:/app
+      # Assure que les node_modules du conteneur soient persistants et ne soient pas écrasés par le volume local
+      - /app/node_modules
 
-  # Service Frontend (React)
   frontend:
+    # Nom du conteneur pour le frontend
+    container_name: frontend
     build:
-      context: ./frontend  # Le répertoire du frontend
-      dockerfile: Dockerfile  # Utilise le Dockerfile situé dans frontend/
+      # Dossier contenant le Dockerfile et le code pour construire l'image du frontend
+      context: ./frontend
+      # Le fichier Dockerfile spécifique pour le frontend
+      dockerfile: Dockerfile.cli
     ports:
-      - "80:80"  # Le frontend est servi sur le port 80
+      # Mappe le port 80 de l'hôte vers le port 80 du conteneur pour accéder au frontend via le navigateur
+      - "80:80"
+    environment:
+      # Définit les variables d'environnement pour le conteneur frontend
+      - HTTPS=${HTTPS:-false}
+      - SSL_CRT_FILE=${SSL_CRT_FILE:-frontend/ssl/certificate.crt}
+      - SSL_KEY_FILE=${SSL_KEY_FILE:-frontend/ssl/private.key}
+      - NODE_ENV=production
+    env_file:
+      # Charge le fichier .env du frontend
+      - ./frontend/.env
     depends_on:
-      - backend  # Le frontend dépend du backend
+      # Le frontend dépend du backend, il attendra que le backend soit prêt avant de démarrer
+      - backend
     networks:
-      - app-network  # Connexion au réseau privé
-    command: ["nginx", "-g", "daemon off;"]  # Démarre Nginx avec le service web Nginx
-    restart: unless-stopped  # Redémarre le frontend en cas d'erreur
+      # Le frontend se connecte au réseau `app-network` pour communiquer avec d'autres services
+      - app-network
+    volumes:
+      # Monte le dossier local ./frontend dans le conteneur sous /app (pour développement local, permet d'accéder au code source)
+      - ./frontend:/app
+      # Assure que les node_modules du conteneur soient persistants
+      - /app/node_modules
+      # Monte le répertoire contenant les certificats SSL pour HTTPS dans le conteneur
+      - ./frontend/ssl:/app/ssl
 
-  # adminMongo (outil de gestion MongoDB)
-  adminer:
-    image: adminer
-    container_name: adminer
-    restart: always
+  mongodb:
+    # Utilise l'image MongoDB officielle avec la version la plus récente
+    image: mongo:latest
+    # Nom du conteneur pour MongoDB
+    container_name: mongodb
+    command: ["--auth"]  # Active l'authentification pour MongoDB (nécessite des utilisateurs et des mots de passe)
+    environment:
+      # Définit les variables d'environnement pour MongoDB
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+    env_file:
+      # Charge le fichier .env du backend pour obtenir les variables d'environnement
+      - ./backend/.env
+    volumes:
+      # Monte le volume persistant pour les données de MongoDB
+      - mongodb-data:/data/db
     ports:
-      - 4000:8080  # Adminer sera accessible sur localhost:4000
-    depends_on:
-      - db  # Adminer dépend de MongoDB
+      # Mappe le port 27017 de l'hôte vers le port 27017 du conteneur pour accéder à MongoDB
+      - "27017:27017"
+    restart: unless-stopped  # Redémarre MongoDB sauf si il est explicitement arrêté
     networks:
-      - app-network  # Connexion au réseau privé
+      # MongoDB se connecte au réseau `app-network` pour communiquer avec d'autres services
+      - app-network
+    dns:
+      # Définit le serveur DNS à utiliser (Google DNS)
+      - 8.8.8.8
+      # Deuxième serveur DNS (Google DNS)
+      - 8.8.4.4
 
+# Déclare un volume persistant nommé mongodb-data pour les données de MongoDB
+volumes:
+  mongodb-data:
+    name: mongodb-cinedelices-data  # Nom du volume persistant
+
+# Déclare le réseau utilisé par vos services Docker
 networks:
   app-network:
-    driver: bridge  # Utilisation d'un réseau de type bridge pour la communication entre services
-
-volumes:
-  db_data:
-    driver: local  # Volume persistant pour les données MongoDB
+    # Utilise le pilote réseau `bridge` pour la communication entre les services Docker
+    driver: bridge

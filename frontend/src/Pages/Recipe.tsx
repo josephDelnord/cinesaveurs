@@ -145,7 +145,7 @@ const Recipe: React.FC = () => {
   return (
     <div className="recipe">
       <h1>{recipe.title}</h1>
-      {recipe.image && <img src={`/img/${recipe.image}`} alt={recipe.title} />}
+      {recipe.image && <img src={`/img/${recipe.image}`} loading="lazy" alt={recipe.title} />}
       <p>
         <strong>Description :</strong> {recipe.description}
       </p>

@@ -78,43 +78,53 @@ export const register = async (req, res) => {
   }
 };
 
+
 // Connexion d'un utilisateur
 export const login = async (req, res) => {
   try {
     // Valider les données
     const { error } = loginSchema.validate(req.body);
-    if (error) return handleValidationError(res, error);
+    if (error) {
+      console.log('Validation error:', error.details);  // Ajouter un log pour afficher l'erreur de validation
+      return handleValidationError(res, error);  // Validation des données
+    }
 
     // Récupérer les données du corps de la requête
     const { email, password } = req.body;
+    console.log('Tentative de connexion avec email:', email);  // Log l'email pour le suivi
 
     // Trouver l'utilisateur et peupler son rôle
     const user = await User.findOne({ email }).populate('role');
     if (!user) {
-      return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
+      console.log('Utilisateur non trouvé pour l\'email:', email);  // Log si l'utilisateur n'est pas trouvé
+      return res.status(400).json({ message: 'Email ou mot de passe incorrect' });  // Erreur 400 si l'utilisateur n'est pas trouvé
     }
 
     // Vérifier le mot de passe hashé
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
+      console.log('Mot de passe incorrect pour l\'utilisateur:', email);  // Log si le mot de passe ne correspond pas
+      return res.status(400).json({ message: 'Email ou mot de passe incorrect' });  // Erreur 400 si le mot de passe est incorrect
     }
 
     // Générer le token
     const token = await generateJwtToken(user._id);
     if (!token) {
-      return res.status(500).json({ message: 'Erreur lors de la génération du token' });
+      console.log('Échec de la génération du token pour l\'utilisateur:', email);  // Log si la génération du token échoue
+      return res.status(500).json({ message: 'Erreur lors de la génération du token' });  // Erreur 500 si la génération du token échoue
     }
 
-      // Stocker le token dans un cookie HttpOnly pour sécurité
-      res.cookie('authToken', token, {
-        httpOnly: true,  // Le cookie est accessible uniquement par le serveur
-        secure: process.env.NODE_ENV === 'production',  // s'assurer que le cookie soit envoyé uniquement sur HTTPS
-        maxAge: 60 * 60 * 1000, // Le cookie expire après 1 heure
-        sameSite: 'Strict', // Empêche l'envoi du cookie sur des requêtes inter-domaines
-      });
+    // Stocker le token dans un cookie HttpOnly pour sécurité
+    res.cookie('authToken', token, {
+      httpOnly: true,  // Le cookie est accessible uniquement par le serveur
+      secure: process.env.NODE_ENV === 'production',  // s'assurer que le cookie soit envoyé uniquement sur HTTPS
+      maxAge: 60 * 60 * 1000, // Le cookie expire après 1 heure
+      sameSite: 'Strict', // Empêche l'envoi du cookie sur des requêtes inter-domaines
+    });
 
-    res.json({
+    // Retourner une réponse 200 en cas de succès
+    console.log('Connexion réussie pour l\'utilisateur:', email);  // Log de succès
+    return res.status(200).json({
       token,
       user: {
         id: user._id,
@@ -123,8 +133,10 @@ export const login = async (req, res) => {
         role: user.role.role_name
       }
     });
+
   } catch (error) {
-    handleDatabaseError(res, error);
+    console.error('Erreur de base de données:', error);  // Log de l'erreur de base de données
+    handleDatabaseError(res, error);  // Gestion des erreurs de base de données
   }
 };
 

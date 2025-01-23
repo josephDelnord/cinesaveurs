@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getTokenAndPseudoFromLocalStorage } from '../localstorage/localstorage';
 
 const myAxiosInstance = axios.create({
-    baseURL: 'https://localhost:5000',
+    baseURL: 'http://localhost:5000',
 });
 
 // Intercepteur de requête

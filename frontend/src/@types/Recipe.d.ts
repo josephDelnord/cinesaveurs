@@ -1,6 +1,6 @@
 
   // src/types/Recipe.ts
-  
+
 // Interface pour une Catégorie
 export interface ICategory {
   _id: string;       // Identifiant unique généré par Mongoose
@@ -13,7 +13,7 @@ export interface ICategory {
 export interface ICreateCategory {
   name: string;        // Nom de la catégorie
 }
-  
+
 // Interface pour un Ingrédient
 export interface IIngredient {
   _id: string;             // Identifiant unique généré par Mongoose
@@ -32,7 +32,7 @@ export interface ICreateIngredient {
   quantity_description?: string; // Description de la quantité (optionnel)
   unit: string;              // Unité de mesure de l'ingrédient
 }
-  
+
 // Interface pour une Instruction
 export interface IInstruction {
   _id: string;           // Identifiant unique généré par Mongoose
@@ -47,7 +47,7 @@ export interface ICreateInstruction {
   step_number: number;     // Numéro de l'étape
   instruction: string;     // Texte de l'instruction
 }
-  
+
   export interface IRecipe {
     _id: string;
     title: string;

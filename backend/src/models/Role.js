@@ -14,8 +14,5 @@ const roleSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Indexation des champs
-roleSchema.index({ role_name: 1 }, { unique: true });
-
 const Role = mongoose.model("Role", roleSchema);
 export default Role;

@@ -114,12 +114,12 @@ export const createCategory = async (req, res) => {
   try {
     const { name } = req.body;
 
-    // Validation des données
-    const validationError = validateCategory(req.body);
-    if (validationError) {
-      return res
-        .status(400)
-        .json({ message: validationError.details[0].message });
+    // Validation des données avec Joi
+    const { error } = categoryValidationSchema.validate(req.body); // Validation avec Joi
+
+    // Si la validation échoue, renvoyer une erreur 400
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
     }
 
     // Vérification de l'existence de la catégorie
@@ -130,12 +130,14 @@ export const createCategory = async (req, res) => {
 
     // Création de la nouvelle catégorie
     const category = new Category({ name });
-    await category.save();
+    const savedCategory = await category.save();  // Sauvegarder et obtenir l'objet sauvegardé
+
+    console.log('Category created:', savedCategory);
 
     // Invalider le cache des catégories pour forcer la mise à jour lors des prochaines requêtes
-    invalidateCache("GET:/api/categories"); // Invalider le cache des catégories
+    invalidateCache("GET:/api/categories");  // Invalider le cache des catégories
 
-    return res.status(201).json(category);
+    return res.status(201).json(savedCategory);  // Retourner la catégorie sauvegardée
   } catch (error) {
     console.error("Erreur lors de la création de la catégorie", error);
     return res

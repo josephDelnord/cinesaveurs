@@ -11,6 +11,12 @@ interface AuthContextProps {
   isAdmin: boolean;
   isLoading: boolean;
 }
+
+interface AuthContextProps {
+  isAdmin: boolean;
+  isLoading: boolean;
+}
+
 export const AuthContext = createContext<AuthContextProps>({
   isAdmin: false,
   isLoading: true,

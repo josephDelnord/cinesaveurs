@@ -15,8 +15,5 @@ const statusSchema = new mongoose.Schema(
   }
 );
 
-// Indexation des champs
-statusSchema.index({ status_name: 1 }); // Index pour rechercher les statuts par nom
-
 const Status = mongoose.model("Status", statusSchema);
 export default Status;

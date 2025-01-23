@@ -15,7 +15,7 @@ export interface IComment {
 // Optionnel: Interface pour la création d'un commentaire (sans l'_id, createdAt, updatedAt)
 export interface ICreateComment {
   content: string;
-  user: { username: string; };       
+  user: { username: string; _id: string; };
   recipe: string;
-  rating: number;   
-}          
+  rating: number;
+}

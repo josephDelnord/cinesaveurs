@@ -1,0 +1,29 @@
+# Utiliser une image officielle de Node.js comme base
+FROM node:18 AS build
+
+# Définir le répertoire de travail dans le conteneur
+WORKDIR /app
+
+# Copier package.json et package-lock.json (ou yarn.lock) pour optimiser la gestion des dépendances
+COPY ./package.json ./package-lock.json ./
+
+# Installer les dépendances du projet
+RUN npm install
+
+# Copier le reste des fichiers du projet dans le conteneur
+COPY . .
+
+# Construire l'application (Vite gère la construction avec "vite build")
+RUN npm run build
+
+# Étape de production
+FROM nginx:alpine
+
+# Copier le dossier dist généré par Vite dans le conteneur Nginx
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Exposer le port utilisé par l'application frontend (Vite par défaut utilise le port 3000)
+EXPOSE 80
+
+# Lancer Nginx pour servir l'application en mode production
+CMD ["nginx", "-g", "daemon off;"]

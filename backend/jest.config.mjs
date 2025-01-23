@@ -5,4 +5,5 @@ export default {
   testEnvironment: 'node',
   roots: ['<rootDir>/src'],
   modulePaths: ['<rootDir>/src'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js']
 };

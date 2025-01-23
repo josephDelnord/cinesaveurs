@@ -7,7 +7,7 @@ import myAxiosInstance from "../axios/axios";
 import RecipeCard from "../components/RecipeCard";
 import { setRecipes, setPopularRecipe, setLoading, setError, setSearchQuery, toggleShowAll, filterRecipes } from "../slices/recipesSlice";
 import Loading from "../components/Loading";
-import type { RootState, AppDispatch } from "../store"; // Importer RootState et AppDispatch
+import type { RootState, AppDispatch } from "../store";
 
 const Recipes: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,18 +30,17 @@ const Recipes: React.FC = () => {
         const recipesData = response.data;
         dispatch(setRecipes(recipesData));
 
-        // Trouver la recette la plus populaire
         const popular = recipesData.reduce(
           (prev: { popularity: number; }, current: { popularity: number; }) => (prev.popularity > current.popularity ? prev : current),
         );
-        dispatch(setPopularRecipe(popular)); // Mettre à jour la recette populaire
+        dispatch(setPopularRecipe(popular));
       })
       .catch((error) => {
         console.error("Erreur de récupération des recettes:", error);
         dispatch(setError("Impossible de récupérer les recettes."));
       })
       .finally(() => {
-        dispatch(setLoading(false)); // Arrêter le chargement
+        dispatch(setLoading(false));
       });
   }, [dispatch]);
 
@@ -119,11 +118,12 @@ const Recipes: React.FC = () => {
         <div className="container-popular-recipe">
           <div className="popular-recipe-title">
             <h4>{popularRecipe.title}</h4>
-            <img src="/img/arrow.webp" alt="arrow" />
+            <img src="/img/arrow.webp" loading="lazy" alt="arrow" />
           </div>
           <img
             className="title-popular-recipe"
             src="/img/mostpopular.webp"
+            loading="lazy"
             alt="Most popular"
           />
           <div className="popular-recipe">
@@ -136,6 +136,9 @@ const Recipes: React.FC = () => {
             <div className="popular-recipe-info">
               <p>{popularRecipe.description}</p>
               <aside>{popularRecipe.source}</aside>
+              <div className="static-score">
+              *****
+              </div>
               <div className="popular-score">
                 {Array.from({ length: popularRecipe.popularity }, (_, index) => (
                   <span

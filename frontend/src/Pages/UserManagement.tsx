@@ -7,6 +7,7 @@ import {
 import UserCard from "../components/UserCard";
 import type { IUser } from "../@types/User";
 import Loading from "../components/Loading";
+
 const UserManagement: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);

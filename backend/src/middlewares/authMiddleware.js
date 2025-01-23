@@ -7,6 +7,7 @@ dotenv.config();
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader?.split(' ')[1];
+  // const token = req.cookies.auth_token; // Récupérer le token depuis les cookies
 
   if (token == null) return res.status(401).json({ message: 'Token manquant' });
 

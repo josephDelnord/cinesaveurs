@@ -39,7 +39,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
   return (
     <div className="recipe-card">
       <Link to={`/recipe/${_id}`}>+</Link>
-      <img src={`img/${image}`} alt={title} />
+      <img src={`img/${image}`} loading="lazy" alt={title} />
       <h3>{title}</h3>
       <p>{description}</p>
       <h2>{source}</h2>

@@ -10,14 +10,14 @@ import commentRoutes from "./src/routes/commentRoutes.js";
 import scoreRoutes from "./src/routes/scoreRoutes.js";
 import statusRoutes from "./src/routes/statusRoutes.js";
 import setupSwagger from "./swagger.js";
-import { connectDB } from "./src/config/db.js";
+import { connectDB } from "./src/data/db.mjs";
 import {
   cacheMiddleware,
   cacheResponse,
   invalidateCache,
 } from "./src/cache/memcached.js";
-import https from "node:https";
-import fs from "node:fs";
+// import https from "node:https";
+// import fs from "node:fs";
 
 dotenv.config();
 
@@ -25,10 +25,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Charger le certificat SSL et la clé privée
-const sslOptions = {
-  key: fs.readFileSync("ssl/private.key"), // Chemin vers la clé privée
-  cert: fs.readFileSync("ssl/certificate.crt"), // Chemin vers le certificat
-};
+// const sslOptions = {
+//   key: fs.readFileSync("ssl/private.key"), // Chemin vers la clé privée
+//   cert: fs.readFileSync("ssl/certificate.crt"), // Chemin vers le certificat
+// };
 
 // Connexion à MongoDB
 connectDB();
@@ -39,13 +39,15 @@ setupSwagger(app);
 // Middleware CORS
 app.use(
   cors({
-    origin: ["https://localhost:3000", "https://127.0.0.1:3000"],
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost", "http://127.0.0.1"],
     credentials: true, // Autoriser les credentials
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [
       "Content-Type",
       "Authorization",
       "Access-Control-Allow-Credentials",
+      "Origin",
+      "X-Auth-Token",
     ],
   })
 );
@@ -67,6 +69,7 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/scores", scoreRoutes);
 app.use("/api/users/:id/status", statusRoutes);
 
+
 // Route de test
 app.get("/api", (req, res) => {
   res.send("Hello, you are in the world of recipes!");
@@ -86,10 +89,16 @@ app.delete("/api/recipes/:id", (req, res) => {
 });
 
 // Démarrage du serveur
+// if (process.env.NODE_ENV !== "test") {
+//   // Démarrage du serveur HTTPS avec les options SSL
+//   https.createServer(sslOptions, app).listen(PORT, () => {
+//     console.log(`Server running on https://localhost:${PORT}`);
+//   });
+// }
+
 if (process.env.NODE_ENV !== "test") {
-  // Démarrage du serveur HTTPS avec les options SSL
-  https.createServer(sslOptions, app).listen(PORT, () => {
-    console.log(`Server running on https://localhost:${PORT}`);
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);  // Utilise HTTP au lieu de HTTPS
   });
 }
 

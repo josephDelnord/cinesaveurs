@@ -561,7 +561,7 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
    - **Mesures Préventives** :
      - Utiliser des pratiques sécurisées de gestion des mots de passe (hashing avec des algorithmes comme bcrypt).
      - Mettre en place un système d'authentification robuste, tel que JWT (JSON Web Token), pour sécuriser les sessions utilisateurs.
-     - Intégrer des outils de sécurité comme **Helmet.js** pour sécuriser les en-têtes HTTP et **CORS** pour contrôler les accès aux ressources depuis d'autres origines.
+     - Intégrer des outils de sécurité comme **CORS** pour contrôler les accès aux ressources depuis d'autres origines.
      - Valider systématiquement toutes les entrées des utilisateurs et utiliser des mécanismes de prévention contre les injections SQL ou XSS.
 
 ### 3. **Risque de Performance** : Problèmes de scalabilité
