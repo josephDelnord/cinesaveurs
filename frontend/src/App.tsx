@@ -14,7 +14,8 @@ import UserManagement from "./Pages/UserManagement";
 import NotFoundPage from "./components/NotFoundPage";
 import { AuthProvider } from "./context/AuthContext";
 import RequireAdmin from "./components/RequireAdmin";
-import ProfileUser from "./Pages/ProfileUser";
+import UserProfile from "./Pages/UserProfile";  // Profil de l'utilisateur
+import AdminProfil from "./Pages/AdminProfil"; // Profil de l'administrateur
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
             <Route path="/" element={<Recipes />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<ProfileUser />} />
+            <Route path="/profile" element={<UserProfile />} />
             <Route path="/about" element={<About />} />
             <Route path="/recipe/:id" element={<Recipe />} />
             <Route path="/add-recipe" element={<AddRecipe />} />
@@ -49,6 +50,13 @@ function App() {
                   <UserManagement />
                 </RequireAdmin>
               }
+            />
+            <Route path="/admin/profile"
+            element={
+              <RequireAdmin>
+                <AdminProfil />
+              </RequireAdmin>
+            }
             />
 
             {/* Route de fallback pour les pages non trouvées */}

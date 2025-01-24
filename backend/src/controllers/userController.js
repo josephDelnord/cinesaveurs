@@ -12,15 +12,16 @@ import {
 
 // Récupérer les informations d'un utilisateur (accessible uniquement par l'utilisateur lui-même ou un administrateur)
 export const getUserInfo = async (req, res) => {
-  const userId = req.params.userId; // L'ID de l'utilisateur passé dans l'URL
-  const cacheKey = `GET:/api/users/${userId}`; // Clé de cache spécifique à l'utilisateur
+  const { id } = req.params;
+  const cacheKey = `GET:/api/users/${id}`; // Clé de cache spécifique à l'utilisateur
 
   // Vérification dans le cache
   cacheMiddleware(req, res, () => {
     // Si les données sont dans le cache, elles ont déjà été envoyées par le middleware cacheMiddleware
     // Sinon, continue ici pour récupérer depuis la base de données
-    User.findById(userId)
+    User.findById(id)
       .select("-password") // Ne pas retourner le mot de passe
+      .populate("username", "email") // Peupler le nom et l'email
       .populate("status", "status_name") // Populate le statut et récupérer le nom du statut
       .populate("role", "role_name") // Populate le rôle et récupérer le nom du rôle
       .then((user) => {
@@ -28,22 +29,10 @@ export const getUserInfo = async (req, res) => {
           return res.status(404).json({ message: "Utilisateur non trouvé." });
         }
 
-        // Si l'utilisateur a un statut et un rôle définis, on récupère leur nom respectivement
-        const statusName = user.status ? user.status.status_name : "Non défini";
-        const roleName = user.role ? user.role.role_name : "Non défini";
-
         // Mise en cache des informations de l'utilisateur pendant 1 heure (3600 secondes)
         memcached.set(
           cacheKey,
-          JSON.stringify({
-            id: user._id,
-            username: user.username,
-            email: user.email,
-            status: statusName,
-            role: roleName,
-          }),
-          3600,
-          (err) => {
+          JSON.stringify(user), 3600, (err) => {
             if (err) {
               console.error(
                 "Erreur lors de la mise en cache de l'utilisateur:",
@@ -51,28 +40,16 @@ export const getUserInfo = async (req, res) => {
               );
             } else {
               console.log(
-                `Informations de l'utilisateur ${userId} mises en cache pour ${cacheKey}`
+                `Informations de l'utilisateur ${id} mises en cache pour ${cacheKey}`
               );
             }
           }
         );
 
-        // Renvoie les informations de l'utilisateur
-        cacheResponse(req, res, () => {
-          res.status(200).json({
-            id: user._id,
-            username: user.username,
-            email: user.email,
-            status: statusName,
-            role: roleName,
-          });
-        });
+        res.status(200).json(user);
       })
-      .catch((err) => {
-        console.error(
-          "Erreur lors de la récupération des informations de l'utilisateur:",
-          err
-        );
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des informations de l'utilisateur:", error);
         res.status(500).json({
           message:
             "Erreur serveur lors de la récupération des informations de l'utilisateur.",
@@ -83,7 +60,7 @@ export const getUserInfo = async (req, res) => {
 
 // Mettre à jour les informations d'un utilisateur
 export const updateUser = async (req, res) => {
-  const { userId } = req.params;
+  const { id } = req.params;
   const { name, email, password, newPassword, confirmPassword, status, role } =
     req.body;
 
@@ -97,7 +74,7 @@ export const updateUser = async (req, res) => {
 
   try {
     // Trouver l'utilisateur dans la base de données
-    const user = await User.findById(userId);
+    const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
@@ -146,30 +123,54 @@ export const updateUser = async (req, res) => {
     await user.save();
 
     // Invalider le cache de l'utilisateur après la mise à jour
-    const cacheKey = `GET:/api/users/${userId}`; // Clé de cache spécifique à l'utilisateur
+    const cacheKey = `GET:/api/users/${id}`; // Clé de cache spécifique à l'utilisateur
     invalidateCache(req, res, cacheKey, () => {
-      console.log(`Cache invalidé pour l'utilisateur ${userId}`);
+      console.log(`Cache invalidé pour l'utilisateur ${id}`);
     });
 
-    // Si l'utilisateur a un statut et un rôle définis, on récupère leur nom respectivement
-    const statusName = user.status ? user.status.status_name : "Non défini";
-    const roleName = user.role ? user.role.role_name : "Non défini";
+    User.findById(id)
+     .select("-password") // Ne pas retourner le mot de passe
+      .populate("username", "email") // Peupler le nom et l'email
+      .populate("status", "status_name") // Populate le statut et récupérer le nom du statut
+      .populate("role", "role_name") // Populate le rôle et récupérer le nom du rôle
+      .then((user) => {
+        if (!user) {
+          return res.status(404).json({ message: "Utilisateur non trouvé." });
+        }
 
-    // Retourner les nouvelles informations de l'utilisateur
-    return res.status(200).json({
-      message: "Utilisateur mis à jour avec succès.",
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      status: statusName, // Nom du statut
-      role: roleName, // Nom du rôle
-    });
-  } catch (err) {
-    console.error("Erreur lors de la mise à jour de l'utilisateur:", err);
-    return res.status(500).json({
+      // Mise en cache des informations de l'utilisateur pendant 1 heure (3600 secondes)
+        memcached.set(
+          cacheKey,
+          JSON.stringify(user), 3600, (err) => {
+            if (err) {
+              console.error(
+                "Erreur lors de la mise en cache de l'utilisateur:",
+                err
+              );
+            } else {
+              console.log(
+                `Informations de l'utilisateur ${id} mises en cache pour ${cacheKey}`
+              );
+            }
+          }
+        );
+
+        res.status(200).json(user);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des informations de l'utilisateur:", error);
+        res.status(500).json({
+          message:
+            "Erreur serveur lors de la récupération des informations de l'utilisateur.",
+        });
+      });
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour de l'utilisateur:", error);
+    res.status(500).json({
       message: "Erreur serveur lors de la mise à jour de l'utilisateur.",
     });
   }
+
 };
 
 // Supprimer un utilisateur (accessible uniquement par un administrateur)

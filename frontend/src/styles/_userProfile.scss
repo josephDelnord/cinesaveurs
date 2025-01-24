@@ -1,28 +1,62 @@
 @use 'variables' as *;
 
 .user-profile {
-  background-color: $background-color-light;
-  padding: $spacing-recipe;
-  border-radius: 10px;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: $background-color-light;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  font-family: $font-family-primary;
+  color: $text-color-primary;
+  text-align: center;
+  flex: 1; /* Permet à la section de prendre l'espace disponible */
 
-  &__title {
-    font-family: $font-family-primary;
+  h1 {
     font-size: $font-size-secondary-title;
+    font-weight: $font-weight-bold;
     color: $text-color-primary;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
   }
 
-  &__details {
-    font-family: $font-family-secondary;
-    color: $text-color-secondary;
+  .user-profile__info {
+    display: block; /* Changed from grid to block */
+    margin-top: 20px;
 
-    &__item {
-      font-size: $font-size-text-description;
-      margin-bottom: 15px;
+    p {
+      font-weight: $font-weight-regular;
+      color: $text-color-tertiary;
+      line-height: 1.6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px; /* Adding space between each line of info */
+
       strong {
-        font-weight: $font-weight-bold;
         color: $text-color-primary;
+        font-weight: $font-weight-bold;
+      }
+
+      span {
+        color: $text-color-secondary;
+        font-weight: $font-weight-regular;
       }
     }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .user-profile {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  h1 {
+    font-size: $font-size-tertiary-title;
+  }
+
+  .user-profile__info p {
+    font-size: 16px;
   }
 }

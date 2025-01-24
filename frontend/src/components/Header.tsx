@@ -1,30 +1,83 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isAuthenticated = localStorage.getItem("token");
-  const userPseudo = localStorage.getItem("pseudo");
+  const isAuthenticated = Boolean(localStorage.getItem("token"));
+  const userPseudo = localStorage.getItem("pseudo") || "Utilisateur";
   const userRole = localStorage.getItem("role");
   const navigate = useNavigate();
 
+  // Fonction pour gérer l'ouverture/fermeture du menu
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((prevState) => !prevState);
   };
 
+  // Fonction pour fermer le menu
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
 
+  // Fonction de déconnexion
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("pseudo");
     localStorage.removeItem("role");
     localStorage.removeItem("userId");
-    navigate("/");
+    navigate("/login");
   };
 
+  // Lien de profil en fonction du rôle de l'utilisateur
   const profileLink = userRole === "admin" ? "/admin/profile" : "/profile";
+
+  // Gestion de la fermeture du menu si l'utilisateur clique en dehors
+  useEffect(() => {
+    const closeMenuOnClickOutside = (e: MouseEvent) => {
+      if (!(e.target as Element).closest('#nav') && !(e.target as Element).closest('.burger-menu')) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('click', closeMenuOnClickOutside);
+    return () => document.removeEventListener('click', closeMenuOnClickOutside);
+  }, []);
+
+  // Rendre les liens pour un utilisateur authentifié
+  const renderAuthLinks = () => (
+    <>
+      <li>
+        <Link to={profileLink} onClick={closeMenu}>
+          {userPseudo}
+        </Link>
+      </li>
+      <li>
+        <Link to="/" onClick={handleLogout}>
+          Déconnexion
+        </Link>
+      </li>
+    </>
+  );
+
+  // Rendre les liens pour un utilisateur non authentifié
+  const renderGuestLinks = () => (
+    <>
+      <li>
+        <Link to="/register" onClick={closeMenu}>
+          Inscription
+        </Link>
+      </li>
+      <li>
+        <Link to="/login" onClick={closeMenu}>
+          Connexion
+        </Link>
+      </li>
+      <li>
+        <Link to="/about" onClick={closeMenu}>
+          A propos
+        </Link>
+      </li>
+    </>
+  );
 
   return (
     <div id="header">
@@ -40,38 +93,7 @@ function Header() {
             </Link>
           </li>
 
-          {!isAuthenticated ? (
-            <>
-              <li>
-                <Link to="/register" onClick={closeMenu}>
-                  Inscription
-                </Link>
-              </li>
-              <li>
-                <Link to="/login" onClick={closeMenu}>
-                  Connexion
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" onClick={closeMenu}>
-                  A propos
-                </Link>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <Link to={profileLink} onClick={closeMenu}>
-                  {userPseudo}
-                </Link>
-              </li>
-              <li>
-                <Link to="/" onClick={handleLogout}>
-                  Déconnexion
-                </Link>
-              </li>
-            </>
-          )}
+          {!isAuthenticated ? renderGuestLinks() : renderAuthLinks()}
 
           {userRole === "admin" && (
             <li>

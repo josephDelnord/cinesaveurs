@@ -12,6 +12,8 @@ footer {
   bottom: 0;
   border-top: $footer-border-top;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: auto; /* Permet au footer de rester en bas */
+
 }
 
 footer p {

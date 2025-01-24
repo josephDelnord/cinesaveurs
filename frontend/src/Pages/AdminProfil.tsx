@@ -10,7 +10,7 @@ import {
   decodeToken,
 } from "../localstorage/localstorage"; // Utilitaires pour gérer le token
 
-const UserProfile: React.FC = () => {
+const AdminProfile: React.FC = () => {
   const dispatch = useDispatch();
 
   // Récupérer l'état depuis le Redux Store
@@ -26,7 +26,7 @@ const UserProfile: React.FC = () => {
 
   const tokenInfo = getTokenAndPseudoFromLocalStorage();
 
-  // Fonction pour récupérer les informations de l'utilisateur
+  // Fonction pour récupérer les informations de l'admin
   const fetchData = () => {
     if (!tokenInfo) {
       dispatch(
@@ -44,7 +44,7 @@ const UserProfile: React.FC = () => {
 
     dispatch(setLoading(true)); // Début de la récupération des données
 
-    // Vérification du token et récupération des informations de l'utilisateur
+    // Vérification du token et récupération des informations de l'admin
     const decodedToken = decodeToken(token);
     if (!decodedToken) {
       dispatch(setError("Token invalide"));
@@ -52,16 +52,17 @@ const UserProfile: React.FC = () => {
       return;
     }
 
-    // Vérifie que l'utilisateur connecté est celui qui veut accéder à son profil
-    if (decodedToken.userId !== userId) {
-      dispatch(setError("Vous ne pouvez accéder qu'à votre propre profil"));
+    // Vérifie que l'utilisateur connecté a un rôle d'admin
+    if (decodedToken.role !== "admin") {
+      dispatch(setError("Accès réservé aux administrateurs"));
       dispatch(setLoading(false));
       return;
     }
 
-    // Récupère les informations de l'utilisateur depuis l'API
+    // Récupère les informations de l'admin depuis l'API
     myAxiosInstance
-      .get<IUser>(`/api/users/${userId}`, {
+      .get<IUser>(`/api/admins/${userId}`, {
+        // Appel à la route spécifique pour l'admin
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -69,8 +70,8 @@ const UserProfile: React.FC = () => {
         dispatch(setUser(response.data)); // Sauvegarder les données dans Redux store
       })
       .catch((err) => {
-        console.error("Erreur lors de la récupération de l'utilisateur", err);
-        dispatch(setError("Erreur lors de la récupération de l'utilisateur"));
+        console.error("Erreur lors de la récupération de l'admin", err);
+        dispatch(setError("Erreur lors de la récupération de l'admin"));
       })
       .finally(() => {
         dispatch(setLoading(false)); // Fin de la récupération des données
@@ -105,26 +106,27 @@ const UserProfile: React.FC = () => {
     return <div>{error}</div>;
   }
 
-  // Si l'utilisateur n'est pas trouvé
+  // Si l'admin n'est pas trouvé
   if (!user) {
-    return <div>Utilisateur introuvable</div>;
+    return <div>Administrateur introuvable</div>;
   }
 
   return (
-    <div className="user-profile">
+    <div className="admin-profile">
       <h1>{user.username}</h1>
-      <div className="user-profile__info">
-        <p className="user-profile__email">
+      <div className="admin-profile__info">
+        <p className="admin-profile__email">
           <strong>Email :</strong> <span>{user.email}</span>
         </p>
-        <p className="user-profile__role">
+        <p className="admin-profile__role">
           <strong>Rôle :</strong> <span>{user.role?.role_name}</span>
         </p>
-        <p className="user-profile__status">
+        <p className="admin-profile__status">
           <strong>Statut :</strong> <span>{user.status?.status_name}</span>
         </p>
       </div>
     </div>
   );
 };
-export default UserProfile;
+
+export default AdminProfile;

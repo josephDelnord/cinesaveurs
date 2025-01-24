@@ -6,6 +6,7 @@ import addRecipeReducer from './slices/addRecipeSlice';
 import recipesReducer from './slices/recipesSlice';
 import recipeReducer from './slices/recipeSlice';
 import authReducer from './slices/authSlice';
+import userInfosReducer from './slices/userInfosSlice';
 
 // Configuration du store avec le reducer global
 export const store = configureStore({
@@ -16,6 +17,8 @@ export const store = configureStore({
     recipes: recipesReducer,
     recipe: recipeReducer,
     auth: authReducer,
+    userInfos: userInfosReducer,
+
 
   },
 });
