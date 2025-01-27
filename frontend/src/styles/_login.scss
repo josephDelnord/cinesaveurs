@@ -1,5 +1,5 @@
 // Import des variables
-@use 'variables' as *;
+@use "variables" as *;
 
 // Page de connexion
 .login-page {
@@ -16,25 +16,23 @@
   // Formulaire de connexion
   .login-form {
     background-color: $background-color-light;
-    padding: 3rem 2rem;
+    padding: 2rem 2rem; // Réduction du padding pour mieux s'adapter aux petits écrans
+    margin-bottom: 3rem;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 500px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    margin-top: 4rem;
+    justify-content: center;
 
     h1 {
-      position: absolute;
-      top: 10rem; // Ajuste la position du titre
+      top: 4rem; // Ajuste la position du titre
       width: 100%;
       text-align: center;
       font-size: $font-size-secondary-title;
       color: $primary-color;
-      margin: 0;
+      margin-bottom: 2rem;
       z-index: 10;
     }
 

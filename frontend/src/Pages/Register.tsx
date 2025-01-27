@@ -5,7 +5,7 @@ import {
   saveTokenAndPseudoInLocalStorage,
   decodeToken,
 } from "../localstorage/localstorage";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loading from "../components/Loading";
 
@@ -89,7 +89,7 @@ const Register = () => {
 
   return (
     <div className="register-page">
-      <h2>Créer un compte</h2>
+      <h2>Inscription</h2>
       <form onSubmit={handleRegister}>
         {error && <p style={{ color: "red" }}>{error}</p>}
 
@@ -129,7 +129,7 @@ const Register = () => {
         </button>
         <div className="login-link">
           <p>
-            Vous avez déjà un compte ? <a href="/login">Se connecter</a>
+            Vous avez déjà un compte ? <Link to="/login">Se connecter</Link>
           </p>
         </div>
       </form>

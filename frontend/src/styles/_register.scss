@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 .register-page {
   width: 100%;
@@ -16,8 +16,8 @@
     text-align: center;
     font-size: $font-size-secondary-title;
     color: $primary-color;
-    margin-top: 2rem; // Réduit l'écart pour les petits écrans
-    margin-bottom: 6rem;
+    margin-top: 8rem;
+    margin-bottom: 1rem;
   }
 
   form {
@@ -32,9 +32,10 @@
     flex-direction: column;
     justify-content: flex-start;
 
-    input, select {
+    input,
+    select {
       width: 100%;
-      padding: 1.5rem; // Ajustement pour plus d'espace dans les champs
+      padding: 1rem; // Ajustement pour plus d'espace dans les champs
       margin: 0.75rem 0;
       border: 1px solid $secondary-color;
       border-radius: 5px;
@@ -56,14 +57,14 @@
     select {
       appearance: none;
       background-color: $background-color-light;
-      background-image: url('/path/to/your/icon.svg');
+      background-image: url("/path/to/your/icon.svg");
       background-repeat: no-repeat;
       background-position: right 10px center;
     }
 
     button {
       width: 100%;
-      padding: 1.8rem; // Ajustement du padding pour une meilleure expérience sur mobile
+      padding: 1rem; // Ajustement du padding pour une meilleure expérience sur mobile
       margin-top: 1rem;
       margin-bottom: 2rem;
       border: none;
@@ -98,7 +99,6 @@
   .login-link {
     display: flex;
     justify-content: center;
-    position: relative;
     top: 2rem;
 
     p {
@@ -130,11 +130,11 @@
       max-width: 100%;
       padding: 2rem; // Ajustement du padding
       margin-right: 10%; // Décalage du formulaire vers la gauche
-      transform: translateX(-10%);  // Décalage à gauche
-
+      transform: translateX(-10%); // Décalage à gauche
     }
 
-    input, select {
+    input,
+    select {
       padding: 1.2rem; // Réduction du padding dans les champs de saisie
     }
 
@@ -158,7 +158,8 @@
       margin-right: 15%; // Plus de décalage pour les petits écrans
     }
 
-    input, select {
+    input,
+    select {
       padding: 1rem; // Plus petit padding pour optimiser l'espace
     }
 
