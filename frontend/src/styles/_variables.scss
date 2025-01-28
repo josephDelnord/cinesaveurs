@@ -45,9 +45,11 @@ $spacing-recipe: 60px; // espacement de recettes
 $spacing-nav: 100px; // espacement de navigation
 
 // 5. Breakpoints pour responsive design
+$breakpoint-xs: 320px; // écran très petit
 $breakpoint-sm: 480px; // petit écran
 $breakpoint-md: 768px; // écran moyen
 $breakpoint-lg: 1024px; // grand écran
+
 
 // 6. footer
 $footer-background-color: #333; // Couleur de fond du footer

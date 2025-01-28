@@ -132,37 +132,39 @@ function Login() {
           </button>
         </div>
       ) : (
-        <div className="login-form">
-          <h1>Connexion</h1>
-          {error && <p className="error">{error}</p>}
-          <form onSubmit={handleLogin}>
-            <div className="input-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Votre email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <label htmlFor="password">Mot de passe</label>
-              <input
-                type="password"
-                id="password"
-                placeholder="Votre mot de passe"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <button type="submit" disabled={loading}>
-              {loading ? "Chargement..." : "Se connecter"}
-            </button>
-          </form>
-        </div>
+        <>
+          <h1>Connexion</h1> {/* Déplacé ici */}
+          <div className="login-form">
+            {error && <p className="error">{error}</p>}
+            <form onSubmit={handleLogin}>
+              <div className="input-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Votre email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="input-group">
+                <label htmlFor="password">Mot de passe</label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Votre mot de passe"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" disabled={loading}>
+                {loading ? <Loading /> : "Se connecter"}
+              </button>
+            </form>
+          </div>
+        </>
       )}
     </div>
   );

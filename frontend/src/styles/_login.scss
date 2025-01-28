@@ -11,13 +11,23 @@
   background-color: $background-color-light;
   font-family: $font-family-primary;
   padding: 2rem;
-  position: relative; // Permet de gérer le titre en position absolue
+  position: relative;
+  flex-direction: column;
+
+  // Titre de la page de connexion
+  h1 {
+    text-align: center;
+    font-size: $font-size-secondary-title;
+    color: $primary-color;
+    margin-bottom: 2rem;
+    font-family: $font-family-primary;
+  }
 
   // Formulaire de connexion
   .login-form {
     background-color: $background-color-light;
-    padding: 2rem 2rem; // Réduction du padding pour mieux s'adapter aux petits écrans
-    margin-bottom: 3rem;
+    padding: 2rem;
+    margin-top: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
@@ -25,20 +35,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-    h1 {
-      top: 4rem; // Ajuste la position du titre
-      width: 100%;
-      text-align: center;
-      font-size: $font-size-secondary-title;
-      color: $primary-color;
-      margin-bottom: 2rem;
-      z-index: 10;
-    }
+    text-align: center;
 
     .error {
       color: $error-color;
-      text-align: center;
       margin-bottom: 1rem;
     }
 
@@ -52,6 +52,7 @@
         color: $text-color-secondary;
         margin-bottom: 0.5rem;
         display: block;
+        text-align: left;
       }
 
       input {
@@ -117,24 +118,6 @@
       font-size: $font-size-secondary-title;
       color: $text-color-primary;
       margin-bottom: 3rem;
-      text-align: center;
-      position: relative;
-    }
-    p {
-      font-family: $font-family-primary;
-      font-size: $font-size-text-description;
-      color: $text-color-secondary;
-      margin: 0.5rem 0;
-      font-weight: 400;
-
-      // Style conditionnel pour le statut "actif" ou "inactif"
-      &.active {
-        color: $success-color; // Assure-toi que $success-color est défini dans tes variables
-      }
-
-      &.inactive {
-        color: $error-color; // Assure-toi que $error-color est défini dans tes variables
-      }
     }
 
     button {

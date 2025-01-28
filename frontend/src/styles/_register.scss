@@ -10,7 +10,7 @@
   font-family: $font-family-primary;
   padding: 2rem;
   position: relative;
-  flex-direction: column; // Assure que les éléments sont alignés verticalement
+  flex-direction: column;
 
   h2 {
     text-align: center;
@@ -22,7 +22,7 @@
 
   form {
     background-color: $background-color-light;
-    padding: 4rem 3rem; // Réduction du padding pour mieux s'adapter aux petits écrans
+    padding: 4rem 3rem;
     margin-bottom: 5rem;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -35,9 +35,9 @@
     input,
     select {
       width: 100%;
-      padding: 1rem; // Ajustement pour plus d'espace dans les champs
+      padding: 1rem;
       margin: 0.75rem 0;
-      border: 1px solid $secondary-color;
+      border: 1px solid #ddd;
       border-radius: 5px;
       font-size: 1rem;
       background-color: $background-color-light;
@@ -46,7 +46,7 @@
 
       &:focus {
         border-color: $primary-color;
-        box-shadow: 0 0 5px $primary-color;
+        outline: none;
       }
 
       &::placeholder {
@@ -57,14 +57,13 @@
     select {
       appearance: none;
       background-color: $background-color-light;
-      background-image: url("/path/to/your/icon.svg");
       background-repeat: no-repeat;
       background-position: right 10px center;
     }
 
     button {
       width: 100%;
-      padding: 1rem; // Ajustement du padding pour une meilleure expérience sur mobile
+      padding: 1rem;
       margin-top: 1rem;
       margin-bottom: 2rem;
       border: none;
@@ -118,53 +117,57 @@
     }
   }
 
-  @media screen and (max-width: $breakpoint-md) {
-    padding: 1rem; // Réduction des padding sur mobile
+
+  @media screen and (max-width: 768px) {
+    padding: 1rem;
 
     h2 {
-      font-size: 2rem; // Ajustement de la taille du titre pour les petits écrans
-      margin-top: 4rem; // Réduction de la marge au-dessus du titre
+      font-size: 2rem;
+      margin-top: 4rem;
     }
 
     form {
       max-width: 100%;
-      padding: 2rem; // Ajustement du padding
-      margin-right: 10%; // Décalage du formulaire vers la gauche
-      transform: translateX(-10%); // Décalage à gauche
+      padding: 2rem 1rem;
+      margin-top: 2rem;
     }
 
     input,
     select {
-      padding: 1.2rem; // Réduction du padding dans les champs de saisie
+      padding: 1.2rem;
     }
 
     button {
-      padding: 1.6rem; // Ajustement du padding du bouton
+      padding: 1.4rem;
     }
 
     .login-link {
-      top: 1rem; // Ajustement de la position du lien
+      top: 1rem;
     }
   }
 
-  @media screen and (max-width: $breakpoint-sm) {
+  @media screen and (max-width: 480px) {
     h2 {
-      font-size: 1.8rem; // Taille de police encore plus petite pour les très petits écrans
-      margin-top: 2rem; // Ajustement de la marge pour les écrans très petits
+      font-size: 1.8rem;
+      margin-top: 2rem;
     }
 
     form {
-      padding: 1.5rem; // Padding supplémentaire réduit pour les petits écrans
-      margin-right: 15%; // Plus de décalage pour les petits écrans
+      padding: 1.5rem;
+      margin-right: 10%;
     }
 
     input,
     select {
-      padding: 1rem; // Plus petit padding pour optimiser l'espace
+      padding: 1rem;
     }
 
     button {
-      padding: 1.4rem; // Taille plus petite du bouton
+      padding: 1.2rem;
+    }
+
+    .login-link {
+      top: 0.5rem;
     }
   }
 }
