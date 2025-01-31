@@ -31,7 +31,7 @@ setupSwagger(app);
 // Middleware CORS
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost", "http://127.0.0.1"],
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost", "http://127.0.0.1 || https://front-ten-ruddy-94.vercel.app"],
     credentials: true, // Autoriser les credentials
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [

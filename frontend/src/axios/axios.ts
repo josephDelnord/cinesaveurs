@@ -1,15 +1,11 @@
-// axiosInstance.js
 import axios from 'axios';
 import { getTokenAndPseudoFromLocalStorage } from '../localstorage/localstorage';
+import dotenv from "dotenv";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface ImportMetaEnv {
-  VITE_REACT_APP_BACKEND_BASEURL: string;
-}
+dotenv.config();
 
 const myAxiosInstance = axios.create({
-    baseURL: `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}`,
+    baseURL: process.env.VITE_REACT_APP_BACKEND_BASEURL,
 });
 
 // Intercepteur de requête
