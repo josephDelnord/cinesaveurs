@@ -32,7 +32,13 @@ export const connectDB = async () => {
     } catch (error) {
         console.error('Erreur de connexion à MongoDB:', error);
         console.error('URI de connexion utilisé:', process.env.MONGODB_URI || process.env.MONGODB_URI_FOR_PROD);
-        process.exit(1);
+        if (process.env.NODE_ENV !== 'test') {
+            process.exit(1);
+        } else {
+            console.error('Erreur de connexion à MongoDB, tests échoués.');
+            // Ne pas arrêter le processus pendant les tests
+        }
+
     }
 };
 
