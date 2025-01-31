@@ -2,8 +2,14 @@
 import axios from 'axios';
 import { getTokenAndPseudoFromLocalStorage } from '../localstorage/localstorage';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface ImportMetaEnv {
+  VITE_REACT_APP_BACKEND_BASEURL: string;
+}
+
 const myAxiosInstance = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}`,
 });
 
 // Intercepteur de requête
