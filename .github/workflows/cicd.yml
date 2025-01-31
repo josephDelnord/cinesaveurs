@@ -82,6 +82,7 @@ jobs:
           host: ${{ secrets.HOST }} # L'adresse de votre serveur
           username: ${{ secrets.SSH_USERNAME }} # Utilisateur SSH pour votre serveur
           key: ${{ secrets.SSH_PRIVATE_KEY }} # Clé privée SSH pour la connexion
+          port: 22 # Port SSH
           script: |
             cd . # Chemin vers le dossier du projet sur votre serveur
             git pull origin master  # Récupérer les dernières modifications
