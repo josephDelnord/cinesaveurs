@@ -16,19 +16,11 @@ import {
   cacheResponse,
   invalidateCache,
 } from "./src/cache/memcached.js";
-// import https from "node:https";
-// import fs from "node:fs";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-// Charger le certificat SSL et la clé privée
-// const sslOptions = {
-//   key: fs.readFileSync("ssl/private.key"), // Chemin vers la clé privée
-//   cert: fs.readFileSync("ssl/certificate.crt"), // Chemin vers le certificat
-// };
 
 // Connexion à MongoDB
 connectDB();
@@ -88,13 +80,6 @@ app.delete("/api/recipes/:id", (req, res) => {
   res.json({ message: "Recette supprimée avec succès!" });
 });
 
-// Démarrage du serveur
-// if (process.env.NODE_ENV !== "test") {
-//   // Démarrage du serveur HTTPS avec les options SSL
-//   https.createServer(sslOptions, app).listen(PORT, () => {
-//     console.log(`Server running on https://localhost:${PORT}`);
-//   });
-// }
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
