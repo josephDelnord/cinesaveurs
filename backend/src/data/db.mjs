@@ -15,10 +15,7 @@ export const connectDB = async () => {
         }
 
         // Connexion à MongoDB avec les options recommandées
-        await mongoose.connect(mongoURI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        await mongoose.connect(mongoURI);
 
         console.log('Connecté à MongoDB');
 

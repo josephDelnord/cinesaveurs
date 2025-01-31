@@ -11,6 +11,7 @@ import Instruction from "../models/Instruction.js";
 
 dotenv.config();
 
+
 async function seedDatabase() {
   try {
     // Log de débogage
@@ -45,150 +46,116 @@ async function seedDatabase() {
     ];
 
     const roles = [];
+
     for (const roleData of rolesToCreate) {
       try {
-        const role = await Role.create(roleData);
-        roles.push(role);
-        console.log(`Rôle créé : ${role.role_name}`);
-      } catch (roleError) {
-        console.error(
-          `Erreur lors de la création du rôle ${roleData.role_name}:`,
-          roleError
+        // Utilisation de findOneAndUpdate avec upsert pour créer ou mettre à jour le rôle
+        const updatedRole = await Role.findOneAndUpdate(
+          { role_name: roleData.role_name },  // Condition pour trouver le rôle
+          { $set: roleData },                  // Les données à mettre à jour (ou à insérer)
+          { upsert: true, new: true }          // upsert crée si pas trouvé, new renvoie l'élément mis à jour
         );
 
-        // Si l'erreur est due à un doublon, essayez de trouver ou de mettre à jour
-        if (roleError.code === 11000) {
-          const existingRole = await Role.findOne({
-            role_name: roleData.role_name,
-          });
-          if (existingRole) {
-            console.log(`Rôle ${roleData.role_name} existe déjà`);
-            roles.push(existingRole);
-          }
-        }
+        // Ajouter le rôle mis à jour ou créé à la liste
+        roles.push(updatedRole);
+        console.log(`Rôle traité : ${updatedRole.role_name}`);
+      } catch (roleError) {
+        console.error(
+          `Erreur lors de la création/maj du rôle ${roleData.role_name}:`,
+          roleError
+        );
+      } finally {
+        console.log(`Fin du traitement pour le rôle ${roleData.role_name}`);
       }
     }
+
     console.log(
       "Rôles créés:",
       roles.map((r) => r.role_name)
     );
 
     // Créer des statuts
-    const status = await Status.create([
+    const statusData = [
       { status_name: "active" },
       { status_name: "inactive" },
       { status_name: "suspended" },
       { status_name: "banned" },
-    ]);
+    ];
 
-    // Créer des utilisateurs avec des données fictives
-    const users = await User.create([
-      {
-        username: "Joseph Delnord",
-        email: "joseph@example.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[0]._id,
-        role: roles.find((r) => r.role_name === "admin")._id,
-      },
-      {
-        username: "Julie Loones",
-        email: "julie@example.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[1]._id,
-        role: roles.find((r) => r.role_name === "admin")._id,
-      },
-      {
-        username: "Chef Gordon Ramsay",
-        email: "gordon@example.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[0]._id,
-        role: roles.find((r) => r.role_name === "user")._id,
-      },
-      {
-        username: "Biba Mouzarine",
-        email: "biba@example.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[0]._id,
-        role: roles.find((r) => r.role_name === "user")._id,
-      },
-      {
-        username: "Alice Dupont",
-        email: "alice.dupont@example.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[0]._id,
-        role: roles.find((r) => r.role_name === "user")._id,
-      },
-      {
-        username: "Bob Martin",
-        email: "bob.martin@example.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[0]._id,
-        role: roles.find((r) => r.role_name === "user")._id,
-      },
-      {
-        username: "Claire Lefevre",
-        email: "claire.lefevre@example.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[0]._id,
-        role: roles.find((r) => r.role_name === "user")._id,
-      },
-      {
-        username: "David Leclerc",
-        email: "david.leclerc@example.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[0]._id,
-        role: roles.find((r) => r.role_name === "user")._id,
-      },
-      {
-        username: "Eva Durand",
-        email: "eva.durand@example.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[0]._id,
-        role: roles.find((r) => r.role_name === "user")._id,
-      },
-      {
-        username: "Frank Sorel",
-        email: "frank.sorel@example.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[0]._id,
-        role: roles.find((r) => r.role_name === "user")._id,
-      },
-      {
-        username: "Jon Snow",
-        email: "jonsnow@got.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[0]._id,
-        role: roles.find((r) => r.role_name === "user")._id,
-      },
-      {
-        username: "Sherlock Holmes",
-        email: "sherlock@bakerstreet.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[1]._id,
-        role: roles.find((r) => r.role_name === "user")._id,
-      },
-      {
-        username: "Tony Stark",
-        email: "tony.stark@starkindustries.com",
-        password: "Password@12345",
-        confirmPassword: "Password@12345",
-        status: status[1]._id,
-        role: roles.find((r) => r.role_name === "user")._id,
-      },
-    ]);
+    const statuses = [];
 
+    for (const status of statusData) {
+      try {
+        // Utilisation de findOneAndUpdate avec upsert pour créer ou mettre à jour
+        const updatedStatus = await Status.findOneAndUpdate(
+          { status_name: status.status_name }, // Condition pour trouver le statut
+          { $set: status },                     // Les données à mettre à jour (ou à insérer)
+          { upsert: true, new: true }           // upsert crée si pas trouvé, new renvoie l'élément mis à jour
+        );
+
+        // Ajouter le statut mis à jour ou créé à la liste
+        statuses.push(updatedStatus);
+        console.log(`Statut traité : ${updatedStatus.status_name}`);
+      } catch (error) {
+        console.error(`Erreur lors de la création/maj du statut ${status.status_name}:`, error);
+      } finally {
+        console.log(`Fin du traitement pour le statut ${status.status_name}`);
+      }
+    }
+    // Afficher tous les statuts créés ou récupérés
+    console.log(
+      "Statuts créés ou existants :",
+      statuses.map((s) => s.status_name)
+    );
+
+    const usersData = [
+      { username: "Joseph Delnord", email: "joseph@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "admin")._id },
+      { username: "Julie Loones", email: "julie@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "admin")._id },
+      { username: "Chef Gordon Ramsay", email: "gordon@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
+      { username: "Biba Mouzarine", email: "biba@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
+      { username: "Alice Dupont", email: "alice.dupont@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
+      { username: "Bob Martin", email: "bob.martin@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
+      { username: "Claire Lefevre", email: "claire.lefevre@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
+      { username: "David Leclerc", email: "david.leclerc@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
+      { username: "Eva Durand", email: "eva.durand@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
+      { username: "Frank Sorel", email: "frank.sorel@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
+      { username: "Jon Snow", email: "jonsnow@got.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
+      { username: "Sherlock Holmes", email: "sherlock@bakerstreet.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
+      { username: "Tony Stark", email: "tony.stark@starkindustries.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id }
+    ];
+
+    const createdUsers = [];
+
+    for (const userData of usersData) {
+      try {
+        // Vérifier si l'utilisateur existe déjà par son email
+        const existingUser = await User.findOneAndUpdate(
+          { email: userData.email },  // Recherche par email
+          userData,                   // Données à mettre à jour
+          { upsert: true, new: true } // Crée l'utilisateur s'il n'existe pas (upsert)
+        );
+
+        if (!existingUser) {
+          // Si l'utilisateur n'existe pas, crée-le
+          const newUser = await User.create(userData);
+          createdUsers.push(newUser);
+          console.log(`Utilisateur créé : ${newUser.username} (${newUser.email})`);
+        } else {
+          // Si l'utilisateur existe déjà, loguer l'information
+          createdUsers.push(existingUser);
+          console.log(`L'utilisateur ${existingUser.username} (${existingUser.email}) existe déjà`);
+        }
+      } catch (error) {
+        console.error(`Erreur lors de la création de l'utilisateur ${userData.email}:`, error);
+      }
+    }
+
+    // Affichage des utilisateurs traités
+
+    console.log(
+      "Utilisateurs traités :",
+      createdUsers.map((u) => u.username)
+    );
     // Créer les ingrédients
     const ingredients = await Ingredient.create([
       // 0
@@ -1279,52 +1246,52 @@ async function seedDatabase() {
     await Comment.create([
       {
         content: "Excellent, mes enfants ont adoré !",
-        user: users[1]._id,
+        user: createdUsers[1]._id,
         recipe: recipes[0]._id,
       },
       {
         content: "Un plat délicieux, facile à préparer.",
-        user: users[2]._id,
+        user: createdUsers[2]._id,
         recipe: recipes[1]._id,
       },
       {
         content: "Recette rapide et simple, j’ai adoré !",
-        user: users[3]._id,
+        user: createdUsers[3]._id,
         recipe: recipes[2]._id,
       },
       {
         content: "Très bon, idéal pour le matin.",
-        user: users[4]._id,
+        user: createdUsers[4]._id,
         recipe: recipes[3]._id,
       },
       {
         content: "Cette recette est incroyable, tout comme dans la série !",
-        user: users[5]._id,
+        user: createdUsers[5]._id,
         recipe: recipes[6]._id,
       },
       {
         content: "Excellent, mes enfants ont adoré !",
-        user: users[6]._id,
+        user: createdUsers[6]._id,
         recipe: recipes[7]._id,
       },
       {
         content: "Elle est délicieuse, j’ai adoré !",
-        user: users[7]._id,
+        user: createdUsers[7]._id,
         recipe: recipes[4]._id,
       },
       {
         content: "Elle est délicieuse, j’ai adoré !",
-        user: users[7]._id,
+        user: createdUsers[7]._id,
         recipe: recipes[5]._id,
       },
       {
         content: "Elle est délicieuse, j’ai adoré !",
-        user: users[5]._id,
+        user: createdUsers[5]._id,
         recipe: recipes[8]._id,
       },
       {
         content: "Elle est délicieuse, j’ai adoré !",
-        user: users[1]._id,
+        user: createdUsers[1]._id,
         recipe: recipes[9]._id,
       },
     ]);
@@ -1333,47 +1300,47 @@ async function seedDatabase() {
     await Score.create([
       {
         score: 5,
-        user: users[1]._id,
+        user: createdUsers[1]._id,
         recipe: recipes[0]._id,
       },
       {
         score: 4,
-        user: users[2]._id,
+        user: createdUsers[2]._id,
         recipe: recipes[1]._id,
       },
       {
         score: 3,
-        user: users[3]._id,
+        user: createdUsers[3]._id,
         recipe: recipes[2]._id,
       },
       {
         score: 5,
-        user: users[4]._id,
+        user: createdUsers[4]._id,
         recipe: recipes[6]._id,
       },
       {
         score: 5,
-        user: users[5]._id,
+        user: createdUsers[5]._id,
         recipe: recipes[5]._id,
       },
       {
         score: 4,
-        user: users[6]._id,
+        user: createdUsers[6]._id,
         recipe: recipes[6]._id,
       },
       {
         score: 5,
-        user: users[7]._id,
+        user: createdUsers[7]._id,
         recipe: recipes[4]._id,
       },
       {
         score: 3,
-        user: users[7]._id,
+        user: createdUsers[7]._id,
         recipe: recipes[8]._id,
       },
       {
         score: 3,
-        user: users[1]._id,
+        user: createdUsers[1]._id,
         recipe: recipes[9]._id,
       },
     ]);

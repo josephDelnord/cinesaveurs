@@ -1,7 +1,17 @@
 import request from "supertest";
 import app from "../../../index.js";
+import { connectDB, disconnectDB } from "../../data/db.mjs";
+
+beforeAll(async () => {
+  await connectDB();
+});
+
+afterAll(async () => {
+  await disconnectDB();
+});
 
 describe('Test de l\'API de recettes', () => {
+
 
   // Test de la route de base /api
   it('devrait répondre avec un message de bienvenue', async () => {
@@ -19,4 +29,3 @@ describe('Test de l\'API de recettes', () => {
     expect(Array.isArray(response.body)).toBe(true);
   });
 });
-

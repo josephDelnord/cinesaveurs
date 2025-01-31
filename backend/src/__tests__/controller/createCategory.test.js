@@ -2,6 +2,8 @@ import { createCategory } from '../../controllers/categoryController.js';
 import Category from '../../models/Category.js';
 import { invalidateCache } from '../../cache/memcached.js';
 
+jest.setTimeout(60000); // Définit un timeout de 60 secondes
+
 // Moker les fonctions de modèle et de cache
 jest.mock('../../models/Category.js');
 jest.mock('../../cache/memcached.js');

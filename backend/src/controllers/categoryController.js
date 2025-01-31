@@ -139,7 +139,6 @@ export const createCategory = async (req, res) => {
 
     return res.status(201).json(savedCategory);  // Retourner la catégorie sauvegardée
   } catch (error) {
-    console.error("Erreur lors de la création de la catégorie", error);
     return res
       .status(500)
       .json({ message: "Erreur lors de la création de la catégorie", error });
