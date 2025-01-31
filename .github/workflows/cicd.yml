@@ -59,37 +59,29 @@ jobs:
           # Il n'est pas nécessaire de "builder" le backend en JavaScript
           # Si vous avez des scripts de migration ou des tâches spécifiques à faire, vous pouvez les ajouter ici
 
-      # Génération d'un artefact
+      # Génération d'un artefact pour GitHub Pages
       - name: generate GitHub Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           name: build
           path: ./frontend/dist
-  # Job pour déployer l'application sur le serveur
+
+  # Job pour déployer l'application sur GitHub Pages
   deploy:
     runs-on: ubuntu-latest
     needs: build # Ce job dépend de l'étape de build et de test réussie
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      # Étape 1 : Checkout du code source
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # Étape 1 : Setup GitHub Pages
+      - name: Setup Github Pages
+        uses: actions/configure-pages@v4
 
-      # Étape 2 : Se connecter au serveur via SSH et déployer l'application
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v0.1.
+      # Étape 2 : Déployer sur GitHub Pages
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
         with:
-          host: ${{ secrets.HOST }} # L'adresse de votre serveur
-          username: ${{ secrets.SSH_USERNAME }} # Utilisateur SSH pour votre serveur
-          key: ${{ secrets.SSH_PRIVATE_KEY }} # Clé privée SSH pour la connexion
-          port: 22 # Port SSH
-          script: |
-            cd . # Chemin vers le dossier du projet sur votre serveur
-            git pull origin master  # Récupérer les dernières modifications
-            cd backend
-            npm install  # Installer les dépendances du backend
-            pm2 restart backend  # Redémarrer le backend avec PM2
-            cd ../frontend
-            npm install  # Installer les dépendances du frontend
-            npm run build  # Construire le frontend
-            pm2 restart frontend  # Redémarrer le frontend avec PM2
+          artifact_name: build
