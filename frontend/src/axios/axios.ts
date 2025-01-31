@@ -1,11 +1,8 @@
 import axios from 'axios';
 import { getTokenAndPseudoFromLocalStorage } from '../localstorage/localstorage';
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const myAxiosInstance = axios.create({
-    baseURL: process.env.VITE_REACT_APP_BACKEND_BASEURL,
+    baseURL:'http://localhost:5000',
 });
 
 // Intercepteur de requête
