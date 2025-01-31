@@ -77,7 +77,7 @@ jobs:
 
       # Étape 2 : Se connecter au serveur via SSH et déployer l'application
       - name: Deploy via SSH
-        uses: appleboy/ssh-action@v0.1.5
+        uses: appleboy/ssh-action@v0.1.
         with:
           host: ${{ secrets.HOST }} # L'adresse de votre serveur
           username: ${{ secrets.SSH_USERNAME }} # Utilisateur SSH pour votre serveur
@@ -88,8 +88,8 @@ jobs:
             git pull origin master  # Récupérer les dernières modifications
             cd backend
             npm install  # Installer les dépendances du backend
-            pm2 restart backend  # Redémarrer le backend avec PM2 ou une autre méthode
+            pm2 restart backend  # Redémarrer le backend avec PM2
             cd ../frontend
             npm install  # Installer les dépendances du frontend
             npm run build  # Construire le frontend
-            pm2 restart frontend  # Redémarrer le frontend avec PM2 ou une autre méthode
+            pm2 restart frontend  # Redémarrer le frontend avec PM2
