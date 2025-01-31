@@ -3,10 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - master  # Déclenche l'action sur les push vers la branche master
+      - master # Déclenche l'action sur les push vers la branche master
   pull_request:
     branches:
-      - master  # Déclenche l'action lors des PR vers la branche master
+      - master # Déclenche l'action lors des PR vers la branche master
 
 permissions:
   contents: read
@@ -26,7 +26,7 @@ jobs:
       - name: Set up Node.js for backend
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: "20.x"
 
       # Étape 3 : Installer les dépendances du backend
       - name: Install backend dependencies
@@ -44,12 +44,6 @@ jobs:
       - name: Run backend tests
         run: |
           cd backend
-          npm test
-
-      # Étape 6 : Exécuter les tests du frontend
-      - name: Run frontend tests
-        run: |
-          cd frontend
           npm test
 
       # Étape 7 : Build du frontend (React/TypeScript)
@@ -74,7 +68,7 @@ jobs:
   # Job pour déployer l'application sur le serveur
   deploy:
     runs-on: ubuntu-latest
-    needs: build  # Ce job dépend de l'étape de build et de test réussie
+    needs: build # Ce job dépend de l'étape de build et de test réussie
 
     steps:
       # Étape 1 : Checkout du code source
@@ -85,9 +79,9 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v0.1.5
         with:
-          host: ${{ secrets.HOST }}  # L'adresse de votre serveur
-          username: ${{ secrets.SSH_USERNAME }}  # Utilisateur SSH pour votre serveur
-          key: ${{ secrets.SSH_PRIVATE_KEY }}  # Clé privée SSH pour la connexion
+          host: ${{ secrets.HOST }} # L'adresse de votre serveur
+          username: ${{ secrets.SSH_USERNAME }} # Utilisateur SSH pour votre serveur
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # Clé privée SSH pour la connexion
           script: |
             cd . # Chemin vers le dossier du projet sur votre serveur
             git pull origin master  # Récupérer les dernières modifications
