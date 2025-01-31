@@ -1,5 +1,5 @@
 /* Importation des variables */
-@use 'variables' as *;
+@use "variables" as *;
 
 /* Styles globaux */
 * {
@@ -14,7 +14,11 @@
   flex-direction: column;
   min-height: 100vh;
   font-family: $font-family-primary;
-  background: linear-gradient(135deg, $background-color, $background-color-light);
+  background: linear-gradient(
+    135deg,
+    $background-color,
+    $background-color-light
+  );
 }
 
 .nav-container {
@@ -35,14 +39,13 @@
   left: 0;
   width: 100%;
   z-index: 1000;
-  position : sticky;
+  position: sticky;
 }
 
 /* Contenu principal */
 .dashboard-main {
   padding: 20px;
-  margin-top: 20px; 
-
+  margin-top: 20px;
 }
 
 /* Tableau de bord avec des cartes modernes */
@@ -77,10 +80,13 @@
 .dashboard-content {
   display: grid;
   gap: 2rem;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
   padding: 2rem;
   background-color: $background-color-light;
   border-radius: 8px;
+  max-width: 1200px; /* Limite la largeur totale */
+  margin: 0 auto; /* Centrer horizontalement */
+  justify-content: center; /* Centrer les éléments à l'intérieur de la grille */
 
   .users-section,
   .comments-section,

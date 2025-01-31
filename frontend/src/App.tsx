@@ -14,8 +14,9 @@ import UserManagement from "./Pages/UserManagement";
 import NotFoundPage from "./components/NotFoundPage";
 import { AuthProvider } from "./context/AuthContext";
 import RequireAdmin from "./components/RequireAdmin";
-import UserProfile from "./Pages/UserProfile";  // Profil de l'utilisateur
+import UserProfile from "./Pages/UserProfile"; // Profil de l'utilisateur
 import AdminProfil from "./Pages/AdminProfil"; // Profil de l'administrateur
+import UserUpdate from "./Pages/UserUpdate"; // Page de mise à jour de l'utilisateur
 
 function App() {
   return (
@@ -51,12 +52,22 @@ function App() {
                 </RequireAdmin>
               }
             />
-            <Route path="/admin/profile"
-            element={
-              <RequireAdmin>
-                <AdminProfil />
-              </RequireAdmin>
-            }
+            <Route
+              path="/admin/dashboard/users/update/:userId"
+              element={
+                <RequireAdmin>
+                  <UserUpdate />
+                </RequireAdmin>
+              }
+            />
+
+            <Route
+              path="/admin/profile"
+              element={
+                <RequireAdmin>
+                  <AdminProfil />
+                </RequireAdmin>
+              }
             />
 
             {/* Route de fallback pour les pages non trouvées */}

@@ -51,6 +51,7 @@ const authenticateUser = async (
     // Redirection après une seconde
     setTimeout(() => {
       navigate("/profile"); // Redirection après connexion
+      window.location.reload();
     }, 1000);
   } catch (err) {
     setLoading(false);

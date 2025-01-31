@@ -24,7 +24,7 @@ function Header() {
     localStorage.removeItem("pseudo");
     localStorage.removeItem("role");
     localStorage.removeItem("userId");
-    navigate("/login");
+    setTimeout(() => navigate("/login"), 100);  // Ajout d'un léger délai
   };
 
   // Lien de profil en fonction du rôle de l'utilisateur
@@ -113,6 +113,8 @@ function Header() {
           if (e.key === "Enter") toggleMenu();
         }}
         aria-label="Menu burger"
+        aria-expanded={isMenuOpen ? "true" : "false"}  // Ajout de cette ligne
+
       >
         <span className="burger-icon" />
         <span className="burger-icon" />

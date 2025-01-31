@@ -5,7 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import myAxiosInstance from "../axios/axios";
 import RecipeCard from "../components/RecipeCard";
-import { setRecipes, setPopularRecipe, setLoading, setError, setSearchQuery, toggleShowAll, filterRecipes } from "../slices/recipesSlice";
+import {
+  setRecipes,
+  setPopularRecipe,
+  setLoading,
+  setError,
+  setSearchQuery,
+  toggleShowAll,
+  filterRecipes,
+} from "../slices/recipesSlice";
 import Loading from "../components/Loading";
 import type { RootState, AppDispatch } from "../store";
 
@@ -19,7 +27,7 @@ const Recipes: React.FC = () => {
     searchQuery,
     loading,
     error,
-    showAll
+    showAll,
   } = useSelector((state: RootState) => state.recipes);
 
   useEffect(() => {
@@ -31,7 +39,8 @@ const Recipes: React.FC = () => {
         dispatch(setRecipes(recipesData));
 
         const popular = recipesData.reduce(
-          (prev: { popularity: number; }, current: { popularity: number; }) => (prev.popularity > current.popularity ? prev : current),
+          (prev: { popularity: number }, current: { popularity: number }) =>
+            prev.popularity > current.popularity ? prev : current
         );
         dispatch(setPopularRecipe(popular));
       })
@@ -51,7 +60,9 @@ const Recipes: React.FC = () => {
     dispatch(toggleShowAll());
   };
 
-  const displayedRecipes = showAll ? filteredRecipes : filteredRecipes.slice(0, 3);
+  const displayedRecipes = showAll
+    ? filteredRecipes
+    : filteredRecipes.slice(0, 3);
 
   if (loading) return <Loading />;
 
@@ -136,18 +147,19 @@ const Recipes: React.FC = () => {
             <div className="popular-recipe-info">
               <p>{popularRecipe.description}</p>
               <aside>{popularRecipe.source}</aside>
-              <div className="static-score">
-              *****
-              </div>
+              <div className="static-score">*****</div>
               <div className="popular-score">
-                {Array.from({ length: popularRecipe.popularity }, (_, index) => (
-                  <span
-                    className="popular-stars"
-                    key={`star-${popularRecipe._id}-${index}`}
-                  >
-                    *
-                  </span>
-                ))}
+                {Array.from(
+                  { length: popularRecipe.popularity },
+                  (_, index) => (
+                    <span
+                      className="popular-stars"
+                      key={`star-${popularRecipe._id}-${index}`}
+                    >
+                      *
+                    </span>
+                  )
+                )}
               </div>
             </div>
             <Link to={`/recipe/${popularRecipe._id}`}>Voir la recette</Link>

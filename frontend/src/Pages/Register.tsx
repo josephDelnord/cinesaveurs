@@ -17,8 +17,10 @@ const Register = () => {
   const [error, setError] = useState("");
   const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(""); // Message de succès
 
   const navigate = useNavigate(); // Initialiser useNavigate
+
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -55,6 +57,7 @@ const Register = () => {
         throw new Error("Le token ne contient pas un userId ou un role valide");
       }
 
+      // Sauvegarde des données dans le localStorage
       saveTokenAndPseudoInLocalStorage(
         username,
         token,
@@ -62,11 +65,25 @@ const Register = () => {
         decodedToken.userId
       );
 
-      // Attendre un court instant avant la redirection
+      // Afficher un message de succès à l'utilisateur
+      setError(""); // On réinitialise l'éventuel message d'erreur
+      setSuccessMessage("Inscription réussie ! Vous pouvez maintenant vous connecter.");
+
+      // Attendre un court instant avant de déconnecter l'utilisateur et de le rediriger
       setTimeout(() => {
-        // Rediriger l'utilisateur vers la page d'accueil après l'inscription réussie
-        navigate("/");
-      }, 500); // Vous pouvez ajuster le délai si nécessaire (en ms)
+        // Déconnexion de l'utilisateur (en supprimant le token et les informations de l'utilisateur du localStorage)
+        localStorage.removeItem("token");
+        localStorage.removeItem("pseudo");
+        localStorage.removeItem("role");
+        localStorage.removeItem("userId");
+
+        // Rediriger l'utilisateur vers la page de connexion
+        navigate("/login");
+
+        // Recharger la page pour mettre à jour le header
+        window.location.reload();
+      }, 3000); // Le message restera affiché pendant 3 secondes
+
     } catch (err) {
       setLoading(false);
 
@@ -90,6 +107,10 @@ const Register = () => {
   return (
     <div className="register-page">
       <h2>Inscription</h2>
+
+      {/* Affichage du message de succès */}
+      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+
       <form onSubmit={handleRegister}>
         {error && <p style={{ color: "red" }}>{error}</p>}
 

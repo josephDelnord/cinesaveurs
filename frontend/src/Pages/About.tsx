@@ -43,12 +43,12 @@ const About: React.FC = () => {
         <p className="section-text">
           Cine Délices ne se limite pas simplement à une collection de recettes. Nous avons créé une véritable communauté de passionnés où les cinéphiles et les gourmets peuvent se retrouver, échanger et partager leur amour du cinéma et de la cuisine.
         </p>
-        <p className="section-text">
+        {/* <p className="section-text">
           Vous pouvez interagir avec d'autres utilisateurs via des forums de discussion, participer à des défis de cuisine thématiques et même organiser des soirées de visionnage avec des recettes spécifiques inspirées des films que vous allez regarder.
         </p>
         <p className="section-text">
           De plus, nous organisons régulièrement des événements virtuels, des concours de cuisine inspirés par des films et des séries populaires, avec des prix à la clé. C'est l'occasion idéale de tester vos compétences culinaires tout en partageant des moments conviviaux avec des membres du monde entier.
-        </p>
+        </p> */}
       </section>
 
       <section className="about-team">
@@ -57,7 +57,7 @@ const About: React.FC = () => {
           Notre équipe est composée de cinéphiles passionnés et de chefs amateurs, tous unis par un seul objectif : vous offrir la meilleure expérience culinaire inspirée du cinéma. Nous avons des experts en gastronomie, des concepteurs de recettes créatives et des développeurs talentueux qui travaillent sans relâche pour rendre cette plateforme encore meilleure.
         </p>
         <p className="section-text">
-          Nous sommes constamment à la recherche de nouvelles idées et de films à explorer à travers nos recettes. Si vous avez des suggestions de films ou de plats à ajouter à notre collection, n'hésitez pas à nous contacter. Votre avis est précieux !
+          Nous sommes constamment à la recherche de nouvelles idées et de films à explorer à travers nos recettes. Si vous avez des suggestions de plats à ajouter à notre collection, n'hésitez pas à nous contacter. Votre avis est précieux !
         </p>
       </section>
 
