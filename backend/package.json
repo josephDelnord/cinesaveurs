@@ -7,14 +7,10 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest",
-    "vercel-build": "npm run build"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
-  "engines": {
-    "node": "20.18.1"
-  },
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
