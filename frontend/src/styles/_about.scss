@@ -1,9 +1,9 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 .about-container {
-  background-color: $background-color;  // Couleur de fond beige
-  color: $text-color-secondary;  // Texte de couleur gris foncé
-  font-family: $font-family-primary;  // Police principale pour le texte
+  background-color: $background-color; // Couleur de fond beige
+  color: $text-color-secondary; // Texte de couleur gris foncé
+  font-family: $font-family-primary; // Police principale pour le texte
   padding: 2rem;
 }
 
@@ -11,7 +11,7 @@
   font-family: $font-family-primary;
   font-size: $font-size-primary-title;
   font-weight: $font-weight-bold;
-  color: $text-color-primary;  // Couleur orange pour le titre
+  color: $text-color-primary; // Couleur orange pour le titre
   text-align: left;
   margin-bottom: 2rem;
   position: relative;
@@ -21,7 +21,7 @@
   font-family: $font-family-primary;
   font-size: $font-size-secondary-title;
   font-weight: $font-weight-bold;
-  color: $text-color-primary;  // Couleur orange pour les titres des sections
+  color: $text-color-primary; // Couleur orange pour les titres des sections
   margin-top: 2rem;
   text-align: left;
   margin-bottom: 2rem;
@@ -30,49 +30,60 @@
 .section-text {
   font-family: $font-family-secondary;
   font-size: $font-size-text-description;
-  color: $text-color-tertiary;  // Couleur de texte gris foncé
+  color: $text-color-tertiary; // Couleur de texte gris foncé
   text-align: justify;
   margin-bottom: 1.5rem;
 }
 
 section {
-  margin-bottom: 3rem;  // Espacement entre les sections
+  margin-bottom: 3rem; // Espacement entre les sections
 }
 
 section p em {
-  color: $primary-color;  // Met en valeur le texte en italique avec la couleur orange
+  color: $primary-color; // Met en valeur le texte en italique avec la couleur orange
   font-style: italic;
 }
 
-.about-introduction, .about-mission, .about-explore, .about-community, .about-team, .about-vision, .about-join {
+.about-introduction,
+.about-mission,
+.about-explore,
+.about-community,
+.about-team,
+.about-vision,
+.about-join {
   padding: 1.5rem;
   border-radius: 10px;
-  background-color: $background-color;  // Fond beige pour chaque section
+  background-color: $background-color;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .about-introduction {
-  background-color: $background-color-light;  // Fond légèrement plus clair pour l'introduction
+  background-color: $background-color-light;
 }
 
-.about-mission, .about-explore, .about-community, .about-team, .about-vision, .about-join {
-  background-color: $background-color;  // Utilisation du fond de base beige pour ces sections
+.about-mission,
+.about-explore,
+.about-community,
+.about-team,
+.about-vision,
+.about-join {
+  background-color: $background-color;
 }
 
 @media (max-width: $breakpoint-md) {
   .about-container {
-    padding: 1rem;  // Réduit le padding sur les petits écrans
+    padding: 1rem;
   }
 
   .about-title {
-    font-size: 48px;  // Réduit la taille du titre principal sur les petits écrans
+    font-size: 48px; // Réduit la taille du titre principal sur les petits écrans
   }
 
   .section-title {
-    font-size: 18px;  // Réduit la taille des titres de sections sur les petits écrans
+    font-size: 18px; // Réduit la taille des titres de sections sur les petits écrans
   }
 
   .section-text {
-    font-size: 12px;  // Réduit la taille de texte des paragraphes sur les petits écrans
+    font-size: 12px; // Réduit la taille de texte des paragraphes sur les petits écrans
   }
 }
