@@ -31,7 +31,12 @@ setupSwagger(app);
 // Middleware CORS
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost", "http://127.0.0.1 || process.env.FRONTEND_URL"],
+    origin: [
+      "http://localhost:3000",
+      "http://127.0.0.1:3000",
+      "http://localhost",
+      "http://127.0.0.1 || process.env.FRONTEND_URL",
+    ],
     credentials: true, // Autoriser les credentials
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [
@@ -61,7 +66,6 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/scores", scoreRoutes);
 app.use("/api/users/:id/status", statusRoutes);
 
-
 // Route de test
 app.get("/api", (req, res) => {
   res.send("Hello, you are in the world of recipes!");
@@ -80,10 +84,9 @@ app.delete("/api/recipes/:id", (req, res) => {
   res.json({ message: "Recette supprimée avec succès!" });
 });
 
-
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);  // Utilise HTTP au lieu de HTTPS
+    console.log(`Server running on http://localhost:${PORT}`); // Utilise HTTP au lieu de HTTPS
   });
 }
 
