@@ -9,6 +9,7 @@ import categoryRoutes from "./src/routes/categoryRoutes.js";
 import commentRoutes from "./src/routes/commentRoutes.js";
 import scoreRoutes from "./src/routes/scoreRoutes.js";
 import statusRoutes from "./src/routes/statusRoutes.js";
+import dbRoutes from "./src/routes/dbRoutes.js";
 import setupSwagger from "./swagger.js";
 import { connectDB } from "./src/data/db.js";
 import {
@@ -66,6 +67,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/scores", scoreRoutes);
 app.use("/api/users/:id/status", statusRoutes);
+app.use("/api/db", dbRoutes);
 
 // Route de test
 app.get("/api", (req, res) => {

@@ -13,11 +13,21 @@ export const connectDB = async () => {
     }
 
     // Connexion à MongoDB
-    await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(mongoURI);
     console.log("Connecté à MongoDB");
+
+    // Écouteur pour surveiller l'état de la connexion
+    mongoose.connection.on("connected", () => {
+      console.log("Connexion réussie à MongoDB Atlas !");
+    });
+
+    mongoose.connection.on("error", (err) => {
+      console.error("Erreur de connexion MongoDB : ", err);
+    });
+
+    mongoose.connection.on("disconnected", () => {
+      console.log("Connexion MongoDB déconnectée.");
+    });
 
     // Log de débogage
     console.log("Valeur de SEED_DB:", process.env.SEED_DB);
