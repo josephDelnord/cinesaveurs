@@ -54,7 +54,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Middleware global pour vérifier le cache
-app.use(cacheMiddleware); // Vérifie si les données sont dans le cache avant d'aller à la route
+app.use(cacheMiddleware);
 
 // Routes
 app.use("/api/auth", authRoutes);
