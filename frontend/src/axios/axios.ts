@@ -2,7 +2,7 @@ import axios from "axios";
 import { getTokenAndPseudoFromLocalStorage } from "../localstorage/localstorage";
 
 const myAxiosInstance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "http://localhost:5000 || https://cinedelices-sigma.vercel.app",
 });
 
 // Intercepteur de requête

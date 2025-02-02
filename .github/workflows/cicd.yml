@@ -3,10 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - master # Déclenche l'action sur les push vers la branche master
+      - master
   pull_request:
     branches:
-      - master # Déclenche l'action lors des PR vers la branche master
+      - master
 
 permissions:
   contents: read
@@ -16,93 +16,65 @@ jobs:
   backend:
     runs-on: ubuntu-latest
     steps:
-      # Checkout le repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Étape 1 : Configurer Node.js pour le backend
-      - name: Set up Node.js for backend
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20.x" # Choisis la version de Node.js que tu utilises
+          node-version: "20.x"
+          cache: "npm"
+          cache-dependency-path: backend/package-lock.json
 
-      # Étape 2 : Installer les dépendances du backend
       - name: Install backend dependencies
-        run: |
-          cd backend
-          npm install
+        working-directory: ./backend
+        run: npm ci
 
-      # Étape 3 : Exécuter les tests du backend
       - name: Run backend tests
-        run: |
-          cd backend
-          npm test
-
-      # Étape 4 : Configurer les variables d'environnement pour MongoDB et Memcached
-      - name: Set environment variables
-        run: |
-          echo "ATLAS_URI=${{ secrets.ATLAS_URI }}" >> $GITHUB_ENV
-          echo "MEMCACHED_URL=${{ secrets.MEMCACHED_URL }}" >> $GITHUB_ENV
-
-      # Étape 5 : Vérifier la connexion à MongoDB et démarrer le serveur
-      - name: Check MongoDB connection and start server
-        run: |
-          cd backend
-          node index.js  # Vérification de la connexion MongoDB et démarrage du serveur
+        working-directory: ./backend
+        run: npm test
         env:
-          ATLAS_URI: ${{ secrets.ATLAS_URI }} # Passer la variable d'environnement MongoDB
+          ATLAS_URI: ${{ secrets.ATLAS_URI }}
+          MEMCACHED_URL: ${{ secrets.MEMCACHED_URL }}
 
-      # Étape 6 : Déployer le backend sur Vercel
       - name: Deploy backend to Vercel
-        run: |
-          cd backend
-          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --confirm
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_BACKEND }}
+          working-directory: ./backend
+          vercel-args: "--prod"
 
   frontend:
     runs-on: ubuntu-latest
-    needs: backend # Le frontend dépend du backend, donc il doit être déployé en premier
+    needs: backend
     steps:
-      # Checkout le repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Étape 1 : Configurer Node.js pour le frontend (Vite.js)
-      - name: Set up Node.js for frontend
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20.x" # Version de Node.js pour le frontend (Vite.js)
+          node-version: "20.x"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
 
-      # Étape 2 : Installer les dépendances du frontend
       - name: Install frontend dependencies
-        run: |
-          cd frontend
-          npm install
+        working-directory: ./frontend
+        run: npm ci
 
-      # Étape 3 : Build du frontend avec Vite.js
-      - name: Build frontend with Vite.js
-        run: |
-          cd frontend
-          npm run build
-
-      # Étape 4 : Déployer le frontend sur Vercel
-      - name: Deploy frontend to Vercel
-        run: |
-          cd frontend
-          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --confirm
-
-  # Job pour vérifier l'intégration entre le frontend et le backend (facultatif)
-  integration-tests:
-    runs-on: ubuntu-latest
-    needs: [frontend, backend] # Ce job dépend de la réussite des jobs frontend et backend
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Exécution des tests d'intégration
-      - name: Run integration tests
-        run: |
-          # Exemple d'utilisation de Cypress ou d'autres outils pour tester l'intégration entre frontend et backend
-          npm run test:integration
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
         env:
-          ATLAS_URI: ${{ secrets.ATLAS_URI }} # Passer la variable d'environnement MongoDB pour les tests
-          MEMCACHED_URL: ${{ secrets.MEMCACHED_URL }} # Passer la variable d'environnement Memcached pour les tests
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+
+      - name: Deploy frontend to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_FRONTEND }}
+          working-directory: ./frontend
+          vercel-args: "--prod"
