@@ -2,11 +2,7 @@ import axios from "axios";
 import { getTokenAndPseudoFromLocalStorage } from "../localstorage/localstorage";
 
 const myAxiosInstance = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? "https://cinedelices-m6xx1biay-delnords-projects.vercel.app"
-      : "http://localhost:5000",
-  withCredentials: true, // Si vous utilisez des cookies ou des tokens dans vos requêtes
+  baseURL: "http://localhost:5000",
 });
 
 // Intercepteur de requête
