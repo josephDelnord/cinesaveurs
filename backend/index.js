@@ -35,7 +35,8 @@ app.use(
       "http://localhost:3000",
       "http://127.0.0.1:3000",
       "http://localhost",
-      "http://127.0.0.1 || process.env.FRONTEND_URL",
+      "http://127.0.0.1",
+      process.env.FRONTEND_URL,
     ],
     credentials: true, // Autoriser les credentials
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
