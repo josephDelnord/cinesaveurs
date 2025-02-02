@@ -41,7 +41,7 @@ jobs:
       - name: Check MongoDB connection
         run: |
           cd backend
-          node -e "import('./data/db.mjs').then(({ default: connect }) => connect()).catch(err => { console.error('MongoDB connection failed', err); process.exit(1); })"
+          node -e "import('./data/db.js').then(({ default: connect }) => connect()).catch(err => { console.error('MongoDB connection failed', err); process.exit(1); })"
 
       # Étape 5 : Déployer le backend sur Vercel
       - name: Deploy backend to Vercel

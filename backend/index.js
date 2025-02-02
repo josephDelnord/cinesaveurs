@@ -10,7 +10,7 @@ import commentRoutes from "./src/routes/commentRoutes.js";
 import scoreRoutes from "./src/routes/scoreRoutes.js";
 import statusRoutes from "./src/routes/statusRoutes.js";
 import setupSwagger from "./swagger.js";
-import { connectDB } from "./src/data/db.mjs";
+import { connectDB } from "./src/data/db.js";
 import {
   cacheMiddleware,
   cacheResponse,

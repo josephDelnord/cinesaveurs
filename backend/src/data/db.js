@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import seedDatabase from "./seed.mjs";
+import seedDatabase from "./seed.js";
 
 dotenv.config();
 
