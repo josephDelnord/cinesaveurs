@@ -1,8 +1,21 @@
-import Memcached from "memcached";
+import MemJS from "memjs";
 
-const memcached = new Memcached("localhost:11211", {
-  retries: 10,
-  retryTimeout: 1000,
+// Récupère l'URL Memcached depuis le fichier .env
+const memcachedUrl = process.env.MEMCACHED_URL;
+
+// Extraction des informations de l'URL (nom d'utilisateur, mot de passe, hôte et port)
+const [auth, hostAndPort] = memcachedUrl.split("@");
+const [username, password] = auth.split(":");
+const [host, port] = hostAndPort.split(":");
+
+// Connexion à Memcached via Memcachier (avec SSL activé)
+const memcached = MemJS.Client.create(`${host}:${port}`, {
+  username: username,
+  password: password,
+  failover: true,
+  retries: 3,
+  timeout: 5000,
+  ssl: true, // Activation de la connexion SSL
 });
 
 // Fonction pour générer une clé cache basée sur la méthode HTTP et l'URL
@@ -13,8 +26,7 @@ function getCacheKey(req) {
 // Middleware pour vérifier le cache avant d'effectuer une requête
 function cacheMiddleware(req, res, next) {
   const cacheKey = getCacheKey(req);
-
-  console.log(`Vérification du cache pour la clé : ${cacheKey}`); // Log pour diagnostic
+  console.log(`Vérification du cache pour la clé : ${cacheKey}`);
 
   memcached.get(cacheKey, (err, data) => {
     if (err) {
@@ -23,12 +35,12 @@ function cacheMiddleware(req, res, next) {
     }
 
     if (data) {
-      console.log("Données récupérées du cache pour :", cacheKey); // Log si le cache existe
+      console.log("Données récupérées du cache pour :", cacheKey);
       return res.json(JSON.parse(data)); // Retourner les données mises en cache
     }
 
-    console.log("Aucune donnée trouvée dans le cache pour :", cacheKey); // Log si pas trouvé
-    next(); // Si pas de données en cache, continuer la requête
+    console.log("Aucune donnée trouvée dans le cache pour :", cacheKey);
+    next();
   });
 }
 
@@ -38,10 +50,9 @@ function cacheResponse(req, res, next) {
 
   res.send = (body) => {
     const cacheKey = getCacheKey(req);
+    console.log(`Mise en cache de la réponse pour la clé : ${cacheKey}`);
 
-    console.log(`Mise en cache de la réponse pour la clé : ${cacheKey}`); // Log pour diagnostic
-
-    memcached.set(cacheKey, body, 3600, (err) => {
+    memcached.set(cacheKey, body, { expires: 3600 }, (err) => {
       // Mise en cache pendant 1 heure
       if (err) {
         console.error("Erreur lors de la mise en cache:", err);
@@ -59,8 +70,7 @@ function cacheResponse(req, res, next) {
 // Invalidation du cache pour une clé spécifique
 function invalidateCache(req) {
   const cacheKey = getCacheKey(req);
-
-  console.log(`Invalidation du cache pour : ${cacheKey}`); // Log pour diagnostic
+  console.log(`Invalidation du cache pour : ${cacheKey}`);
 
   memcached.del(cacheKey, (err) => {
     if (err) {
