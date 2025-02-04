@@ -128,20 +128,16 @@ async function seedDatabase() {
 
     for (const userData of usersData) {
       try {
-        // Vérifier si l'utilisateur existe déjà par son email
         const existingUser = await User.findOneAndUpdate(
-          { email: userData.email },  // Recherche par email
-          userData,                   // Données à mettre à jour
-          { upsert: true, new: true } // Crée l'utilisateur s'il n'existe pas (upsert)
+          { email: userData.email },
+          userData,
+          { upsert: true, new: true }
         );
-
         if (!existingUser) {
-          // Si l'utilisateur n'existe pas, crée-le
           const newUser = await User.create(userData);
           createdUsers.push(newUser);
           console.log(`Utilisateur créé : ${newUser.username} (${newUser.email})`);
         } else {
-          // Si l'utilisateur existe déjà, loguer l'information
           createdUsers.push(existingUser);
           console.log(`L'utilisateur ${existingUser.username} (${existingUser.email}) existe déjà`);
         }
@@ -150,12 +146,11 @@ async function seedDatabase() {
       }
     }
 
-    // Affichage des utilisateurs traités
-
     console.log(
       "Utilisateurs traités :",
       createdUsers.map((u) => u.username)
     );
+
     // Créer les ingrédients
     const ingredients = await Ingredient.create([
       // 0

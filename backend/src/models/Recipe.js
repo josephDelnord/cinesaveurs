@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// Modèle de données pour les recettes
 const recipeSchema = new mongoose.Schema(
   {
     title: {

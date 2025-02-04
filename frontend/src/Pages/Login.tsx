@@ -22,6 +22,42 @@ const authenticateUser = async (
     setError("Veuillez remplir tous les champs");
     return;
   }
+  // Vérification du champ email
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailPattern.test(email)) {
+    setError("L'email n'est pas valide");
+    return;
+  }
+
+  // Vérification de la longueur du mot de passe
+  if (password.length < 8) {
+    setError("Le mot de passe doit contenir au moins 8 caractères");
+    return;
+  }
+  // Vérification de la présence d'une majuscule dans le mot de passe
+  const upperCasePattern = /[A-Z]/;
+  if (!upperCasePattern.test(password)) {
+    setError("Le mot de passe doit contenir au moins une majuscule");
+    return;
+  }
+  // Vérification de la présence d'une minuscule dans le mot de passe
+  const lowerCasePattern = /[a-z]/;
+  if (!lowerCasePattern.test(password)) {
+    setError("Le mot de passe doit contenir au moins une minuscule");
+    return;
+  }
+  // Vérification de la présence d'un chiffre dans le mot de passe
+  const digitPattern = /\d/;
+  if (!digitPattern.test(password)) {
+    setError("Le mot de passe doit contenir au moins un chiffre");
+    return;
+  }
+  // Vérification de la présence d'un caractère spécial dans le mot de passe
+  const specialCharPattern = /[!@#$%^&*()_+{}[\]:;<>,.?~\\-]/;
+  if (!specialCharPattern.test(password)) {
+    setError("Le mot de passe doit contenir au moins un caractère*spécial");
+    return;
+  }
 
   setLoading(true);
   setError("");

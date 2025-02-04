@@ -1,13 +1,13 @@
 // src/styles/_variables.scss
 
 // 1. Palette de Couleurs
-$primary-color: #E65126; // orange
+$primary-color: #e65126; // orange
 $secondary-color: #333333; // gris foncé
 $accent-color: #ffc107; // jaune
 $error-color: #dc3545; // rouge
-$background-color: #F7EEDF; // beige
-$background-color-light: #FDF6F0; // beige clair
-$text-color-primary: #E65126; // orange
+$background-color: #f7eedf; // beige
+$background-color-light: #fdf6f0; // beige clair
+$text-color-primary: #e65126; // orange
 $text-color-secondary: #202020; // gris très foncé
 $text-color-tertiary: #333333; // gris foncé
 $text-color-quaternary: #ffffff; // blanc
@@ -15,28 +15,28 @@ $success-color: #28a745; // vert
 $warning-color: #ffc107; // jaune
 $error-color: #dc3545; // rouge
 // 2. Typographie
-$font-family-primary: 'Inter', sans-serif; // police principale
-$font-family-secondary: 'Anonymous Pro', sans-serif; // police secondaire
+$font-family-primary: "Inter", sans-serif; // police principale
+$font-family-secondary: "Anonymous Pro", sans-serif; // police secondaire
 
 $font-size-primary-title: 54px; // titre principal (h1)
 $font-size-secondary-title: 44px; // titre secondaire (h2)
 $font-size-tertiary-title: 34px; // titre tertiaire (h3)
 $font-size-text-description: 20px; // description
 
-$font-weight-bold: 'Bold'; // gras
-$font-weight-regular: 'Regular'; // normal
+$font-weight-bold: "Bold"; // gras
+$font-weight-regular: "Regular"; // normal
 
-$primary-title: $font-weight-bold, $font-size-primary-title, #E65126; // titre principal
+$primary-title: $font-weight-bold, $font-size-primary-title, #e65126; // titre principal
 $secondary-title: $font-weight-bold, $font-size-secondary-title, #202020; // titre secondaire
-$tertiary-title: $font-weight-bold, $font-size-tertiary-title, #E65126; // titre tertiaire
+$tertiary-title: $font-weight-bold, $font-size-tertiary-title, #e65126; // titre tertiaire
 $text-description: $font-weight-regular, $font-size-text-description, #333333; // description
 
 // 3. Boutons
-$background-color-button: #E65126; // orange
+$background-color-button: #e65126; // orange
 $text-color-button: #ffffff; // blanc
 $border-radius-button: 50px; // arrondi du bouton
-$hover-background-color-button: #FAC5B6; // orange clair
-$hover-text-color-button: #E65126; // orange foncé
+$hover-background-color-button: #fac5b6; // orange clair
+$hover-text-color-button: #e65126; // orange foncé
 $size-button: 60px; // taille du bouton
 $hover-size-button: 70px; // taille du bouton au survol
 
@@ -50,19 +50,17 @@ $breakpoint-sm: 480px; // petit écran
 $breakpoint-md: 768px; // écran moyen
 $breakpoint-lg: 1024px; // grand écran
 
-
 // 6. footer
 $footer-background-color: #333; // Couleur de fond du footer
 $footer-text-color: #fff; // Couleur du texte
 $footer-padding: 1rem 2rem; // Espacement du footer
 $footer-font-size: 1rem; // Taille du texte dans le footer
-$footer-font-family: 'Arial', sans-serif; // Police du footer
+$footer-font-family: "Arial", sans-serif; // Police du footer
 $footer-border-top: 1px solid #444; // Bordure en haut du footer
-
 
 // 7. ingrédients et instructions
 $content-wrapper-bg: #f8f8f8; // Fond clair pour la section
 $border-color: #ddd; // Couleur de bordure subtile
-$hover-color: #FAC5B6; // Couleur de survol des lignes de table
-$table-header-bg: #E65126; // Fond orange pour les en-têtes de table
+$hover-color: #fac5b6; // Couleur de survol des lignes de table
+$table-header-bg: #e65126; // Fond orange pour les en-têtes de table
 $odd-row-bg: #f9f9f9; // Fond de lignes avec un gris clair

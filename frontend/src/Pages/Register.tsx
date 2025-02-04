@@ -23,17 +23,59 @@ const Register = () => {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    // vérification des champs
+    if (!username || !email || !password || !confirmPassword) {
+      setError("Veuillez remplir tous les champs");
+      return;
+    }
+    // verification du champ username
+    if (username.length < 3) {
+      setError("Le nom d'utilisateur doit contenir au moins 3 caractères");
+      return;
+    }
+    // Vérification du champ email
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(email)) {
+      setError("L'email n'est pas valide");
+      return;
+    }
     // Vérification des mots de passe
     if (password !== confirmPassword) {
       setError("Les mots de passe ne correspondent pas");
       return;
     }
-
-    // Validation de l'email
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(email)) {
-      setError("L'email n'est pas valide");
+    // Vérification de la longueur du mot de passe
+    if (password.length < 8) {
+      setError("Le mot de passe doit contenir au moins 8 caractères");
+      return;
+    }
+    // Vérification de la présence d'une majuscule dans le mot de passe
+    const upperCasePattern = /[A-Z]/;
+    if (!upperCasePattern.test(password)) {
+      setError("Le mot de passe doit contenir au moins une majuscule");
+      return;
+    }
+    // Vérification de la présence d'une minuscule dans le mot de passe
+    const lowerCasePattern = /[a-z]/;
+    if (!lowerCasePattern.test(password)) {
+      setError("Le mot de passe doit contenir au moins une minuscule");
+      return;
+    }
+    // Vérification de la présence d'un chiffre dans le mot de passe
+    const digitPattern = /\d/;
+    if (!digitPattern.test(password)) {
+      setError("Le mot de passe doit contenir au moins un chiffre");
+      return;
+    }
+    // Vérification de la présence d'un caractère spécial dans le mot de passe
+    const specialCharPattern = /[!@#$%^&*()_+{}[\]:;<>,.?~\\-]/;
+    if (!specialCharPattern.test(password)) {
+      setError("Le mot de passe doit contenir au moins un caractère*spécial");
+      return;
+    }
+    // verification du champ role
+    if (role !== "admin" && role !== "user") {
+      setError("Le rôle doit être 'admin' ou 'user'");
       return;
     }
 
@@ -67,7 +109,9 @@ const Register = () => {
 
       // Afficher un message de succès à l'utilisateur
       setError(""); // On réinitialise l'éventuel message d'erreur
-      setSuccessMessage("Inscription réussie ! Vous pouvez maintenant vous connecter.");
+      setSuccessMessage(
+        "Inscription réussie ! Vous pouvez maintenant vous connecter."
+      );
 
       // Attendre un court instant avant de déconnecter l'utilisateur et de le rediriger
       setTimeout(() => {
@@ -83,7 +127,6 @@ const Register = () => {
         // Recharger la page pour mettre à jour le header
         window.location.reload();
       }, 3000); // Le message restera affiché pendant 3 secondes
-
     } catch (err) {
       setLoading(false);
 
@@ -119,24 +162,28 @@ const Register = () => {
           placeholder="Nom"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          required
         />
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
         <input
           type="password"
           placeholder="Mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
         <input
           type="password"
           placeholder="Confirmer le mot de passe"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          required
         />
         {/* Dropdown pour choisir le rôle */}
         <select value={role} onChange={(e) => setRole(e.target.value)}>

@@ -72,7 +72,7 @@ services:
     image: mongo:latest
     # Nom du conteneur pour MongoDB
     container_name: mongodb
-    command: ["--auth"]  # Active l'authentification pour MongoDB (nécessite des utilisateurs et des mots de passe)
+    command: ["--auth"] # Active l'authentification pour MongoDB (nécessite des utilisateurs et des mots de passe)
     environment:
       # Définit les variables d'environnement pour MongoDB
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
@@ -87,7 +87,7 @@ services:
     ports:
       # Mappe le port 27017 de l'hôte vers le port 27017 du conteneur pour accéder à MongoDB
       - "27017:27017"
-    restart: unless-stopped  # Redémarre MongoDB sauf si il est explicitement arrêté
+    restart: unless-stopped # Redémarre MongoDB sauf si il est explicitement arrêté
     networks:
       # MongoDB se connecte au réseau `app-network` pour communiquer avec d'autres services
       - app-network
@@ -100,7 +100,7 @@ services:
 # Déclare un volume persistant nommé mongodb-data pour les données de MongoDB
 volumes:
   mongodb-data:
-    name: mongodb-cinedelices-data  # Nom du volume persistant
+    name: mongodb-cinedelices-data # Nom du volume persistant
 
 # Déclare le réseau utilisé par vos services Docker
 networks:
