@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import "./styles/style.scss";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -17,17 +17,19 @@ import RequireAdmin from "./components/RequireAdmin";
 import UserProfile from "./Pages/UserProfile"; // Profil de l'utilisateur
 import AdminProfil from "./Pages/AdminProfil"; // Profil de l'administrateur
 import UserUpdate from "./Pages/UserUpdate"; // Page de mise à jour de l'utilisateur
+import HomePage from "./Pages/Home"; // Page d'accueil
 
 function App() {
   return (
     <AuthProvider>
       <div>
-        {/* <Sidebar/> */}
+        <Header />
         <div className="main-content">
-          <Header />
           <Routes>
             {/* Routes publiques */}
-            <Route path="/" element={<Recipes />} />
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/recipes" element={<Recipes />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<UserProfile />} />
@@ -60,7 +62,6 @@ function App() {
                 </RequireAdmin>
               }
             />
-
             <Route
               path="/admin/profile"
               element={
@@ -73,8 +74,8 @@ function App() {
             {/* Route de fallback pour les pages non trouvées */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-          <Footer />
         </div>
+        <Footer />
       </div>
     </AuthProvider>
   );

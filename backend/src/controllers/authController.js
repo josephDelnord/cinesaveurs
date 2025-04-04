@@ -5,6 +5,7 @@ import Role from '../models/Role.js';
 import Status from '../models/Status.js';
 import dotenv from 'dotenv';
 import { registerSchema, loginSchema } from '../validation/schemas/authValidation.js';
+import { invalidateCache } from "../cache/memcached.js";
 
 dotenv.config();
 
@@ -21,7 +22,6 @@ const handleDatabaseError = (res, error) => {
 
 // Fonction pour créer un objet utilisateur avec le rôle
 const createUserObject = async (username, email, password, roleName) => {
-  // Trouver le rôle par son nom
   const role = await Role.findOne({ role_name: roleName });
   if (!role) {
     throw new Error('Rôle non trouvé');
@@ -31,13 +31,12 @@ const createUserObject = async (username, email, password, roleName) => {
 
 // Fonction pour hacher le mot de passe
 const hashPassword = async (password) => {
-  return await bcrypt.hash(password, 10);
+  return await bcrypt.hash(password, 10);  // Utilisation du facteur de salage 10 pour le hachage
 };
 
 // Inscription d'un nouvel utilisateur
 export const register = async (req, res) => {
   try {
-
     // Vérifier si un statut "active" existe dans la base de données
     let activeStatus = await Status.findOne({ status_name: "active" });
     if (!activeStatus) {
@@ -45,7 +44,7 @@ export const register = async (req, res) => {
       activeStatus = await Status.create({ status_name: "active" });
     }
 
-    // Valider les données
+    // Valider les données d'inscription
     const { error } = registerSchema.validate(req.body);
     if (error) return handleValidationError(res, error);
 
@@ -61,14 +60,15 @@ export const register = async (req, res) => {
     // Hacher le mot de passe
     const hashedPassword = await hashPassword(password);
 
-    // Créer l'utilisateur avec le rôle
+    // Créer l'utilisateur avec le rôle et le statut
     const newUser = await createUserObject(username, email, hashedPassword, role);
-    newUser.status = activeStatus._id; // Assigner l'ID du statut actif à l'utilisateur
+    newUser.status = activeStatus._id;  // Assigner l'ID du statut actif à l'utilisateur
     await newUser.save();
 
-    // Générer le token
+    // Générer le token JWT
     const token = await generateJwtToken(newUser._id);
 
+    // Répondre avec le message de succès et le token
     res.status(201).json({
       message: 'Utilisateur créé avec succès',
       token
@@ -78,14 +78,13 @@ export const register = async (req, res) => {
   }
 };
 
-
 // Connexion d'un utilisateur
 export const login = async (req, res) => {
   try {
-    // Valider les données
+    // Valider les données de connexion
     const { error } = loginSchema.validate(req.body);
     if (error) {
-      console.log('Validation error:', error.details);  // Ajouter un log pour afficher l'erreur de validation
+      console.log('Validation error:', error.details);  // Log l'erreur de validation
       return handleValidationError(res, error);  // Validation des données
     }
 
@@ -93,14 +92,26 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
     console.log('Tentative de connexion avec email:', email);  // Log l'email pour le suivi
 
-    // Trouver l'utilisateur et peupler son rôle
+    // Trouver l'utilisateur par son email et peupler son rôle
     const user = await User.findOne({ email }).populate('role');
     if (!user) {
       console.log('Utilisateur non trouvé pour l\'email:', email);  // Log si l'utilisateur n'est pas trouvé
       return res.status(400).json({ message: 'Email ou mot de passe incorrect' });  // Erreur 400 si l'utilisateur n'est pas trouvé
     }
 
-    // Vérifier le mot de passe hashé
+    // Invalider le cache pour cette tentative de connexion
+    invalidateCache(req); // Invalidation du cache de cette requête
+
+    // Vérifier si l'utilisateur a le rôle "admin"
+    if (user.role.role_name !== 'admin' && user.role.role_name !== 'user') {
+      return res.status(403).json({ message: 'Accès interdit' });
+    }
+
+    console.log('Email reçu:', email);
+    console.log("Mot de passe haché en base de données:", user.password);
+    console.log("Mot de passe fourni pour la comparaison:", password);
+
+    // Vérifier si le mot de passe correspond
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       console.log('Mot de passe incorrect pour l\'utilisateur:', email);  // Log si le mot de passe ne correspond pas
@@ -114,15 +125,15 @@ export const login = async (req, res) => {
       return res.status(500).json({ message: 'Erreur lors de la génération du token' });  // Erreur 500 si la génération du token échoue
     }
 
-    // Stocker le token dans un cookie HttpOnly pour sécurité
+    // Stocker le token dans un cookie HttpOnly pour la sécurité
     res.cookie('authToken', token, {
       httpOnly: true,  // Le cookie est accessible uniquement par le serveur
-      secure: process.env.NODE_ENV === 'production',  // s'assurer que le cookie soit envoyé uniquement sur HTTPS
+      secure: process.env.NODE_ENV === 'production',  // Le cookie est envoyé uniquement sur HTTPS en production
       maxAge: 60 * 60 * 1000, // Le cookie expire après 1 heure
       sameSite: 'Strict', // Empêche l'envoi du cookie sur des requêtes inter-domaines
     });
 
-    // Retourner une réponse 200 en cas de succès
+    // Retourner une réponse 200 avec le token et les informations de l'utilisateur
     console.log('Connexion réussie pour l\'utilisateur:', email);  // Log de succès
     return res.status(200).json({
       token,
@@ -133,7 +144,6 @@ export const login = async (req, res) => {
         role: user.role.role_name
       }
     });
-
   } catch (error) {
     console.error('Erreur de base de données:', error);  // Log de l'erreur de base de données
     handleDatabaseError(res, error);  // Gestion des erreurs de base de données

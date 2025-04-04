@@ -45,7 +45,11 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
       <h2>{source}</h2>
 
       {/* Afficher un bouton pour ajouter/enlever des favoris */}
-      <button  className="favorite-button" type="button" onClick={handleToggleFavorite}>
+      <button
+        className="favorite-button"
+        type="button"
+        onClick={handleToggleFavorite}
+      >
         {isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
       </button>
     </div>

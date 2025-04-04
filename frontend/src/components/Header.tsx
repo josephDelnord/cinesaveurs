@@ -24,7 +24,7 @@ function Header() {
     localStorage.removeItem("pseudo");
     localStorage.removeItem("role");
     localStorage.removeItem("userId");
-    setTimeout(() => navigate("/login"), 100);  // Ajout d'un léger délai
+    setTimeout(() => navigate("/login"), 100); // Ajout d'un léger délai
   };
 
   // Lien de profil en fonction du rôle de l'utilisateur
@@ -33,13 +33,16 @@ function Header() {
   // Gestion de la fermeture du menu si l'utilisateur clique en dehors
   useEffect(() => {
     const closeMenuOnClickOutside = (e: MouseEvent) => {
-      if (!(e.target as Element).closest('#nav') && !(e.target as Element).closest('.burger-menu')) {
+      if (
+        !(e.target as Element).closest("#nav") &&
+        !(e.target as Element).closest(".burger-menu")
+      ) {
         setIsMenuOpen(false);
       }
     };
 
-    document.addEventListener('click', closeMenuOnClickOutside);
-    return () => document.removeEventListener('click', closeMenuOnClickOutside);
+    document.addEventListener("click", closeMenuOnClickOutside);
+    return () => document.removeEventListener("click", closeMenuOnClickOutside);
   }, []);
 
   // Rendre les liens pour un utilisateur authentifié
@@ -82,7 +85,7 @@ function Header() {
   return (
     <div id="header">
       <Link to="/">
-        <img id="logo-header" src="/img/logo.webp" alt="logo" />
+        <img id="logo-header" src="/img/logo.png" alt="logo" />
       </Link>
 
       <nav id="nav" className={isMenuOpen ? "open" : ""}>
@@ -90,6 +93,11 @@ function Header() {
           <li>
             <Link to="/" onClick={closeMenu}>
               Accueil
+            </Link>
+          </li>
+          <li>
+            <Link to="/recipes" onClick={closeMenu}>
+              Recettes
             </Link>
           </li>
 
@@ -113,8 +121,7 @@ function Header() {
           if (e.key === "Enter") toggleMenu();
         }}
         aria-label="Menu burger"
-        aria-expanded={isMenuOpen ? "true" : "false"}  // Ajout de cette ligne
-
+        aria-expanded={isMenuOpen ? "true" : "false"} // Ajout de cette ligne
       >
         <span className="burger-icon" />
         <span className="burger-icon" />

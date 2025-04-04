@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import seedDatabase from "./seed.js";
+import seedDatabase from "./seed.js";  // Importer le script de seeding
 
 dotenv.config();
 
@@ -16,7 +16,7 @@ export const connectDB = async () => {
     await mongoose.connect(mongoURI);
     console.log("Connecté à MongoDB");
 
-    // Écouteur pour surveiller l'état de la connexion
+    // Log de débogage
     mongoose.connection.on("connected", () => {
       console.log("Connexion réussie à MongoDB Atlas !");
     });
@@ -29,16 +29,15 @@ export const connectDB = async () => {
       console.log("Connexion MongoDB déconnectée.");
     });
 
-    // Log de débogage
-    console.log("Valeur de SEED_DB:", process.env.SEED_DB);
-
     // Lancer le seeding si nécessaire
+    console.log("Valeur de SEED_DB:", process.env.SEED_DB);
     if (process.env.NODE_ENV !== "test" && process.env.SEED_DB === "true") {
       console.log("Démarrage du seeding...");
       await seedDatabase();
     } else {
       console.log("Seeding désactivé ou en mode test");
     }
+
   } catch (error) {
     console.error("Erreur de connexion à MongoDB:", error);
     console.error(

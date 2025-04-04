@@ -8,9 +8,9 @@ import Score from "../models/Score.js";
 import Status from "../models/Status.js";
 import Ingredient from "../models/Ingredient.js";
 import Instruction from "../models/Instruction.js";
+import bcrypt from 'bcryptjs';
 
 dotenv.config();
-
 
 async function seedDatabase() {
   try {
@@ -108,33 +108,56 @@ async function seedDatabase() {
       statuses.map((s) => s.status_name)
     );
 
+    const adminRole = roles.find((r) => r.role_name === "admin");
+    const userRole = roles.find((r) => r.role_name === "user");
+    const activeStatus = statuses.find((s) => s.status_name === "active");
+
+    if (!adminRole || !userRole || !activeStatus) {
+      console.error("Un ou plusieurs rôles ou statuts manquent. Impossible de créer les utilisateurs.");
+      return;
+    }
+
     const usersData = [
-      { username: "Joseph Delnord", email: "joseph@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "admin")._id },
-      { username: "Julie Loones", email: "julie@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "admin")._id },
-      { username: "Chef Gordon Ramsay", email: "gordon@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
-      { username: "Biba Mouzarine", email: "biba@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
-      { username: "Alice Dupont", email: "alice.dupont@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
-      { username: "Bob Martin", email: "bob.martin@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
-      { username: "Claire Lefevre", email: "claire.lefevre@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
-      { username: "David Leclerc", email: "david.leclerc@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
-      { username: "Eva Durand", email: "eva.durand@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
-      { username: "Frank Sorel", email: "frank.sorel@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
-      { username: "Jon Snow", email: "jonsnow@got.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
-      { username: "Sherlock Holmes", email: "sherlock@bakerstreet.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id },
-      { username: "Tony Stark", email: "tony.stark@starkindustries.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")._id }
+      { username: "Joseph Delnord", email: "joseph@example.com", password: "Password@12345", status: activeStatus._id, role: adminRole._id },
+      { username: "Julie Loones", email: "julie@example.com", password: "Password@12345", status: activeStatus._id, role: userRole._id },
+      { username: "Chef Gordon Ramsay", email: "gordon@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")?._id },
+      { username: "Biba Mouzarine", email: "biba@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")?._id },
+      { username: "Alice Dupont", email: "alice.dupont@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")?._id },
+      { username: "Bob Martin", email: "bob.martin@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")?._id },
+      { username: "Claire Lefevre", email: "claire.lefevre@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")?._id },
+      { username: "David Leclerc", email: "david.leclerc@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")?._id },
+      { username: "Eva Durand", email: "eva.durand@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")?._id },
+      { username: "Frank Sorel", email: "frank.sorel@example.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")?._id },
+      { username: "Jon Snow", email: "jonsnow@got.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")?._id },
+      { username: "Sherlock Holmes", email: "sherlock@bakerstreet.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")?._id },
+      { username: "Tony Stark", email: "tony.stark@starkindustries.com", password: "Password@12345", status: statuses[0]._id, role: roles.find((r) => r.role_name === "user")?._id }
     ];
 
     const createdUsers = [];
 
     for (const userData of usersData) {
       try {
+        // Vérification du rôle et du statut de chaque utilisateur avant de créer
+        if (!userData.role || !userData.status) {
+          console.error(`Erreur dans la configuration de l'utilisateur ${userData.username}: rôle ou statut manquant.`);
+          continue;  // Passer à l'utilisateur suivant
+        }
+
+        // Hacher le mot de passe avant de l'enregistrer
+        const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+        // Mettre à jour les données de l'utilisateur avec le mot de passe haché
+        const updatedUserData = { ...userData, password: hashedPassword };
+
+        // Trouver ou créer l'utilisateur
         const existingUser = await User.findOneAndUpdate(
           { email: userData.email },
-          userData,
+          updatedUserData, // Utiliser les données de l'utilisateur avec le mot de passe haché
           { upsert: true, new: true }
         );
+
         if (!existingUser) {
-          const newUser = await User.create(userData);
+          const newUser = await User.create(updatedUserData);
           createdUsers.push(newUser);
           console.log(`Utilisateur créé : ${newUser.username} (${newUser.email})`);
         } else {
@@ -146,10 +169,26 @@ async function seedDatabase() {
       }
     }
 
+    if (!roles.find((r) => r.role_name === "admin") || !statuses[0]) {
+      console.error("Rôles ou statuts manquants. Impossible de créer les utilisateurs.");
+      return;
+    }
+
     console.log(
       "Utilisateurs traités :",
       createdUsers.map((u) => u.username)
     );
+
+    // Vérification pour chaque utilisateur dans le tableau usersData
+    for (const userData of usersData) {
+      // Vérification que le rôle et le statut sont bien assignés à l'utilisateur
+      if (!userData.role || !userData.status) {
+        console.error(`Erreur dans la configuration de l'utilisateur ${userData.username}: rôle ou statut manquant.`);
+        continue;  // Passe à l'utilisateur suivant
+      }
+
+      console.log("Utilisateur correctement configuré:", userData.username);
+    }
 
     // Créer les ingrédients
     const ingredients = await Ingredient.create([

@@ -6,7 +6,7 @@ labels: "Conception"
 assignees: ""
 ---
 
-# Suivi des documents à fournir / faire valider (sera coché par l'équipe péda)
+# Suivi des documents
 
 ## Cahier des charges
 

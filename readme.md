@@ -1,21 +1,18 @@
-# Ciné Délices - Project README
+# Ciné Saveurs - Project README
 
 ## Présentation Générale
 
-**Quoi ?**  
+**Quoi ?**
 Conception et développement d'un site web de recettes de cuisine inspirées du cinéma et des séries.
 
-**Qui ?**  
+**Qui ?**
 Une entreprise fictive de divertissement (streaming, production cinématographique, etc.) souhaitant proposer une expérience innovante à ses utilisateurs.
 
-**Pour qui ?**  
+**Pour qui ?**
 Amateurs de cuisine et de cinéma, curieux gourmands, fans de films et de séries.
 
-**Comment ?**  
+**Comment ?**
 En équipe, Julie et Joseph, de développeurs full-stack. Organisation en méthode agile pour la gestion de projet.
-
-**Pourquoi ?**  
-Pour la réalisation d'un projet fictif à but pédagogique visant l'obtention du Titre Professionnel.
 
 ---
 

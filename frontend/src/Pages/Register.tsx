@@ -15,7 +15,6 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState(""); // Message de succès
 
@@ -70,25 +69,20 @@ const Register = () => {
     // Vérification de la présence d'un caractère spécial dans le mot de passe
     const specialCharPattern = /[!@#$%^&*()_+{}[\]:;<>,.?~\\-]/;
     if (!specialCharPattern.test(password)) {
-      setError("Le mot de passe doit contenir au moins un caractère*spécial");
-      return;
-    }
-    // verification du champ role
-    if (role !== "admin" && role !== "user") {
-      setError("Le rôle doit être 'admin' ou 'user'");
+      setError("Le mot de passe doit contenir au moins un caractère spécial");
       return;
     }
 
     setLoading(true);
 
     try {
-      // Appel à l'API pour inscrire l'utilisateur
+      // Appel à l'API pour inscrire l'utilisateur, avec le rôle "user" par défaut
       const response = await myAxiosInstance.post("/api/auth/register", {
         username,
         email,
         password,
         confirmPassword,
-        role,
+        role: "user", // On assigne directement le rôle "user" ici
       });
 
       // Sauvegarder le token et le pseudo dans le localStorage
@@ -185,13 +179,6 @@ const Register = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-        {/* Dropdown pour choisir le rôle */}
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="">Sélectionner un rôle</option>
-          <option value="admin">Admin</option>
-          <option value="user">Utilisateur</option>
-        </select>
-
         <button type="submit" disabled={loading}>
           {loading ? "Chargement..." : "S'inscrire"}
         </button>

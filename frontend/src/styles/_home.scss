@@ -1,0 +1,63 @@
+@use "variables" as *;
+
+html,
+body {
+  height: 100%; /* S'assurer que le body et html prennent toute la hauteur de la fenêtre */
+  margin: 0; /* Supprimer les marges par défaut */
+  padding: 0; /* Supprimer les paddings par défaut */
+}
+
+.home-page {
+  height: 100%; /* L'élément principal prend toute la hauteur */
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Cette section prend toute la hauteur de la fenêtre */
+  background: linear-gradient(
+    135deg,
+    $primary-color,
+    $accent-color
+  ); /* Fond dégradé */
+  color: $text-color-quaternary;
+  text-align: center;
+  padding: 0 20px; /* Espacement latéral */
+}
+
+.title-main {
+  font-family: $font-family-primary;
+  font-size: $font-size-primary-title;
+  font-weight: $font-weight-bold;
+  margin-bottom: 20px;
+}
+
+.highlight {
+  color: $accent-color;
+}
+
+.hero-description {
+  font-size: $font-size-text-description;
+  margin-bottom: 30px;
+}
+
+.explore-button {
+  padding: 10px 20px;
+  background-color: $primary-color;
+  color: $text-color-quaternary;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: $hover-background-color-button;
+    color: $hover-text-color-button;
+  }
+}

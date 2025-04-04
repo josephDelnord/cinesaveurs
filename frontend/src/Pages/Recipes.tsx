@@ -98,7 +98,7 @@ const Recipes: React.FC = () => {
         </div>
       </div>
 
-      <h2>Bienvenue dans l'univers de Ciné Délices</h2>
+      <h2>Bienvenue dans l'univers de Ciné Saveurs</h2>
 
       {error && <p className="error-message">{error}</p>}
 

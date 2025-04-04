@@ -1,134 +1,135 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 #header {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: $background-color;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  #logo-header {
-    height: 60px; /* Ajuster la taille du logo */
-    width: auto;
-  }
-  
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: $background-color;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#logo-header {
+  height: 100px; /* Ajuster la taille du logo */
+  width: 150px; /* Ajuster la taille du logo */
+}
+
+#nav {
+  display: flex;
+  gap: 2rem;
+}
+
+#nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+#nav li {
+  display: inline-block;
+  padding: 0 1rem; /* Uniformiser l'espacement */
+}
+
+#nav a {
+  text-decoration: none;
+  color: $text-color-secondary;
+  font-family: $font-family-primary;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+}
+
+#nav a:hover {
+  color: $primary-color;
+}
+
+/* Ligne allant de la droite vers le logo */
+#header::before {
+  content: "";
+  position: absolute;
+  top: 100%; /* Positionne la ligne juste sous la barre de navigation */
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 5px;
+  background-color: $primary-color;
+  transform: translateY(0);
+}
+
+/* Styles pour le menu burger */
+.burger-menu {
+  display: none; /* Cacher le burger par défaut */
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.burger-icon {
+  width: 100%;
+  height: 4px;
+  background-color: $primary-color;
+  margin: 4px 0;
+  transition: all 0.3s;
+}
+
+/* Lorsque le menu burger est ouvert */
+.burger-menu.open .burger-icon:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.burger-menu.open .burger-icon:nth-child(2) {
+  opacity: 0;
+}
+
+.burger-menu.open .burger-icon:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+#nav.open {
+  display: block; /* Affiche le menu en mode burger */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+}
+
+#nav.open ul {
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 0;
+}
+
+#nav.open a {
+  font-size: 1.5rem;
+  color: $text-color-quaternary;
+}
+
+#nav.open a:hover {
+  color: $hover-text-color-button;
+}
+
+/* Media queries pour le responsive */
+@media (max-width: 768px) {
   #nav {
-    display: flex;
-    gap: 2rem;
-  }
-  
-  #nav ul {
-    list-style: none;
-    display: flex;
-    gap: 2rem;
-  }
-  
-  #nav li {
-    display: inline-block;
-  }
-  
-  #nav a {
-    text-decoration: none;
-    color: $text-color-secondary;
-    font-family: $font-family-primary;
-    font-size: 1.1rem;
-    padding: 0.5rem 1rem;
-  }
-  
-  #nav a:hover {
-    color: $primary-color;
+    display: none; /* Cache le menu sur mobile */
   }
 
-  /* Ligne allant de la droite vers le logo */
-  #header::before {
-    content: '';
-    position: absolute;
-    top: 100%; /* Positionne la ligne juste sous la barre de navigation */
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 5px;
-    background-color: $primary-color;
-    transform: translateY(0);
-  }
-
-  /* Styles pour le menu burger */
   .burger-menu {
-    display: none; /* Cacher le burger par défaut */
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 30px;
-    height: 30px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    z-index: 1001;
+    display: flex; /* Affiche le burger sur mobile */
   }
-  
-  .burger-icon {
-    width: 100%;
-    height: 4px;
-    background-color: $primary-color;
-    margin: 4px 0;
-    transition: all 0.3s;
-  }
-  
-  /* Lorsque le menu burger est ouvert */
-  .burger-menu.open .burger-icon:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-  
-  .burger-menu.open .burger-icon:nth-child(2) {
-    opacity: 0;
-  }
-  
-  .burger-menu.open .burger-icon:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
-  }
-  
+
   #nav.open {
-    display: block; /* Affiche le menu en mode burger */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    justify-content: center;
-    align-items: center;
+    display: block;
   }
-  
-  #nav.open ul {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  #nav.open a {
-    font-size: 1.5rem;
-    color: $text-color-quaternary;
-  }
-  
-  #nav.open a:hover {
-    color: $hover-text-color-button;
-  }
-  
-  /* Media queries pour le responsive */
-  @media (max-width: 768px) {
-    #nav {
-      display: none; /* Cache le menu sur mobile */
-    }
-  
-    .burger-menu {
-      display: flex; /* Affiche le burger sur mobile */
-    }
-  
-    #nav.open {
-      display: block;
-    }
-  }
-  
+}

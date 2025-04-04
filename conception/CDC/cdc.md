@@ -1,8 +1,8 @@
-# Ciné Délices - Projet Web de Recettes Inspirées par le Cinéma et les Séries
+# Ciné Saveurs - Projet Web de Recettes Inspirées par le Cinéma et les Séries
 
 ## 1. Contexte du Projet
 
-**Ciné Délices** est une plateforme web innovante qui combine deux passions populaires : le cinéma et la cuisine. Ce site offre une expérience immersive en permettant aux utilisateurs de découvrir des recettes inspirées des films et des séries télévisées, tout en apportant une dimension sociale et interactive à travers des fonctionnalités de partage et de gestion de contenu.
+**Ciné Saveurs** est une plateforme web innovante qui combine deux passions populaires : le cinéma et la cuisine. Ce site offre une expérience immersive en permettant aux utilisateurs de découvrir des recettes inspirées des films et des séries télévisées, tout en apportant une dimension sociale et interactive à travers des fonctionnalités de partage et de gestion de contenu.
 
 ### 1. Besoins (Problèmes auxquels répond le projet)
 
@@ -34,7 +34,7 @@
 
 ### 3. Public visé
 
-Le projet **Ciné Délices** s'adresse à différents groupes d'utilisateurs qui partagent des intérêts communs pour le cinéma et la cuisine. Voici les principaux segments de public visés :
+Le projet **Ciné Saveurs** s'adresse à différents groupes d'utilisateurs qui partagent des intérêts communs pour le cinéma et la cuisine. Voici les principaux segments de public visés :
 
 #### 1. **Les cinéphiles**
    - **Description** : Passionnés de cinéma et de séries, ce public aime explorer des aspects divers de l'univers cinématographique, y compris la cuisine inspirée par les films et les séries. Ils sont intéressés par la découverte de recettes qui leur rappellent leurs œuvres cinématographiques préférées.
@@ -74,7 +74,7 @@ Le projet **Ciné Délices** s'adresse à différents groupes d'utilisateurs qui
 
 ### 2. Fonctionnalités du projet (Spécifications fonctionnelles)
 
-Le projet **Ciné Délices** propose une plateforme permettant aux utilisateurs de découvrir, partager et gérer des recettes inspirées par le cinéma et les séries. Les fonctionnalités du projet sont définies par plusieurs besoins et cas d'utilisation, classés selon leur priorité et leur pertinence pour le lancement du projet.
+Le projet **Ciné Saveurs** propose une plateforme permettant aux utilisateurs de découvrir, partager et gérer des recettes inspirées par le cinéma et les séries. Les fonctionnalités du projet sont définies par plusieurs besoins et cas d'utilisation, classés selon leur priorité et leur pertinence pour le lancement du projet.
 
 #### Fonctionnalités principales
 
@@ -318,7 +318,7 @@ Ces évolutions seront priorisées et développées en fonction des retours des 
 
 ## 6. Navigateurs Compatibles
 
-Afin de garantir que **Ciné Délices** soit accessible et performant sur la majorité des appareils et des configurations, il est essentiel de spécifier les navigateurs web avec lesquels l'application sera compatible. Cela permet de s'assurer que tous les utilisateurs bénéficient d'une expérience fluide, sans rencontrer de problèmes d'affichage ou de fonctionnalité.
+Afin de garantir que **Ciné Saveurs** soit accessible et performant sur la majorité des appareils et des configurations, il est essentiel de spécifier les navigateurs web avec lesquels l'application sera compatible. Cela permet de s'assurer que tous les utilisateurs bénéficient d'une expérience fluide, sans rencontrer de problèmes d'affichage ou de fonctionnalité.
 
 ### 1. **Navigateurs Modernes Principaux**
 
@@ -344,7 +344,7 @@ Les versions plus anciennes de ces navigateurs peuvent ne pas prendre en charge 
 
 ### 3. **Navigateurs Mobiles Compatibles**
 
-Ciné Délices étant conçu pour être **responsive** (adapté aux mobiles), il sera compatible avec les navigateurs mobiles des systèmes iOS et Android :
+Ciné Saveurs étant conçu pour être **responsive** (adapté aux mobiles), il sera compatible avec les navigateurs mobiles des systèmes iOS et Android :
 
 - **Google Chrome Mobile** (dernière version stable)
 - **Safari Mobile** (dernière version stable pour iOS)
@@ -369,12 +369,12 @@ Les navigateurs trop anciens ou moins utilisés, comme **Internet Explorer** (ve
 Les utilisateurs de ces navigateurs seront invités à mettre à jour leur version de navigateur pour bénéficier de l'expérience complète.
 
 
-**Ciné Délices** sera conçu pour être compatible avec la majorité des navigateurs modernes, tant sur **desktop** que sur **mobile**, pour garantir une expérience utilisateur fluide et performante. L'objectif est de rendre l'application accessible au plus grand nombre d'utilisateurs tout en tenant compte des évolutions technologiques des navigateurs web.
+**Ciné Saveurs** sera conçu pour être compatible avec la majorité des navigateurs modernes, tant sur **desktop** que sur **mobile**, pour garantir une expérience utilisateur fluide et performante. L'objectif est de rendre l'application accessible au plus grand nombre d'utilisateurs tout en tenant compte des évolutions technologiques des navigateurs web.
 
 ---
 ## 7. Arborescence de l'Application
 
-L'arborescence de **Ciné Délices** décrit les principales sections de l'application et les chemins que les utilisateurs suivront pour naviguer à travers les différentes pages. Elle correspond également aux **routes front-end** qui définissent les pages accessibles de l'application via le navigateur.
+L'arborescence de **Ciné Saveurs** décrit les principales sections de l'application et les chemins que les utilisateurs suivront pour naviguer à travers les différentes pages. Elle correspond également aux **routes front-end** qui définissent les pages accessibles de l'application via le navigateur.
 
 ### 1. **Page d'Accueil**
 - **Route** : `/`
@@ -609,7 +609,7 @@ L'arborescence de **Ciné Délices** décrit les principales sections de l'appli
      - Implémenter des tests fonctionnels et des tests de performance pour vérifier la robustesse et la scalabilité de l'application.
      - Mettre en place une pipeline CI/CD pour exécuter les tests automatiquement lors de chaque mise à jour du code.
 
-L’analyse des risques met en évidence plusieurs défis techniques, de sécurité, de gestion et de performance qui pourraient survenir au cours du développement du projet **Ciné Délices**. Cependant, avec les mesures préventives et les pratiques recommandées ci-dessus, ces risques peuvent être efficacement gérés et minimisés, garantissant ainsi une expérience utilisateur fluide et un produit final de qualité. Il est essentiel de rester vigilant tout au long du développement pour ajuster les stratégies en fonction des évolutions du projet et des retours des utilisateurs.
+L’analyse des risques met en évidence plusieurs défis techniques, de sécurité, de gestion et de performance qui pourraient survenir au cours du développement du projet **Ciné Saveurs**. Cependant, avec les mesures préventives et les pratiques recommandées ci-dessus, ces risques peuvent être efficacement gérés et minimisés, garantissant ainsi une expérience utilisateur fluide et un produit final de qualité. Il est essentiel de rester vigilant tout au long du développement pour ajuster les stratégies en fonction des évolutions du projet et des retours des utilisateurs.
 
 ---
 
